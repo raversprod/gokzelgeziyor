@@ -21,15 +21,22 @@
     :root {
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --app-bg: #f1f5f9;
+      --hero-bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #311042 100%);
+    }
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
     }
     body {
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f1f5f9;
+      background-color: var(--app-bg);
       color: #0f172a;
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
       padding-bottom: calc(96px + var(--safe-bottom));
+      transition: background-color 0.25s ease;
     }
     /* iPhone Şarj Çubuğu / Çentik (Dynamic Island & Notch) Güvenli Boşluk Koruması */
     .ios-safe-header {
@@ -55,7 +62,8 @@
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
     .hero-compact {
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #311042 100%);
+      background: var(--hero-bg);
+      transition: background 0.3s ease;
     }
     .card-hover {
       transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease;
@@ -108,17 +116,17 @@
     <div class="max-w-6xl mx-auto">
       <div class="flex items-center justify-between gap-2">
         <!-- Sol: Başlık & Tarih (GG.AA.YYYY) -->
-        <div class="min-w-0">
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="liveSyncDot" title="Firebase Canlı Bulut Aktif"></span>
-            <h1 id="tripTitleDisplay" class="text-base sm:text-xl font-extrabold tracking-tight truncate">
+        <div class="min-w-0 flex-1">
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0" id="liveSyncDot" title="Firebase Canlı Bulut Aktif"></span>
+            <h1 id="tripTitleDisplay" class="text-sm sm:text-xl font-extrabold tracking-tight truncate">
               Göksel & Zeliş • Tiflis 🇬🇪
             </h1>
           </div>
-          <div class="flex items-center gap-2 text-[11px] text-indigo-200 font-semibold mt-0.5 flex-wrap">
-            <span id="tripDatesBadge">📅 15.11.2026 ➔ 18.11.2026</span>
+          <div class="flex items-center gap-1.5 text-[11px] text-indigo-100 font-semibold mt-0.5 flex-wrap">
+            <span id="tripDatesBadge" class="truncate">📅 03.12.2026 ➔ 06.12.2026</span>
             <span>•</span>
-            <span id="activeUserHeaderBadge" class="text-pink-300 font-extrabold">👦 Göksel</span>
+            <span id="activeUserHeaderBadge" class="text-pink-300 font-extrabold shrink-0">👦 Göksel</span>
           </div>
         </div>
 
@@ -138,7 +146,7 @@
 
           <button
             onclick="window.appActions.openItemModal()"
-            class="px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 font-extrabold text-xs shadow-md transition cursor-pointer flex items-center gap-1"
+            class="px-2.5 sm:px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 font-extrabold text-xs shadow-md transition cursor-pointer flex items-center gap-1 shrink-0"
           >
             <span>➕</span>
             <span>Plan Ekle</span>
@@ -146,8 +154,8 @@
 
           <button
             onclick="window.appActions.openSettingsModal()"
-            class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition cursor-pointer border border-white/15 flex items-center gap-1"
-            title="Ayarlar, Kullanıcı Seçimi ve Kodu Kopyala"
+            class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs transition cursor-pointer border border-white/15 flex items-center gap-1 shrink-0"
+            title="Ayarlar, Arka Plan Rengi, Kullanıcı Seçimi ve Kodu Kopyala"
           >
             <span>⚙️</span>
             <span class="hidden sm:inline">Ayarlar</span>
@@ -155,8 +163,8 @@
         </div>
       </div>
 
-      <!-- MASAÜSTÜ 4 ANA SEKME -->
-      <div class="hidden md:grid grid-cols-4 gap-2 mt-3 pt-2.5 border-t border-white/10">
+      <!-- MASAÜSTÜ 5 ANA SEKME (Planımız | Öneriler | Bütçe | Akış | Notlar) -->
+      <div class="hidden md:grid grid-cols-5 gap-2 mt-3 pt-2.5 border-t border-white/10">
         <button
           id="tabBtn-planner"
           onclick="window.appActions.switchTab('planner')"
@@ -188,20 +196,25 @@
           <span>⏳ Akış</span>
           <span id="tabCountFlow" class="px-1.5 py-0.5 rounded-full bg-emerald-400 text-slate-950 text-[10px] font-black">0</span>
         </button>
+        <button
+          id="tabBtn-notes"
+          onclick="window.appActions.switchTab('notes')"
+          class="py-2 px-3 rounded-xl font-extrabold text-xs transition cursor-pointer bg-white/10 text-white hover:bg-white/20 flex items-center justify-center gap-1.5"
+        >
+          <span>📝 Notlar</span>
+          <span id="tabCountNotes" class="px-1.5 py-0.5 rounded-full bg-pink-400 text-slate-950 text-[10px] font-black">0</span>
+        </button>
       </div>
     </div>
   </header>
 
   <!-- ANA İÇERİK ALANI -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4">
+  <main class="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 py-4 overflow-x-hidden">
 
-    <!-- SEKME 1: PLANIMIZ -->
+    <!-- SEKME 1: PLANIMIZ (Sadece Sizin Eklediğiniz Planlar + 2x3 Kategori Kutuları) -->
     <section id="view-planner" class="space-y-4 fade-in">
       <!-- 2x3 Belirgin Renkli Kategori Kutucukları (Kaydırmasız) -->
       <div id="categoryFilterGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5"></div>
-
-      <!-- Gezi & Taksi Kutucuklarının Hemen Altında Tek Kutu: Yapılacaklar Listesi & Ortak Notlar -->
-      <div id="todoSingleBoxContainer"></div>
 
       <!-- Durum Filtresi + Arama + Hızlı Ekle -->
       <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
@@ -243,42 +256,220 @@
       <div id="flowContainer"></div>
     </section>
 
+    <!-- SEKME 5: NOTLAR (İçinde Yapılacaklar, "📁 Yapıldı Klasörü" ve "📂 Beklentimiz Klasörü" Yer Alır) -->
+    <section id="view-notes" class="space-y-4 hidden fade-in">
+      <!-- BÖLÜM 1: Ortak Notlar & Yapılacaklar + İçinde "📁 Yapıldı Klasörü" -->
+      <!-- Statik Form + Dinamik Liste Ayrımı: Yazarken asla silinmez! -->
+      <div class="bg-gradient-to-br from-amber-50/95 via-white to-rose-50/90 rounded-3xl border-2 border-amber-300/90 p-4 sm:p-5 shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3.5 border-b border-amber-200/80">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-9 h-9 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-extrabold text-base shadow-2xs shrink-0">📝</span>
+            <div class="min-w-0">
+              <h2 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-1.5 flex-wrap">
+                <span>Ortak Notlar & Yapılacaklar Listesi</span>
+                <span id="todoActiveCountBadge" class="px-2 py-0.5 rounded-full bg-amber-200/80 text-amber-950 text-[10px] font-black">0 aktif</span>
+              </h2>
+              <p class="text-[11px] text-slate-600 font-medium">Nokta nokta hızlı not alın, yapılanları tikleyip altındaki Yapıldı klasörüne gönderin</p>
+            </div>
+          </div>
+
+          <form onsubmit="window.appActions.addTodoItem(event)" class="flex items-center gap-1.5 w-full sm:w-auto">
+            <input
+              id="newTodoInput"
+              type="text"
+              autocomplete="off"
+              placeholder="• Yeni yapılacak veya not yazın..."
+              class="flex-1 sm:w-72 min-w-0 px-3.5 py-2.5 rounded-xl border border-amber-300 bg-white text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-600 shadow-2xs"
+            />
+            <button
+              type="submit"
+              class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shrink-0 cursor-pointer transition shadow-2xs"
+            >
+              + Not Ekle
+            </button>
+          </form>
+        </div>
+
+        <!-- Sadece liste maddeleri ve "📁 Yapıldı Klasörü" burada güncellenir -->
+        <div id="todoListDynamicArea" class="mt-3"></div>
+      </div>
+
+      <!-- BÖLÜM 2: "📂 Beklentimiz Klasörü" (Tıklayınca Göksel & Zeliş 5 Yıldızlı Beklenti Şablonu Açılır) -->
+      <div class="bg-white rounded-3xl border-2 border-indigo-200/90 shadow-xs overflow-hidden">
+        <button
+          type="button"
+          onclick="window.appActions.toggleExpectationsFolder()"
+          class="w-full p-4 sm:p-5 bg-gradient-to-r from-indigo-50/90 via-purple-50/80 to-pink-50/90 hover:from-indigo-100/80 hover:to-pink-100/80 flex items-center justify-between gap-3 text-left cursor-pointer transition"
+        >
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 to-pink-600 text-white flex items-center justify-center text-lg font-extrabold shadow-xs shrink-0">
+              📂
+            </span>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="text-sm sm:text-base font-extrabold text-slate-900">Beklentimiz Klasörü (Göksel & Zeliş)</h3>
+                <span id="expFolderTotalBadge" class="px-2 py-0.5 rounded-full bg-indigo-600 text-white text-[10px] font-black">0 istek</span>
+              </div>
+              <p class="text-[11px] text-slate-600 font-semibold mt-0.5">
+                Tiflis'te yapmak istediklerimizi ayrı ayrı yazdığımız ve 5 yıldız (★★★★★) üzerinden puanladığımız klasör
+              </p>
+            </div>
+          </div>
+
+          <span id="expFolderToggleLabel" class="px-3 py-1.5 rounded-xl bg-white border border-indigo-200 text-indigo-900 font-extrabold text-xs shrink-0 shadow-2xs">
+            🔽 Klasörü Aç
+          </span>
+        </button>
+
+        <!-- Tıklayınca Açılan Beklentiler Şablonu -->
+        <div id="expectationsFolderContent" class="hidden p-4 sm:p-5 border-t border-indigo-100 bg-slate-50/60 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white p-3 rounded-2xl border border-slate-200">
+            <p class="text-xs font-bold text-slate-600">
+              💡 İkiniz de kendi kutunuza beklentilerinizi yazıp ne kadar istediğinizi <strong>1★ - 5★</strong> arası puanlayabilirsiniz.
+            </p>
+            <button
+              type="button"
+              id="expSortBtn"
+              onclick="window.appActions.toggleExpectationsSort()"
+              class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 text-xs font-extrabold cursor-pointer transition shrink-0"
+            >
+              🔥 Yıldız Puanına Göre Sırala
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <!-- GÖKSEL KUTUSU -->
+            <div class="bg-gradient-to-br from-blue-50/95 via-indigo-50/60 to-white rounded-3xl border-2 border-blue-300 p-4 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-2 pb-3 border-b border-blue-200">
+                  <div class="flex items-center gap-2">
+                    <span class="w-9 h-9 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-base font-extrabold shadow-xs">👦</span>
+                    <div>
+                      <h4 class="text-sm sm:text-base font-extrabold text-blue-950">Göksel'in Beklentileri</h4>
+                      <p class="text-[11px] font-semibold text-blue-700">Yapmak istediklerim & önem derecesi (1★ - 5★)</p>
+                    </div>
+                  </div>
+                  <span id="gokselExpCountBadge" class="px-2.5 py-1 rounded-full bg-blue-600 text-white text-xs font-black">0</span>
+                </div>
+
+                <!-- Göksel Yeni Beklenti Formu (Statik Input) -->
+                <form onsubmit="window.appActions.addExpectation(event, 'Göksel')" class="mt-3 bg-white p-3 rounded-2xl border border-blue-200 shadow-2xs space-y-2.5">
+                  <input
+                    id="gokselExpInput"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="👦 Göksel: Bu seyahatte ne yapmak istiyorsun?"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white text-xs font-bold text-slate-900 focus:outline-none focus:border-blue-500"
+                  />
+                  <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <div class="flex items-center gap-1">
+                      <span class="text-[11px] font-extrabold text-slate-600 mr-1">Ne kadar istiyorsun:</span>
+                      <div id="gokselNewExpStarBar" class="flex items-center gap-0.5"></div>
+                    </div>
+                    <button
+                      type="submit"
+                      class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer transition shadow-2xs"
+                    >
+                      + Ekle
+                    </button>
+                  </div>
+                </form>
+
+                <!-- Göksel Beklenti Listesi -->
+                <div id="gokselExpectationsList" class="mt-3 space-y-2"></div>
+              </div>
+            </div>
+
+            <!-- ZELİŞ KUTUSU -->
+            <div class="bg-gradient-to-br from-pink-50/95 via-rose-50/60 to-white rounded-3xl border-2 border-pink-300 p-4 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-2 pb-3 border-b border-pink-200">
+                  <div class="flex items-center gap-2">
+                    <span class="w-9 h-9 rounded-2xl bg-pink-600 text-white flex items-center justify-center text-base font-extrabold shadow-xs">👧</span>
+                    <div>
+                      <h4 class="text-sm sm:text-base font-extrabold text-pink-950">Zeliş'in Beklentileri</h4>
+                      <p class="text-[11px] font-semibold text-pink-700">Yapmak istediklerim & önem derecesi (1★ - 5★)</p>
+                    </div>
+                  </div>
+                  <span id="zelisExpCountBadge" class="px-2.5 py-1 rounded-full bg-pink-600 text-white text-xs font-black">0</span>
+                </div>
+
+                <!-- Zeliş Yeni Beklenti Formu (Statik Input) -->
+                <form onsubmit="window.appActions.addExpectation(event, 'Zeliş')" class="mt-3 bg-white p-3 rounded-2xl border border-pink-200 shadow-2xs space-y-2.5">
+                  <input
+                    id="zelisExpInput"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="👧 Zeliş: Bu seyahatte ne yapmak istiyorsun?"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white text-xs font-bold text-slate-900 focus:outline-none focus:border-pink-500"
+                  />
+                  <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <div class="flex items-center gap-1">
+                      <span class="text-[11px] font-extrabold text-slate-600 mr-1">Ne kadar istiyorsun:</span>
+                      <div id="zelisNewExpStarBar" class="flex items-center gap-0.5"></div>
+                    </div>
+                    <button
+                      type="submit"
+                      class="px-3.5 py-1.5 rounded-xl bg-pink-600 hover:bg-pink-700 text-white text-xs font-extrabold cursor-pointer transition shadow-2xs"
+                    >
+                      + Ekle
+                    </button>
+                  </div>
+                </form>
+
+                <!-- Zeliş Beklenti Listesi -->
+                <div id="zelisExpectationsList" class="mt-3 space-y-2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- iPHONE / MOBİL ALT YÜZEN UYGULAMA MENÜSÜ (4 SEKME) -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200 px-2 pt-1.5 ios-safe-bottom-nav shadow-2xl">
-    <div class="grid grid-cols-4 gap-1 max-w-md mx-auto">
+  <!-- iPHONE / MOBİL ALT YÜZEN UYGULAMA MENÜSÜ (5 SEKME: Planımız, Öneriler, Bütçe, Akış, Notlar) -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200 px-1.5 pt-1.5 ios-safe-bottom-nav shadow-2xl">
+    <div class="grid grid-cols-5 gap-1 max-w-md mx-auto">
       <button
         id="mobTab-planner"
         onclick="window.appActions.switchTab('planner')"
-        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 bg-indigo-50 font-extrabold text-[11px] cursor-pointer"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 bg-indigo-50 font-extrabold text-[10px] cursor-pointer"
       >
-        <span class="text-base">📋</span>
-        <span>Planımız</span>
+        <span class="text-base leading-none">📋</span>
+        <span class="mt-0.5 truncate">Planımız</span>
       </button>
       <button
         id="mobTab-recommendations"
         onclick="window.appActions.switchTab('recommendations')"
-        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[11px] cursor-pointer"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[10px] cursor-pointer"
       >
-        <span class="text-base">💡</span>
-        <span>Öneriler</span>
+        <span class="text-base leading-none">💡</span>
+        <span class="mt-0.5 truncate">Öneriler</span>
       </button>
       <button
         id="mobTab-budget"
         onclick="window.appActions.switchTab('budget')"
-        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[11px] cursor-pointer"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[10px] cursor-pointer"
       >
-        <span class="text-base">💰</span>
-        <span>Bütçe</span>
+        <span class="text-base leading-none">💰</span>
+        <span class="mt-0.5 truncate">Bütçe</span>
       </button>
       <button
         id="mobTab-flow"
         onclick="window.appActions.switchTab('flow')"
-        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[11px] cursor-pointer"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[10px] cursor-pointer"
       >
-        <span class="text-base">⏳</span>
-        <span>Akış</span>
+        <span class="text-base leading-none">⏳</span>
+        <span class="mt-0.5 truncate">Akış</span>
+      </button>
+      <button
+        id="mobTab-notes"
+        onclick="window.appActions.switchTab('notes')"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[10px] cursor-pointer"
+      >
+        <span class="text-base leading-none">📝</span>
+        <span class="mt-0.5 truncate">Notlar</span>
       </button>
     </div>
   </nav>
@@ -323,7 +514,7 @@
               id="formTitle"
               type="text"
               required
-              placeholder="Örn: Zodiaqo Restoran veya AJet Uçuşu"
+              placeholder="Örn: Konaklama veya Pegasus"
               class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold"
             />
           </div>
@@ -332,7 +523,7 @@
             <input
               id="formCity"
               type="text"
-              placeholder="Örn: Eski Tiflis"
+              placeholder="Örn: Tiflis Merkez"
               class="w-full px-3 py-2 border border-slate-300 rounded-xl"
             />
           </div>
@@ -376,7 +567,7 @@
             <label class="block text-xs font-extrabold text-indigo-950 mb-1">📅 Tarih (GG.AA.YYYY) *</label>
             <div class="date-picker-shell" onclick="window.appActions.triggerDatePicker('formDatePicker')">
               <div class="w-full px-3 py-2 border-2 border-indigo-400 rounded-xl bg-white font-extrabold text-slate-900 flex items-center justify-between shadow-2xs">
-                <span id="formDateDisplayText">15.11.2026</span>
+                <span id="formDateDisplayText">03.12.2026</span>
                 <span class="text-indigo-600 text-xs font-black">📅 Takvim</span>
               </div>
               <input
@@ -408,14 +599,15 @@
             <input id="formSubtitle" type="text" placeholder="Örn: Gecelik 2.250 ₺ veya 2 Kişilik" class="w-full px-3 py-2 border border-slate-300 rounded-xl" />
           </div>
           <div>
-            <label class="block text-xs font-extrabold text-slate-700 mb-1">📍 Konum / Adres (Google Maps İçin)</label>
-            <input id="formLocation" type="text" placeholder="Örn: 6 Giorgi Chanturia St, Tbilisi" class="w-full px-3 py-2 border border-slate-300 rounded-xl" />
+            <label class="block text-xs font-extrabold text-emerald-800 mb-1">📍 Google Maps Linki veya Tam Mekan Adı</label>
+            <input id="formLocation" type="text" placeholder="https://maps.app.goo.gl/... veya tam adres" class="w-full px-3 py-2 border-2 border-emerald-300 rounded-xl bg-emerald-50/30 font-semibold" />
+            <span class="text-[10px] text-emerald-700 font-semibold mt-0.5 block">Direkt Google Maps paylaşım linki yapıştırabilirsiniz!</span>
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-extrabold text-slate-700 mb-1">🔗 Link (Opsiyonel)</label>
+            <label class="block text-xs font-extrabold text-slate-700 mb-1">🔗 Ekstra Web/Bilet Linki (Opsiyonel)</label>
             <input id="formLink" type="url" placeholder="https://..." class="w-full px-3 py-2 border border-slate-300 rounded-xl" />
           </div>
           <div>
@@ -436,18 +628,27 @@
     </div>
   </div>
 
-  <!-- MODAL: AYARLAR, KULLANICI SEÇİMİ (CİHAZA ÖZEL), TEK TIKLA KOD KOPYALA VE ROTA TARİHLERİ -->
+  <!-- MODAL: AYARLAR, ARKA PLAN RENK SEÇİMİ, KULLANICI SEÇİMİ VE ROTA TARİHLERİ -->
   <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/65 backdrop-blur-xs hidden items-start sm:items-center justify-center px-3 overflow-y-auto ios-safe-modal">
     <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 my-auto max-h-[88vh] overflow-y-auto space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div>
-          <h3 class="text-base sm:text-lg font-extrabold text-slate-900">⚙️ Ayarlar & Cihaz Profili</h3>
-          <p class="text-[11px] text-slate-500 font-semibold">Bu cihazda kim kullanıyor, GitHub kopyalama ve tarih ayarları</p>
+          <h3 class="text-base sm:text-lg font-extrabold text-slate-900">⚙️ Ayarlar, Tema Rengi & Cihaz Profili</h3>
+          <p class="text-[11px] text-slate-500 font-semibold">Arka plan rengi, aktif kullanıcı, GitHub kopyalama ve tarih ayarları</p>
         </div>
         <button onclick="window.appActions.closeSettingsModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center cursor-pointer font-bold">✕</button>
       </div>
 
-      <!-- 1. Cihaza Özel Kullanıcı Seçimi -->
+      <!-- 1. Arayüz Arka Plan Rengi Seçici (Yeşil, Kırmızı ve 8 Temel Renk) -->
+      <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5">
+        <div class="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+          <span>🎨 Arayüz Arka Plan & Tema Rengi</span>
+        </div>
+        <p class="text-[11px] text-slate-500 font-medium">Seçtiğiniz renk anında uygulanır ve kaydedilir:</p>
+        <div id="themeColorPickerGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1"></div>
+      </div>
+
+      <!-- 2. Cihaza Özel Kullanıcı Seçimi -->
       <div class="p-4 rounded-2xl bg-slate-900 text-white space-y-2.5">
         <div class="text-xs font-extrabold text-pink-300">📱 Bu Telefonu / Bilgisayarı Kim Kullanıyor?</div>
         <p class="text-[11px] text-slate-300">
@@ -473,10 +674,10 @@
         </div>
       </div>
 
-      <!-- 2. Canlı Bulut Senkronizasyon + GitHub Mobil Uygulaması İçin Tek Tıkla Kopyala / İndir -->
+      <!-- 3. Canlı Bulut Senkronizasyon + GitHub Mobil Uygulaması İçin Tek Tıkla Kopyala / İndir -->
       <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-emerald-950">☁️ Firebase Canlı Bulut Aktif</span>
+          <span class="text-xs font-extrabold text-emerald-950">☁️ Çakışmasız Çoklu Kullanıcı Bulutu Aktif</span>
           <button
             type="button"
             onclick="window.appActions.forceCloudSync()"
@@ -512,7 +713,7 @@
         </div>
       </div>
 
-      <!-- 3. Seyahat Tarihleri (GG.AA.YYYY), Hedef Bütçe ve Kur -->
+      <!-- 4. Seyahat Tarihleri (GG.AA.YYYY), Hedef Bütçe ve Kur -->
       <form onsubmit="window.appActions.saveTripSettings(event)" class="space-y-3 text-xs border-t border-slate-100 pt-3">
         <div class="font-extrabold text-slate-800 text-sm">🗓️ Seyahat Tarihleri (GG.AA.YYYY) & Bütçe</div>
 
@@ -532,7 +733,7 @@
             <label class="block font-bold text-slate-700 mb-1">Başlangıç Tarihi</label>
             <div class="date-picker-shell" onclick="window.appActions.triggerDatePicker('setStartDatePicker')">
               <div class="w-full px-3 py-2 border-2 border-indigo-300 rounded-xl bg-white font-extrabold text-slate-900 flex items-center justify-between">
-                <span id="setStartDateDisplayText">15.11.2026</span>
+                <span id="setStartDateDisplayText">03.12.2026</span>
                 <span class="text-xs text-indigo-600">📅 Seç</span>
               </div>
               <input
@@ -549,7 +750,7 @@
             <label class="block font-bold text-slate-700 mb-1">Bitiş Tarihi</label>
             <div class="date-picker-shell" onclick="window.appActions.triggerDatePicker('setEndDatePicker')">
               <div class="w-full px-3 py-2 border-2 border-indigo-300 rounded-xl bg-white font-extrabold text-slate-900 flex items-center justify-between">
-                <span id="setEndDateDisplayText">18.11.2026</span>
+                <span id="setEndDateDisplayText">06.12.2026</span>
                 <span class="text-xs text-indigo-600">📅 Seç</span>
               </div>
               <input
@@ -574,14 +775,7 @@
           </div>
         </div>
 
-        <div class="flex items-center justify-between pt-2">
-          <button
-            type="button"
-            onclick="window.appActions.resetToSampleWithCurrentDates()"
-            class="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-[11px] cursor-pointer"
-          >
-            🔄 Varsayılan Paketi Bugünün Tarihiyle Yükle
-          </button>
+        <div class="flex items-center justify-end pt-2">
           <button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold cursor-pointer shadow">
             Kaydet
           </button>
@@ -604,7 +798,7 @@
       <input type="hidden" id="remItemId" />
       <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
         <div id="remItemTitle" class="text-sm font-extrabold text-slate-900"></div>
-        <div id="remItemLocation" class="text-xs text-slate-500 mt-0.5"></div>
+        <div id="remItemLocation" class="text-xs text-slate-500 mt-0.5 break-all"></div>
       </div>
 
       <div class="grid grid-cols-3 gap-2 bg-amber-50 p-3 rounded-2xl border border-amber-200 text-xs">
@@ -612,7 +806,7 @@
           <label class="block font-extrabold text-amber-950 mb-1">📅 Tarih</label>
           <div class="date-picker-shell" onclick="window.appActions.triggerDatePicker('remDatePicker')">
             <div class="w-full px-2 py-1.5 rounded-lg border border-amber-400 bg-white font-bold text-slate-900 flex items-center justify-between">
-              <span id="remDateDisplayText">15.11.2026</span>
+              <span id="remDateDisplayText">03.12.2026</span>
               <span class="text-[10px]">📅</span>
             </div>
             <input
@@ -644,12 +838,12 @@
   </div>
 
   <!-- BİLDİRİM TOAST (GERİ AL BUTONLU) -->
-  <div id="toastNotification" class="fixed bottom-20 md:bottom-6 right-4 z-50 hidden bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-white/15 text-xs font-bold items-center gap-3">
-    <span id="toastText">İşlem tamamlandı</span>
+  <div id="toastNotification" class="fixed bottom-20 md:bottom-6 right-4 z-50 hidden bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-white/15 text-xs font-bold items-center gap-3 max-w-[92vw]">
+    <span id="toastText" class="truncate">İşlem tamamlandı</span>
     <button
       id="toastUndoBtn"
       onclick="window.appActions.undoLastAction()"
-      class="hidden px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-extrabold text-[11px] cursor-pointer"
+      class="hidden px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-extrabold text-[11px] cursor-pointer shrink-0"
     >
       ↩️ Geri Al
     </button>
@@ -661,22 +855,102 @@
 
     (function () {
       const FIREBASE_DB_URL = "https://raverscode-default-rtdb.europe-west1.firebasedatabase.app/gokzel_tiflis_v10.json";
-      const STORAGE_KEY = "goksel_zelis_tiflis_v15_local";
+      const STORAGE_KEY = "goksel_zelis_tiflis_v16_local";
       const USER_PREF_KEY = "goksel_zelis_device_user_v15";
+      const THEME_PREF_KEY = "goksel_zelis_theme_v15";
       const DEFAULT_GEL_RATE = 19.50;
 
-      // Bugünün tarihini baz alan dinamik tarih fonksiyonları
-      function getTodayIsoOffset(daysOffset = 0) {
-        const d = new Date();
-        d.setDate(d.getDate() + daysOffset);
-        const yyyy = d.getFullYear();
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        const dd = String(d.getDate()).padStart(2, '0');
-        return `${yyyy}-${mm}-${dd}`;
+      // Sizin belirlediğiniz sabit varsayılan gezi tarihleri (03.12.2026 ➔ 06.12.2026)
+      const DEFAULT_START_DATE = "2026-12-03";
+      const DEFAULT_END_DATE = "2026-12-06";
+
+      // 8 Arayüz Arka Plan ve Üst Bar Tema Seçeneği (Yeşil, Kırmızı ve Diğer Temel Renkler)
+      const THEME_PRESETS = {
+        slate: {
+          id: "slate",
+          name: "Klasik Açık",
+          swatch: "#e2e8f0",
+          appBg: "#f1f5f9",
+          heroBg: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #311042 100%)"
+        },
+        green: {
+          id: "green",
+          name: "Zümrüt Yeşili",
+          swatch: "#10b981",
+          appBg: "#dcfce7",
+          heroBg: "linear-gradient(135deg, #064e3b 0%, #047857 55%, #0f766e 100%)"
+        },
+        red: {
+          id: "red",
+          name: "Yakut Kırmızısı",
+          swatch: "#ef4444",
+          appBg: "#fee2e2",
+          heroBg: "linear-gradient(135deg, #7f1d1d 0%, #991b1b 55%, #881337 100%)"
+        },
+        blue: {
+          id: "blue",
+          name: "Okyanus Mavisi",
+          swatch: "#3b82f6",
+          appBg: "#dbeafe",
+          heroBg: "linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 55%, #0369a1 100%)"
+        },
+        purple: {
+          id: "purple",
+          name: "Kraliyet Moru",
+          swatch: "#a855f7",
+          appBg: "#f3e8ff",
+          heroBg: "linear-gradient(135deg, #3b0764 0%, #581c87 55%, #4c1d95 100%)"
+        },
+        amber: {
+          id: "amber",
+          name: "Sıcak Kehribar",
+          swatch: "#f59e0b",
+          appBg: "#fef3c7",
+          heroBg: "linear-gradient(135deg, #78350f 0%, #92400e 55%, #9a3412 100%)"
+        },
+        rose: {
+          id: "rose",
+          name: "Gül Pembesi",
+          swatch: "#ec4899",
+          appBg: "#fce7f3",
+          heroBg: "linear-gradient(135deg, #831843 0%, #9d174d 55%, #701a75 100%)"
+        },
+        dark: {
+          id: "dark",
+          name: "Gece Koyu",
+          swatch: "#1e293b",
+          appBg: "#cbd5e1",
+          heroBg: "linear-gradient(135deg, #020617 0%, #0f172a 55%, #1e293b 100%)"
+        }
+      };
+
+      // Kullanıcının o an yazı yazıp yazmadığını takip eden koruma mekanizması
+      let lastUserKeystrokeAt = 0;
+      let syncInFlight = false;
+
+      document.addEventListener("keydown", () => {
+        lastUserKeystrokeAt = Date.now();
+      }, true);
+      document.addEventListener("input", () => {
+        lastUserKeystrokeAt = Date.now();
+      }, true);
+
+      function isUserActivelyTyping() {
+        if (Date.now() - lastUserKeystrokeAt < 4500) return true;
+        const el = document.activeElement;
+        if (!el) return false;
+        const tag = (el.tagName || "").toUpperCase();
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") {
+          const type = (el.type || "").toLowerCase();
+          if (type !== "checkbox" && type !== "radio" && type !== "button" && type !== "submit") {
+            return true;
+          }
+        }
+        return false;
       }
 
       function formatDateTR(dateInput) {
-        if (!dateInput) return formatDateTR(getTodayIsoOffset(0));
+        if (!dateInput) return "03.12.2026";
         const str = String(dateInput).trim();
         if (/^\d{2}\.\d{2}\.\d{4}$/.test(str)) return str;
         const isoMatch = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
@@ -694,55 +968,119 @@
       }
 
       function toIsoDate(dateInput) {
-        if (!dateInput) return getTodayIsoOffset(0);
+        if (!dateInput) return DEFAULT_START_DATE;
         const str = String(dateInput).trim();
         if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
         const trMatch = str.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/);
         if (trMatch) {
           return `${trMatch[3]}-${trMatch[2].padStart(2, '0')}-${trMatch[1].padStart(2, '0')}`;
         }
-        return getTodayIsoOffset(0);
+        return DEFAULT_START_DATE;
       }
 
-      function migrateLegacyDates(dataObj) {
-        if (!dataObj) return dataObj;
-        const day0 = getTodayIsoOffset(0);
-        const day1 = getTodayIsoOffset(1);
-        const day2 = getTodayIsoOffset(2);
-        const day3 = getTodayIsoOffset(3);
+      // AKILLI GOOGLE MAPS LİNK ÇÖZÜCÜ: Direkt maps linki girildiyse bozmadan doğrudan o linke götürür!
+      function isDirectUrl(str) {
+        if (!str) return false;
+        return /^https?:\/\//i.test(String(str).trim());
+      }
 
-        if (dataObj.tripInfo) {
-          if (!dataObj.tripInfo.startDate || String(dataObj.tripInfo.startDate).startsWith("2027-05")) {
-            dataObj.tripInfo.startDate = day0;
-            dataObj.tripInfo.endDate = day3;
-          } else {
-            dataObj.tripInfo.startDate = toIsoDate(dataObj.tripInfo.startDate);
-            dataObj.tripInfo.endDate = toIsoDate(dataObj.tripInfo.endDate || day3);
+      function isMapsUrl(str) {
+        if (!str) return false;
+        const s = String(str).trim().toLowerCase();
+        return s.includes("maps.app.goo.gl") || s.includes("google.com/maps") || s.includes("goo.gl/maps") || s.includes("maps.google.") || s.includes("yandex.com/maps") || s.includes("apple.com/maps");
+      }
+
+      function resolveSmartMapsUrl(obj) {
+        if (!obj) return "https://www.google.com/maps/search/?api=1&query=Tbilisi";
+        const loc = String(obj.location || "").trim();
+        const link = String(obj.link || "").trim();
+        const title = String(obj.title || "").trim();
+        const city = String(obj.city || obj.area || "").trim();
+
+        // 1. Konum kutusuna direkt link (https://maps.app.goo.gl/...) yapıştırıldıysa doğrudan onu aç!
+        if (isDirectUrl(loc)) {
+          return loc;
+        }
+        // 2. Link kutusuna Google Maps linki yapıştırıldıysa doğrudan onu aç!
+        if (isMapsUrl(link)) {
+          return link;
+        }
+        // 3. Spesifik mekan adı + açık adres kombinasyonuyla nokta atışı Google Maps araması oluştur
+        let queryParts = [];
+        if (loc) {
+          if (title && !loc.toLowerCase().includes(title.toLowerCase())) {
+            queryParts.push(title);
           }
+          queryParts.push(loc);
+        } else {
+          if (title) queryParts.push(title);
+          if (city) queryParts.push(city);
         }
-        if (Array.isArray(dataObj.items)) {
-          dataObj.items = dataObj.items.map((it) => {
-            let d = it.date || day0;
-            if (d === "2027-05-15") d = day0;
-            else if (d === "2027-05-16") d = day1;
-            else if (d === "2027-05-17") d = day2;
-            else if (d === "2027-05-18") d = day3;
-            else d = toIsoDate(d);
-            return Object.assign({}, it, { date: d });
-          });
+        const combined = queryParts.join(", ");
+        const finalQuery = combined.toLowerCase().includes("tbilisi") || combined.toLowerCase().includes("tiflis") || combined.toLowerCase().includes("georgia") || combined.toLowerCase().includes("mtskheta")
+          ? combined
+          : `${combined}, Tbilisi, Georgia`;
+
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(finalQuery.trim())}`;
+      }
+
+      // Kart içinde konum yazısını taşmadan şık gösterme (Link ise "Kayıtlı Harita Konumu" yazar)
+      function formatCleanLocationText(locationStr, cityStr) {
+        const loc = String(locationStr || "").trim();
+        const city = String(cityStr || "").trim();
+        if (!loc) return city || "Tiflis Merkez";
+        if (isDirectUrl(loc)) {
+          return city ? `${city} (Harita Linki Ekli)` : "Kayıtlı Harita Konumu";
         }
-        if (!Array.isArray(dataObj.todos)) {
-          dataObj.todos = getDefaultTodos();
-        }
-        return dataObj;
+        return loc;
       }
 
       function getDefaultTodos() {
         return [
-          { id: "todo-1", text: "Yeni kimlik kartlarını ve uçuş barkodlarını kontrol et", addedBy: "Göksel", completed: false },
-          { id: "todo-2", text: "Telefona çevrimdışı Google Maps Tiflis haritasını ve Bolt uygulamasını indir", addedBy: "Zeliş", completed: false },
-          { id: "todo-3", text: "Yanımıza priz dönüştürücü ve powerbank al", addedBy: "Ortak", completed: false }
+          { id: "todo-1", text: "Yeni kimlik kartlarını ve uçuş barkodlarını kontrol et", addedBy: "Göksel", completed: false, updatedAt: 1000 },
+          { id: "todo-2", text: "Telefona çevrimdışı Google Maps Tiflis haritasını ve Bolt uygulamasını indir", addedBy: "Zeliş", completed: false, updatedAt: 1000 },
+          { id: "todo-3", text: "Yanımıza priz dönüştürücü ve powerbank al", addedBy: "Ortak", completed: false, updatedAt: 1000 }
         ];
+      }
+
+      function getDefaultExpectations() {
+        return [
+          { id: "exp-1", owner: "Göksel", text: "Zodiaqo'da sıcak Khinkali ve Haçapuri ziyafeti yapmak", stars: 5, completed: false, updatedAt: 1000 },
+          { id: "exp-2", owner: "Göksel", text: "Abanotubani'de özel kükürt hamamı deneyimi", stars: 5, completed: false, updatedAt: 1000 },
+          { id: "exp-3", owner: "Zeliş", text: "Sololaki'nin tarihi balkonlu sokaklarında ve Betlemi'de fotoğraf çekilmek", stars: 5, completed: false, updatedAt: 1000 },
+          { id: "exp-4", owner: "Zeliş", text: "Narikala Kalesi teleferiği ile gün batımını izlemek", stars: 5, completed: false, updatedAt: 1000 }
+        ];
+      }
+
+      // Kullanıcının girdiği tarihleri ve planları ASLA ezmez!
+      function normalizeDataStructure(dataObj) {
+        if (!dataObj) return getDefaultSampleData();
+        if (!dataObj.tripInfo) {
+          dataObj.tripInfo = getDefaultSampleData().tripInfo;
+        } else {
+          dataObj.tripInfo.startDate = dataObj.tripInfo.startDate ? toIsoDate(dataObj.tripInfo.startDate) : DEFAULT_START_DATE;
+          dataObj.tripInfo.endDate = dataObj.tripInfo.endDate ? toIsoDate(dataObj.tripInfo.endDate) : DEFAULT_END_DATE;
+          if (!dataObj.tripInfo.bgTheme) {
+            dataObj.tripInfo.bgTheme = localStorage.getItem(THEME_PREF_KEY) || "slate";
+          }
+        }
+        if (!Array.isArray(dataObj.items)) {
+          dataObj.items = [];
+        } else {
+          dataObj.items = dataObj.items.map((it) => Object.assign({ updatedAt: 1000 }, it, {
+            date: it.date ? toIsoDate(it.date) : (dataObj.tripInfo.startDate || DEFAULT_START_DATE)
+          }));
+        }
+        if (!Array.isArray(dataObj.todos)) {
+          dataObj.todos = getDefaultTodos();
+        }
+        if (!Array.isArray(dataObj.expectations)) {
+          dataObj.expectations = getDefaultExpectations();
+        }
+        if (!Array.isArray(dataObj.deletedIds)) {
+          dataObj.deletedIds = [];
+        }
+        return dataObj;
       }
 
       const CATEGORY_META = {
@@ -824,171 +1162,68 @@
       };
 
       const INITIAL_RECOMMENDATIONS = [
-        { id: "rec-food-1", group: "food", planCat: "food", title: "Zodiaqo (Eski Tiflis)", area: "Chanturia St", gel: 55, time: "19:30", location: "6 Giorgi Chanturia St, Tbilisi", desc: "Tiflis'in en iyi kızarmış ve haşlama Khinkali yapan lokal restoranlarından biri." },
-        { id: "rec-food-2", group: "food", planCat: "food", title: "Shavi Lomi (Black Lion)", area: "Marjanishvili", gel: 95, time: "20:00", location: "28 Zurab Kvlividze St, Tbilisi", desc: "Modern Gürcü mutfağı, gizli bahçe ambiyansı ve erik soslu güveçleri harika." },
-        { id: "rec-food-3", group: "food", planCat: "food", title: "Salobie Bia", area: "Rustaveli", gel: 65, time: "14:00", location: "17 Shota Rustaveli Ave, Tbilisi", desc: "Geleneksel güveçte fasulye (Lobio), mısır ekmeği ve turşu tabağı." },
-        { id: "rec-food-4", group: "food", planCat: "food", title: "Puri Guliani", area: "Saarbrucken Meydanı", gel: 50, time: "10:00", location: "Saarbrucken Square, Tbilisi", desc: "Nehir kenarında taş fırından sıcak Adjaruli Khachapuri ve Ponçik kahvaltısı." },
-        { id: "rec-food-5", group: "food", planCat: "food", title: "Pasanauri", area: "Rustaveli / Baratashvili", gel: 60, time: "18:30", location: "37 Griboedov St, Tbilisi", desc: "7/24 açık klasik Gürcü mutfağı; sulu mantıları ve cevizli patlıcanı çok lezzetli." },
-        { id: "rec-sight-1", group: "sight", planCat: "museum", title: "Narikala Kalesi & Kartlis Deda", area: "Eski Tiflis", gel: 10, time: "16:30", location: "Rike Park Cable Car, Tbilisi", desc: "Rike Park'tan teleferikle çıkıp gün batımında tüm Tiflis manzarasını izleme noktası." },
-        { id: "rec-sight-2", group: "sight", planCat: "museum", title: "Mtatsminda Park & Füniküler", area: "Mtatsminda", gel: 30, time: "18:00", location: "Daniel Chonkadze St, Tbilisi", desc: "Tarihi füniküler ile şehrin en yüksek tepesine çıkış ve Ponçik/manzara keyfi." },
+        { id: "rec-food-1", group: "food", planCat: "food", title: "Zodiaqo (Eski Tiflis)", area: "Chanturia St", gel: 55, time: "19:30", location: "Zodiaqo, 6 Giorgi Chanturia St, Tbilisi", desc: "Tiflis'in en iyi kızarmış ve haşlama Khinkali yapan lokal restoranlarından biri." },
+        { id: "rec-food-2", group: "food", planCat: "food", title: "Shavi Lomi (Black Lion)", area: "Marjanishvili", gel: 95, time: "20:00", location: "Shavi Lomi, 28 Zurab Kvlividze St, Tbilisi", desc: "Modern Gürcü mutfağı, gizli bahçe ambiyansı ve erik soslu güveçleri harika." },
+        { id: "rec-food-3", group: "food", planCat: "food", title: "Salobie Bia", area: "Rustaveli", gel: 65, time: "14:00", location: "Salobie Bia, 17 Shota Rustaveli Ave, Tbilisi", desc: "Geleneksel güveçte fasulye (Lobio), mısır ekmeği ve turşu tabağı." },
+        { id: "rec-food-4", group: "food", planCat: "food", title: "Puri Guliani", area: "Saarbrucken Meydanı", gel: 50, time: "10:00", location: "Puri Guliani, Saarbrucken Square, Tbilisi", desc: "Nehir kenarında taş fırından sıcak Adjaruli Khachapuri ve Ponçik kahvaltısı." },
+        { id: "rec-food-5", group: "food", planCat: "food", title: "Pasanauri", area: "Rustaveli / Baratashvili", gel: 60, time: "18:30", location: "Pasanauri, 37 Griboedov St, Tbilisi", desc: "7/24 açık klasik Gürcü mutfağı; sulu mantıları ve cevizli patlıcanı çok lezzetli." },
+        { id: "rec-sight-1", group: "sight", planCat: "museum", title: "Narikala Kalesi & Kartlis Deda", area: "Eski Tiflis", gel: 10, time: "16:30", location: "Narikala Fortress, Tbilisi", desc: "Rike Park'tan teleferikle çıkıp gün batımında tüm Tiflis manzarasını izleme noktası." },
+        { id: "rec-sight-2", group: "sight", planCat: "museum", title: "Mtatsminda Park & Füniküler", area: "Mtatsminda", gel: 30, time: "18:00", location: "Tbilisi Funicular, Daniel Chonkadze St, Tbilisi", desc: "Tarihi füniküler ile şehrin en yüksek tepesine çıkış ve Ponçik/manzara keyfi." },
         { id: "rec-sight-3", group: "sight", planCat: "museum", title: "Tiflis Kronikleri (Chronicles of Georgia)", area: "Tiflis Denizi", gel: 20, time: "15:00", location: "Chronicles of Georgia, Tbilisi", desc: "Devasa bronz sütunlardan oluşan anıt ve göl manzarası; Bolt ile 20 dk." },
         { id: "rec-sight-4", group: "sight", planCat: "museum", title: "Abanotubani Şelalesi (Leghvtakhevi)", area: "Abanotubani", gel: 0, time: "11:30", location: "Leghvtakhevi Waterfall, Tbilisi", desc: "Kükürt hamamlarının arkasındaki kanyon içinde yürüyüş ve doğal şelale." },
         { id: "rec-sight-5", group: "sight", planCat: "museum", title: "Dry Bridge Antika & Bit Pazarı", area: "Saarbrucken", gel: 0, time: "12:30", location: "Dry Bridge Market, Tbilisi", desc: "Sovyet dönemi fotoğraf makineleri, plaklar, takılar ve el yapımı tablolar." },
-        { id: "rec-cafe-1", group: "cafe", planCat: "food", title: "Fabrika Tbilisi Avlusu", area: "Marjanishvili", gel: 45, time: "21:00", location: "8 Egnate Ninoshvili St, Tbilisi", desc: "Eski Sovyet dikim fabrikasından dönüştürülen avluda kafeler, barlar ve sokak sanatı." },
-        { id: "rec-cafe-2", group: "cafe", planCat: "food", title: "Cafe Stamba & Dedaena Park", area: "Vera", gel: 75, time: "15:30", location: "14 Merab Kostava St, Tbilisi", desc: "Eski basımevi binasında devasa kitaplıklar arasında kahve ve tatlı molası." },
-        { id: "rec-cafe-3", group: "cafe", planCat: "food", title: "8000 Vintages Şarap Tadımı", area: "Saburtalo / Vera", gel: 70, time: "20:30", location: "26 Sulkhan Tsintsadze St, Tbilisi", desc: "Gürcistan'ın geleneksel küp (Qvevri) amber şaraplarını peynir tabağıyla tadım." },
-        { id: "rec-cafe-4", group: "cafe", planCat: "food", title: "Chaduna", area: "Sololaki", gel: 45, time: "17:00", location: "18 Galaktion Tabidze St, Tbilisi", desc: "Sololaki'nin tarihi sokaklarında çok samimi, vintage dekorlu kafe & şarap evi." },
-        { id: "rec-bath-1", group: "bath", planCat: "museum", title: "Chreli Abano (Özel Kükürt Hamamı)", area: "Abanotubani", gel: 150, time: "20:00", location: "2 Abano St, Tbilisi", desc: "Mavi çinili tarihi binada 1 saatlik iki kişilik özel sıcak kükürt havuzlu oda." },
-        { id: "rec-bath-2", group: "bath", planCat: "museum", title: "Gulo's Thermal Spa", area: "Abanotubani", gel: 120, time: "19:00", location: "Abanotubani, Tbilisi", desc: "Daha butik, tertemiz ve kubbeli geleneksel özel kükürt hamamı deneyimi." },
-        { id: "rec-bath-3", group: "bath", planCat: "museum", title: "Kura Nehri Tekne Turu", area: "Metekhi Köprüsü", gel: 50, time: "17:45", location: "Peace Bridge, Tbilisi", desc: "Barış Köprüsü ve Metekhi kayalıkları boyunca 35 dakikalık nehir turu." },
-        { id: "rec-stay-1", group: "stay", planCat: "hotel", title: "Sololaki Tarihi Balkonlu Loft", area: "Sololaki", gel: 115, time: "14:00", location: "Lado Asatiani St, Tbilisi", desc: "Özgürlük Meydanı'na 5 dk yürüme mesafesinde yüksek tavanlı ferah daire (Gecelik <2.500 ₺)." },
+        { id: "rec-cafe-1", group: "cafe", planCat: "food", title: "Fabrika Tbilisi Avlusu", area: "Marjanishvili", gel: 45, time: "21:00", location: "Fabrika Tbilisi, 8 Egnate Ninoshvili St, Tbilisi", desc: "Eski Sovyet dikim fabrikasından dönüştürülen avluda kafeler, barlar ve sokak sanatı." },
+        { id: "rec-cafe-2", group: "cafe", planCat: "food", title: "Cafe Stamba & Dedaena Park", area: "Vera", gel: 75, time: "15:30", location: "Cafe Stamba, 14 Merab Kostava St, Tbilisi", desc: "Eski basımevi binasında devasa kitaplıklar arasında kahve ve tatlı molası." },
+        { id: "rec-cafe-3", group: "cafe", planCat: "food", title: "8000 Vintages Şarap Tadımı", area: "Saburtalo / Vera", gel: 70, time: "20:30", location: "8000 Vintages, 26 Sulkhan Tsintsadze St, Tbilisi", desc: "Gürcistan'ın geleneksel küp (Qvevri) amber şaraplarını peynir tabağıyla tadım." },
+        { id: "rec-cafe-4", group: "cafe", planCat: "food", title: "Chaduna", area: "Sololaki", gel: 45, time: "17:00", location: "Chaduna, 18 Galaktion Tabidze St, Tbilisi", desc: "Sololaki'nin tarihi sokaklarında çok samimi, vintage dekorlu kafe & şarap evi." },
+        { id: "rec-bath-1", group: "bath", planCat: "museum", title: "Chreli Abano (Özel Kükürt Hamamı)", area: "Abanotubani", gel: 150, time: "20:00", location: "Chreli Abano, 2 Abano St, Tbilisi", desc: "Mavi çinili tarihi binada 1 saatlik iki kişilik özel sıcak kükürt havuzlu oda." },
+        { id: "rec-bath-2", group: "bath", planCat: "museum", title: "Gulo's Thermal Spa", area: "Abanotubani", gel: 120, time: "19:00", location: "Gulo's Thermal Spa, Abanotubani, Tbilisi", desc: "Daha butik, tertemiz ve kubbeli geleneksel özel kükürt hamamı deneyimi." },
+        { id: "rec-bath-3", group: "bath", planCat: "museum", title: "Kura Nehri Tekne Turu", area: "Metekhi Köprüsü", gel: 50, time: "17:45", location: "Bridge of Peace, Tbilisi", desc: "Barış Köprüsü ve Metekhi kayalıkları boyunca 35 dakikalık nehir turu." },
+        { id: "rec-stay-1", group: "stay", planCat: "hotel", title: "Sololaki Tarihi Balkonlu Loft", area: "Sololaki", gel: 115, time: "14:00", location: "Lado Asatiani St, Sololaki, Tbilisi", desc: "Özgürlük Meydanı'na 5 dk yürüme mesafesinde yüksek tavanlı ferah daire (Gecelik <2.500 ₺)." },
         { id: "rec-stay-2", group: "stay", planCat: "hotel", title: "Pushkin 10 Boutique Hotel", area: "Özgürlük Meydanı", gel: 135, time: "14:00", location: "10 Alexander Pushkin St, Tbilisi", desc: "Tam merkezde, her yere yürüyüş mesafesinde temiz ve konforlu çift kişilik oda." },
         { id: "rec-stay-3", group: "stay", planCat: "hotel", title: "Marjanishvili Art Studio", area: "Chugureti", gel: 105, time: "14:00", location: "David Agmashenebeli Ave, Tbilisi", desc: "Fabrika ve Agmashenebeli yürüyüş caddesine komşu şık tasarım stüdyo." }
       ];
 
       const EXTRA_RECOMMENDATION_POOL = [
-        { group: "food", planCat: "food", title: "Mapshalia (Gizli Lokal Esnaf Lokantası)", area: "Agmashenebeli", gel: 35, time: "13:30", location: "137 Davit Aghmashenebeli Ave, Tbilisi", desc: "Çok uygun fiyatlı, gerçek ev yapımı Megrel Khachapuri ve Ostri (dana güveç) mekanı." },
-        { group: "food", planCat: "food", title: "Keto and Kote", area: "Vera", gel: 110, time: "20:30", location: "3 Mikheil Zandukeli Dead End, Tbilisi", desc: "Ahşap Tiflis konağının terasında romantik akşam yemeği ve cevizli yemekler." },
-        { group: "food", planCat: "food", title: "Amo Rame", area: "Vera / Rustaveli", gel: 65, time: "19:00", location: "4 Pavle Ingorokva St, Tbilisi", desc: "Sanatsal iç mekan tasarımına sahip, ev yapımı erik soslu yemekleriyle ünlü mekan." },
-        { group: "food", planCat: "food", title: "Ezo (Organik Bahçe Restoranı)", area: "Sololaki", gel: 80, time: "19:30", location: "16 Geronti Kikodze St, Tbilisi", desc: "Tarihi bir Tiflis avlusunda doğal malzemelerle hazırlanan paylaşımlı Gürcü sofrası." },
-        { group: "food", planCat: "food", title: "Barbarestan", area: "Chugureti", gel: 140, time: "20:00", location: "132 Davit Aghmashenebeli Ave, Tbilisi", desc: "19. yüzyıl Gürcü yemek kitabındaki orijinal tarifleri sunan ödüllü gastronomi restoranı." },
-        { group: "sight", planCat: "museum", title: "Rezo Gabriadze Kukla Kulesi (Saat Başı Gösteri)", area: "Eski Tiflis", gel: 0, time: "12:00", location: "13 Ioane Shavteli St, Tbilisi", desc: "Eğri saat kulesinde her saat başı (ve 12:00 / 19:00'da) çıkan melek ve kukla seremonisi." },
+        { group: "food", planCat: "food", title: "Mapshalia (Gizli Lokal Esnaf Lokantası)", area: "Agmashenebeli", gel: 35, time: "13:30", location: "Mapshalia, 137 Davit Aghmashenebeli Ave, Tbilisi", desc: "Çok uygun fiyatlı, gerçek ev yapımı Megrel Khachapuri ve Ostri (dana güveç) mekanı." },
+        { group: "food", planCat: "food", title: "Keto and Kote", area: "Vera", gel: 110, time: "20:30", location: "Keto and Kote, 3 Mikheil Zandukeli Dead End, Tbilisi", desc: "Ahşap Tiflis konağının terasında romantik akşam yemeği ve cevizli yemekler." },
+        { group: "food", planCat: "food", title: "Amo Rame", area: "Vera / Rustaveli", gel: 65, time: "19:00", location: "Amo Rame, 4 Pavle Ingorokva St, Tbilisi", desc: "Sanatsal iç mekan tasarımına sahip, ev yapımı erik soslu yemekleriyle ünlü mekan." },
+        { group: "food", planCat: "food", title: "Ezo (Organik Bahçe Restoranı)", area: "Sololaki", gel: 80, time: "19:30", location: "Ezo Restaurant, 16 Geronti Kikodze St, Tbilisi", desc: "Tarihi bir Tiflis avlusunda doğal malzemelerle hazırlanan paylaşımlı Gürcü sofrası." },
+        { group: "food", planCat: "food", title: "Barbarestan", area: "Chugureti", gel: 140, time: "20:00", location: "Barbarestan, 132 Davit Aghmashenebeli Ave, Tbilisi", desc: "19. yüzyıl Gürcü yemek kitabındaki orijinal tarifleri sunan ödüllü gastronomi restoranı." },
+        { group: "sight", planCat: "museum", title: "Rezo Gabriadze Kukla Kulesi (Saat Başı Gösteri)", area: "Eski Tiflis", gel: 0, time: "12:00", location: "Gabriadze Theater, 13 Ioane Shavteli St, Tbilisi", desc: "Eğri saat kulesinde her saat başı (ve 12:00 / 19:00'da) çıkan melek ve kukla seremonisi." },
         { group: "sight", planCat: "museum", title: "Mtskheta & Jvari Manastırı (Yarım Gün Rota)", area: "Mtskheta", gel: 40, time: "11:00", location: "Jvari Monastery, Mtskheta", desc: "Tiflis'e 25 dk uzaklıkta, iki nehrin (Kura ve Aragvi) birleştiği efsanevi manzara noktası." },
-        { group: "sight", planCat: "museum", title: "Tiflis Botanik Bahçesi", area: "Sololaki Sırtları", gel: 8, time: "14:30", location: "1 Botanikuri St, Tbilisi", desc: "Narikala Kalesi'nin hemen arkasında şelaleli ve bambu ağaçlı devasa vadi yürüyüşü." },
-        { group: "sight", planCat: "museum", title: "Kaloubani & Sololaki Gizli Merdivenli Konaklar", area: "Sololaki", gel: 0, time: "11:00", location: "Betlemi St, Tbilisi", desc: "Vitray camlı Betlemi merdivenleri ve işlemeli tarihi İtalyan avlularında fotoğraf yürüyüşü." },
+        { group: "sight", planCat: "museum", title: "Tiflis Botanik Bahçesi", area: "Sololaki Sırtları", gel: 8, time: "14:30", location: "National Botanical Garden of Georgia, Tbilisi", desc: "Narikala Kalesi'nin hemen arkasında şelaleli ve bambu ağaçlı devasa vadi yürüyüşü." },
+        { group: "sight", planCat: "museum", title: "Kaloubani & Sololaki Gizli Merdivenli Konaklar", area: "Sololaki", gel: 0, time: "11:00", location: "Gallery 27, 3 Betlemi St, Tbilisi", desc: "Vitray camlı Betlemi merdivenleri ve işlemeli tarihi İtalyan avlularında fotoğraf yürüyüşü." },
         { group: "sight", planCat: "museum", title: "Kaplumbağa Gölü (Turtle Lake) & Teleferik", area: "Vake", gel: 15, time: "16:00", location: "Turtle Lake, Tbilisi", desc: "Vake Park'tan nostaljik teleferikle çıkılan göl kenarı yürüyüş ve dinlenme noktası." },
-        { group: "cafe", planCat: "food", title: "Linville Vintage Cafe", area: "Sololaki", gel: 50, time: "17:30", location: "11/17 Kote Abkhazi St, Tbilisi", desc: "Eski bir Tiflis apartmanının içinde antika koltuklar ve çiçekli balkonuyla ünlü gizli kafe." },
-        { group: "cafe", planCat: "food", title: "Shavi Coffee Roasters", area: "Vera", gel: 30, time: "11:30", location: "40 Janashia St, Tbilisi", desc: "Tiflis'in en iyi nitelikli 3. nesil kahvecilerinden biri; kruvasanları harika." },
-        { group: "cafe", planCat: "food", title: "Wine Factory N1 (Şarap Avlusu)", area: "Vera / Vasil Petriashvili", gel: 75, time: "21:30", location: "1 Vasil Petriashvili St, Tbilisi", desc: "Tarihi şarap mahzeni etrafında kurulmuş açık hava barları, pizzacılar ve şarap tadım noktaları." },
-        { group: "cafe", planCat: "food", title: "Littera (Yazarlar Evi Bahçesi)", area: "Sololaki", gel: 90, time: "18:30", location: "13 Ivane Machabeli St, Tbilisi", desc: "Tarihi Yazarlar Evi'nin yemyeşil saray bahçesinde akşamüstü içeceği ve tatlı." },
-        { group: "bath", planCat: "museum", title: "Orbeliani Hamamı (Kese & Köpük Paketi)", area: "Abanotubani", gel: 160, time: "20:30", location: "Abano St, Tbilisi", desc: "Özel mermer kükürt odasına ek olarak geleneksel Gürcü kesesi (Kisi) deneyimi." },
-        { group: "bath", planCat: "museum", title: "Tiflis Sıcak Hava Balonu (Rike Park)", area: "Rike Park", gel: 90, time: "19:00", location: "Rike Park, Tbilisi", desc: "150 metre yüksekliğe çıkan sabit sıcak hava balonuyla 360 derece Tiflis panoraması." },
-        { group: "bath", planCat: "museum", title: "Stamba Çikolata & Kahve Atölyesi Tadımı", area: "Vera", gel: 55, time: "15:00", location: "14 Merab Kostava St, Tbilisi", desc: "El yapımı Gürcü fındıklı ve şarap aromalı artizan çikolata tadım deneyimi." },
-        { group: "stay", planCat: "hotel", title: "Shota @ Rustaveli Boutique", area: "Rustaveli", gel: 145, time: "14:00", location: "1 Shevchenko St, Tbilisi", desc: "Rustaveli Bulvarı'nın hemen arkasında sessiz sokakta çok şık ve modern butik konaklama." },
+        { group: "cafe", planCat: "food", title: "Linville Vintage Cafe", area: "Sololaki", gel: 50, time: "17:30", location: "Linville, 11/17 Kote Abkhazi St, Tbilisi", desc: "Eski bir Tiflis apartmanının içinde antika koltuklar ve çiçekli balkonuyla ünlü gizli kafe." },
+        { group: "cafe", planCat: "food", title: "Shavi Coffee Roasters", area: "Vera", gel: 30, time: "11:30", location: "Shavi Coffee Roasters, 40 Janashia St, Tbilisi", desc: "Tiflis'in en iyi nitelikli 3. nesil kahvecilerinden biri; kruvasanları harika." },
+        { group: "cafe", planCat: "food", title: "Wine Factory N1 (Şarap Avlusu)", area: "Vera / Vasil Petriashvili", gel: 75, time: "21:30", location: "Wine Factory N1, 1 Vasil Petriashvili St, Tbilisi", desc: "Tarihi şarap mahzeni etrafında kurulmuş açık hava barları, pizzacılar ve şarap tadım noktaları." },
+        { group: "cafe", planCat: "food", title: "Littera (Yazarlar Evi Bahçesi)", area: "Sololaki", gel: 90, time: "18:30", location: "Littera Restaurant, 13 Ivane Machabeli St, Tbilisi", desc: "Tarihi Yazarlar Evi'nin yemyeşil saray bahçesinde akşamüstü içeceği ve tatlı." },
+        { group: "bath", planCat: "museum", title: "Orbeliani Hamamı (Kese & Köpük Paketi)", area: "Abanotubani", gel: 160, time: "20:30", location: "Chreli Abano, Abano St, Tbilisi", desc: "Özel mermer kükürt odasına ek olarak geleneksel Gürcü kesesi (Kisi) deneyimi." },
+        { group: "bath", planCat: "museum", title: "Tiflis Sıcak Hava Balonu (Rike Park)", area: "Rike Park", gel: 90, time: "19:00", location: "Air Balloon Tbilisi, Rike Park, Tbilisi", desc: "150 metre yüksekliğe çıkan sabit sıcak hava balonuyla 360 derece Tiflis panoraması." },
+        { group: "bath", planCat: "museum", title: "Stamba Çikolata & Kahve Atölyesi Tadımı", area: "Vera", gel: 55, time: "15:00", location: "Stamba Hotel, 14 Merab Kostava St, Tbilisi", desc: "El yapımı Gürcü fındıklı ve şarap aromalı artizan çikolata tadım deneyimi." },
+        { group: "stay", planCat: "hotel", title: "Shota @ Rustaveli Boutique", area: "Rustaveli", gel: 145, time: "14:00", location: "Shota @ Rustaveli Boutique Hotel, 1 Shevchenko St, Tbilisi", desc: "Rustaveli Bulvarı'nın hemen arkasında sessiz sokakta çok şık ve modern butik konaklama." },
         { group: "stay", planCat: "hotel", title: "Kala Old Tbilisi Veranda House", area: "Eski Tiflis", gel: 120, time: "14:00", location: "Erekle II St, Tbilisi", desc: "Barış Köprüsü'ne 2 dakika yürüme mesafesinde, ahşap oymalı Tiflis teraslı daire." }
       ];
 
+      // Sizin ekledikleriniz dışında ekstra örnek plan eklenmez (items: []) ve tarih 03.12.2026 -> 06.12.2026 olarak korunur
       function getDefaultSampleData() {
-        const d0 = getTodayIsoOffset(0);
-        const d1 = getTodayIsoOffset(1);
-        const d2 = getTodayIsoOffset(2);
-        const d3 = getTodayIsoOffset(3);
         return {
           tripInfo: {
             title: "Göksel & Zeliş • Tiflis 🇬🇪",
             destination: "Eski Tiflis, Sololaki, Rustaveli, Marjanishvili",
-            startDate: d0,
-            endDate: d3,
+            startDate: DEFAULT_START_DATE,
+            endDate: DEFAULT_END_DATE,
             targetBudget: 25000,
-            gelRate: DEFAULT_GEL_RATE
+            gelRate: DEFAULT_GEL_RATE,
+            bgTheme: localStorage.getItem(THEME_PREF_KEY) || "slate"
           },
           todos: getDefaultTodos(),
+          expectations: getDefaultExpectations(),
+          deletedIds: [],
           tipRatings: {},
           customTips: [],
-          items: [
-            {
-              id: "item-1",
-              category: "flight",
-              status: "booked",
-              title: "İstanbul ➔ Tiflis (TBS) Direkt Uçuş",
-              subtitle: "2 Kişi Gidiş-Dönüş • Yeni Kimlikle Vizesiz",
-              city: "Tiflis Havalimanı",
-              price: 11800,
-              paidBy: "Göksel",
-              date: d0,
-              timeStart: "10:25",
-              timeEnd: "13:50",
-              location: "Tbilisi International Airport",
-              link: "https://vf.ajet.com/",
-              notes: "Pasaporta gerek yok, yeni çipli TC Kimlik kartı ile geçiş ve kapıda verilen barkodlu kağıdı saklıyoruz.",
-              completed: false
-            },
-            {
-              id: "item-2",
-              category: "other",
-              status: "booked",
-              title: "Yurt Dışı Çıkış Harcı + Magti SIM + Bolt",
-              subtitle: "2 Kişi Harç (1.420 ₺) + Havalimanı Bolt Taksi",
-              city: "Havalimanı & Merkez",
-              price: 2200,
-              paidBy: "Zeliş",
-              date: d0,
-              timeStart: "14:15",
-              timeEnd: "15:00",
-              location: "Freedom Square, Tbilisi",
-              link: "https://www.magticom.ge/en",
-              notes: "Havalimanı kapısındaki taksiciler yerine Bolt çağırıyoruz (~25 Lari = 485 TL).",
-              completed: false
-            },
-            {
-              id: "item-3",
-              category: "hotel",
-              status: "booked",
-              title: "Sololaki Tarihi Balkonlu Merkez Ev (3 Gece)",
-              subtitle: "Gecelik 2.250 ₺ (~115 ₾) • Limit Altı",
-              city: "Sololaki / Özgürlük Meydanı",
-              price: 6750,
-              paidBy: "Göksel",
-              date: d0,
-              timeStart: "15:00",
-              timeEnd: "15:30",
-              location: "Lado Asatiani St, Tbilisi",
-              link: "https://www.airbnb.com.tr/s/Tbilisi--Georgia/homes",
-              notes: "Özgürlük Meydanı'na 5 dk yürüyüş mesafesinde, ikonik ahşap balkonlu daire.",
-              completed: false
-            },
-            {
-              id: "item-4",
-              category: "food",
-              status: "booked",
-              title: "Zodiaqo • İlk Akşam Khinkali & Khachapuri",
-              subtitle: "2 Kişi Ziyafet: ~55 Lari (₾) = 1.072 ₺",
-              city: "Eski Tiflis",
-              price: 1072,
-              paidBy: "Zeliş",
-              date: d0,
-              timeStart: "19:30",
-              timeEnd: "21:30",
-              location: "6 Giorgi Chanturia St, Tbilisi",
-              link: "https://www.google.com/maps/search/?api=1&query=Zodiaqo+Tbilisi",
-              notes: "Haşlama ve kızarmış Khinkali + armut gazozu (Nabeghlavi/Zedazeni) mutlaka denenecek.",
-              completed: false
-            },
-            {
-              id: "item-5",
-              category: "museum",
-              status: "booked",
-              title: "Narikala Teleferik & Abanotubani Özel Hamam",
-              subtitle: "Teleferik + 1 Saat Özel Kükürt Odası (~160 ₾)",
-              city: "Abanotubani",
-              price: 3120,
-              paidBy: "Zeliş",
-              date: d1,
-              timeStart: "17:30",
-              timeEnd: "20:00",
-              location: "Abanotubani Sulfur Baths, Tbilisi",
-              link: "https://chreliabano.ge/",
-              notes: "Gün batımında Rike Park'tan teleferikle kaleye çıkıp akşam kükürt hamamına iniyoruz.",
-              completed: false
-            },
-            {
-              id: "item-6",
-              category: "food",
-              status: "favorite",
-              title: "Shavi Lomi & Fabrika Tbilisi Akşamı",
-              subtitle: "Akşam Yemeği + İçecekler: ~125 Lari (₾)",
-              city: "Marjanishvili",
-              price: 2438,
-              paidBy: "Ortak",
-              date: d2,
-              timeStart: "20:00",
-              timeEnd: "23:00",
-              location: "8 Egnate Ninoshvili St, Tbilisi",
-              link: "https://fabrikatbilisi.com/",
-              notes: "Yemek sonrası Fabrika avlusunda kahve ve eğlence.",
-              completed: false
-            }
-          ]
+          items: []
         };
       }
 
@@ -1000,6 +1235,11 @@
         activeUser: localStorage.getItem(USER_PREF_KEY) || "Göksel",
         recCategory: "all",
         recStarFilter: "all",
+        showExpectationsFolder: false,
+        expSortByStars: false,
+        newExpStarsGoksel: 5,
+        newExpStarsZelis: 5,
+        editingExpId: null,
         showCompletedFlow: false,
         showCompletedTodos: false,
         editingTodoId: null,
@@ -1007,6 +1247,34 @@
         undoStack: [],
         data: getDefaultSampleData()
       };
+
+      function applyBackgroundTheme(themeId) {
+        const preset = THEME_PRESETS[themeId] || THEME_PRESETS.slate;
+        document.documentElement.style.setProperty("--app-bg", preset.appBg);
+        document.documentElement.style.setProperty("--hero-bg", preset.heroBg);
+        localStorage.setItem(THEME_PREF_KEY, preset.id);
+      }
+
+      function renderThemeColorPicker() {
+        const grid = document.getElementById("themeColorPickerGrid");
+        if (!grid) return;
+        const currentTheme = state.data.tripInfo?.bgTheme || localStorage.getItem(THEME_PREF_KEY) || "slate";
+        grid.innerHTML = Object.values(THEME_PRESETS).map((t) => {
+          const active = currentTheme === t.id;
+          return `
+            <button
+              type="button"
+              onclick="window.appActions.setThemeColor('${t.id}')"
+              class="p-2 rounded-xl border-2 flex items-center gap-2 text-left cursor-pointer transition ${
+                active ? 'border-slate-900 bg-white shadow-sm ring-2 ring-indigo-500/30' : 'border-slate-200 bg-white/80 hover:bg-white'
+              }"
+            >
+              <span class="w-5 h-5 rounded-full shrink-0 border border-black/15" style="background:${t.swatch}"></span>
+              <span class="text-[11px] font-extrabold text-slate-800 truncate">${t.name}</span>
+            </button>
+          `;
+        }).join("");
+      }
 
       function escapeHtml(str) {
         if (!str) return "";
@@ -1060,6 +1328,8 @@
           tripInfo: state.data.tripInfo,
           items: state.data.items || [],
           todos: state.data.todos || [],
+          expectations: state.data.expectations || [],
+          deletedIds: state.data.deletedIds || [],
           tipRatings: state.data.tipRatings || {},
           customTips: state.data.customTips || []
         }));
@@ -1089,24 +1359,95 @@
         }
       }
 
+      // İKİ KİŞİ AYNI ANDA KULLANIRKEN ÇAKIŞMAYI ÖNLEYEN AKILLI BİRLEŞTİRİCİ (SMART MERGE BY ID & TIMESTAMP)
+      function mergeArrayById(localArr, remoteArr, deletedSet) {
+        const map = new Map();
+        (Array.isArray(remoteArr) ? remoteArr : []).forEach((item) => {
+          if (item && item.id && !deletedSet.has(item.id)) {
+            map.set(item.id, item);
+          }
+        });
+        (Array.isArray(localArr) ? localArr : []).forEach((item) => {
+          if (!item || !item.id || deletedSet.has(item.id)) return;
+          const existing = map.get(item.id);
+          if (!existing) {
+            map.set(item.id, item);
+          } else {
+            const localTime = Number(item.updatedAt) || 0;
+            const remoteTime = Number(existing.updatedAt) || 0;
+            if (localTime >= remoteTime) {
+              map.set(item.id, item);
+            }
+          }
+        });
+        return Array.from(map.values());
+      }
+
+      function mergeRemoteWithLocal(remote) {
+        if (!remote || !remote.tripInfo) return state.data;
+
+        const deletedSet = new Set([
+          ...(Array.isArray(state.data.deletedIds) ? state.data.deletedIds : []),
+          ...(Array.isArray(remote.deletedIds) ? remote.deletedIds : [])
+        ]);
+
+        const localTripTime = Number(state.data.tripInfo?.updatedAt) || 0;
+        const remoteTripTime = Number(remote.tripInfo?.updatedAt) || 0;
+        const mergedTripInfo = Object.assign(
+          {},
+          getDefaultSampleData().tripInfo,
+          remoteTripTime >= localTripTime ? remote.tripInfo : state.data.tripInfo
+        );
+
+        const remoteItems = Array.isArray(remote.items) ? remote.items : [];
+        const remoteTodos = Array.isArray(remote.todos)
+          ? remote.todos
+          : (remote.todosCount === 0 ? [] : (state.data.todos || []));
+        const remoteExpectations = Array.isArray(remote.expectations)
+          ? remote.expectations
+          : (state.data.expectations || getDefaultExpectations());
+        const remoteCustomTips = Array.isArray(remote.customTips) ? remote.customTips : [];
+
+        const mergedItems = mergeArrayById(state.data.items, remoteItems, deletedSet);
+        const mergedTodos = mergeArrayById(state.data.todos, remoteTodos, deletedSet);
+        const mergedExpectations = mergeArrayById(state.data.expectations, remoteExpectations, deletedSet);
+        const mergedCustomTips = mergeArrayById(state.data.customTips, remoteCustomTips, deletedSet);
+
+        const mergedRatings = Object.assign({}, remote.tipRatings || {}, state.data.tipRatings || {});
+
+        return normalizeDataStructure({
+          tripInfo: mergedTripInfo,
+          items: mergedItems,
+          todos: mergedTodos,
+          expectations: mergedExpectations,
+          deletedIds: Array.from(deletedSet).slice(-200),
+          tipRatings: mergedRatings,
+          customTips: mergedCustomTips,
+          updatedAt: Math.max(Number(state.data.updatedAt) || 0, Number(remote.updatedAt) || 0)
+        });
+      }
+
       function loadLocalData() {
         try {
           if (window.__BAKED_INITIAL_DATA__ && window.__BAKED_INITIAL_DATA__.tripInfo) {
-            state.data = migrateLegacyDates(JSON.parse(JSON.stringify(window.__BAKED_INITIAL_DATA__)));
+            state.data = normalizeDataStructure(JSON.parse(JSON.stringify(window.__BAKED_INITIAL_DATA__)));
           }
-          const raw = localStorage.getItem(STORAGE_KEY);
+          const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("goksel_zelis_tiflis_v15_local");
           if (raw) {
             const parsed = JSON.parse(raw);
             if (parsed && parsed.tripInfo) {
-              state.data = migrateLegacyDates({
+              state.data = normalizeDataStructure({
                 tripInfo: Object.assign({}, getDefaultSampleData().tripInfo, parsed.tripInfo),
                 items: Array.isArray(parsed.items) ? parsed.items : [],
                 todos: Array.isArray(parsed.todos) ? parsed.todos : getDefaultTodos(),
+                expectations: Array.isArray(parsed.expectations) ? parsed.expectations : getDefaultExpectations(),
+                deletedIds: Array.isArray(parsed.deletedIds) ? parsed.deletedIds : [],
                 tipRatings: parsed.tipRatings || {},
                 customTips: Array.isArray(parsed.customTips) ? parsed.customTips : []
               });
             }
           }
+          applyBackgroundTheme(state.data.tripInfo?.bgTheme || localStorage.getItem(THEME_PREF_KEY) || "slate");
         } catch (err) {
           console.warn("Yerel veri okunamadı:", err);
         }
@@ -1118,63 +1459,95 @@
           state.data.updatedBy = state.activeUser;
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
           if (!skipCloud) {
-            pushToFirebase();
+            syncWithFirebase();
           }
         } catch (err) {
           console.warn("Kayıt hatası:", err);
         }
       }
 
-      async function pushToFirebase() {
+      // ÇAKIŞMASIZ SENKRONİZASYON
+      async function syncWithFirebase() {
+        if (syncInFlight) return;
+        syncInFlight = true;
         try {
+          const getRes = await fetch(FIREBASE_DB_URL + "?t=" + Date.now(), { cache: "no-store" });
+          if (getRes.ok) {
+            const remote = await getRes.json();
+            if (remote && remote.tripInfo) {
+              state.data = mergeRemoteWithLocal(remote);
+            }
+          }
+
           const payload = {
             tripInfo: state.data.tripInfo,
             items: Array.isArray(state.data.items) ? state.data.items : [],
             itemsCount: Array.isArray(state.data.items) ? state.data.items.length : 0,
             todos: Array.isArray(state.data.todos) ? state.data.todos : [],
             todosCount: Array.isArray(state.data.todos) ? state.data.todos.length : 0,
+            expectations: Array.isArray(state.data.expectations) ? state.data.expectations : [],
+            deletedIds: Array.isArray(state.data.deletedIds) ? state.data.deletedIds : [],
             tipRatings: state.data.tipRatings || {},
             customTips: Array.isArray(state.data.customTips) ? state.data.customTips : [],
-            updatedAt: state.data.updatedAt || Date.now(),
+            updatedAt: Date.now(),
             updatedBy: state.activeUser
           };
+
           await fetch(FIREBASE_DB_URL, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
           });
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
         } catch (err) {
-          console.warn("Firebase yazma hatası:", err);
+          console.warn("Firebase senkronizasyon hatası:", err);
+        } finally {
+          syncInFlight = false;
         }
       }
 
       async function pullFromFirebase(manual = false) {
+        // Kullanıcı herhangi bir kutuya yazı yazıyorsa arka plan yenilemesini ertele!
+        if (!manual && (isUserActivelyTyping() || state.editingTodoId || state.flowEditingNoteId || state.editingExpId)) {
+          return;
+        }
+        if (syncInFlight) return;
+
         try {
           const res = await fetch(FIREBASE_DB_URL + "?t=" + Date.now(), { cache: "no-store" });
           if (!res.ok) return;
           const remote = await res.json();
           if (remote && remote.tripInfo) {
-            const remoteItems = Array.isArray(remote.items) ? remote.items : [];
-            const remoteTodos = Array.isArray(remote.todos)
-              ? remote.todos
-              : (remote.todosCount === 0 ? [] : (state.data.todos || getDefaultTodos()));
-
-            state.data = migrateLegacyDates({
-              tripInfo: Object.assign({}, getDefaultSampleData().tripInfo, remote.tripInfo),
-              items: remoteItems,
-              todos: remoteTodos,
-              tipRatings: remote.tipRatings || {},
-              customTips: Array.isArray(remote.customTips) ? remote.customTips : [],
-              updatedAt: remote.updatedAt || Date.now(),
-              updatedBy: remote.updatedBy || "Göksel"
+            const prevJson = JSON.stringify({
+              i: state.data.items,
+              t: state.data.todos,
+              e: state.data.expectations,
+              r: state.data.tipRatings,
+              info: state.data.tripInfo
             });
+
+            state.data = mergeRemoteWithLocal(remote);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
-            renderAll();
+            applyBackgroundTheme(state.data.tripInfo?.bgTheme || "slate");
+
+            const nextJson = JSON.stringify({
+              i: state.data.items,
+              t: state.data.todos,
+              e: state.data.expectations,
+              r: state.data.tipRatings,
+              info: state.data.tripInfo
+            });
+
+            if (manual || prevJson !== nextJson) {
+              if (!isUserActivelyTyping()) {
+                renderAll();
+              }
+            }
             if (manual) {
               showToast("☁️ Canlı bulut ile eşitlendi!");
             }
           } else if (remote === null) {
-            await pushToFirebase();
+            await syncWithFirebase();
           }
         } catch (err) {
           if (manual) showToast("⚠️ Bağlantı kontrol ediliyor");
@@ -1195,8 +1568,8 @@
         if (userBadge) {
           userBadge.textContent = state.activeUser === "Göksel" ? "👦 Göksel" : "👧 Zeliş";
           userBadge.className = state.activeUser === "Göksel"
-            ? "text-sky-300 font-extrabold"
-            : "text-pink-300 font-extrabold";
+            ? "text-sky-300 font-extrabold shrink-0"
+            : "text-pink-300 font-extrabold shrink-0";
         }
 
         const btnGoksel = document.getElementById("settingsUserBtnGoksel");
@@ -1218,13 +1591,17 @@
         const items = state.data.items || [];
         const activeFlowCount = items.filter((i) => !i.completed).length;
         const starredRecsCount = Object.values(state.data.tipRatings || {}).filter((v) => Number(v) > 0).length;
+        const activeTodosCount = (state.data.todos || []).filter((t) => !t.completed).length;
+        const expCount = (state.data.expectations || []).length;
 
         const tabCountAll = document.getElementById("tabCountAll");
         const tabCountFlow = document.getElementById("tabCountFlow");
         const tabCountRecs = document.getElementById("tabCountRecs");
+        const tabCountNotes = document.getElementById("tabCountNotes");
         if (tabCountAll) tabCountAll.textContent = items.length;
         if (tabCountFlow) tabCountFlow.textContent = activeFlowCount;
         if (tabCountRecs) tabCountRecs.textContent = starredRecsCount > 0 ? `⭐${starredRecsCount}` : getAllRecommendationsList().length;
+        if (tabCountNotes) tabCountNotes.textContent = activeTodosCount + expCount;
 
         updateUndoButtonUI();
       }
@@ -1256,169 +1633,12 @@
                   <div class="text-[10px] font-bold opacity-80">${counts[key]} kayıt</div>
                 </div>
               </div>
-              <span class="px-2 py-0.5 rounded-full text-xs font-black ${isSelected ? 'bg-white/25 text-white' : 'bg-white/90 text-slate-900 shadow-2xs'}">
+              <span class="px-2 py-0.5 rounded-full text-xs font-black shrink-0 ${isSelected ? 'bg-white/25 text-white' : 'bg-white/90 text-slate-900 shadow-2xs'}">
                 ${counts[key]}
               </span>
             </button>
           `;
         }).join("");
-      }
-
-      function renderTodoSingleBox() {
-        const container = document.getElementById("todoSingleBoxContainer");
-        if (!container) return;
-
-        const todos = Array.isArray(state.data.todos) ? state.data.todos : [];
-        const activeTodos = todos.filter((t) => !t.completed);
-        const completedTodos = todos.filter((t) => t.completed);
-
-        container.innerHTML = `
-          <div class="bg-gradient-to-br from-amber-50/90 via-white to-rose-50/80 rounded-2xl border-2 border-amber-300/90 p-3.5 sm:p-4 shadow-xs">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-amber-200/80">
-              <div class="flex items-center gap-2">
-                <span class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-extrabold text-sm shadow-2xs">📝</span>
-                <div>
-                  <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-1.5">
-                    <span>Yapılacaklar Listesi & Ortak Notlar</span>
-                    <span class="px-2 py-0.5 rounded-full bg-amber-200/80 text-amber-950 text-[10px] font-black">${activeTodos.length} aktif</span>
-                  </h3>
-                  <p class="text-[11px] text-slate-600 font-medium">Nokta nokta hızlı not alın, yapılanları tikleyip Tamamlandı klasörüne gönderin</p>
-                </div>
-              </div>
-
-              <form onsubmit="window.appActions.addTodoItem(event)" class="flex items-center gap-1.5 w-full sm:w-auto">
-                <input
-                  id="newTodoInput"
-                  type="text"
-                  placeholder="• Yeni yapılacak veya not yazın..."
-                  class="flex-1 sm:w-64 px-3 py-2 rounded-xl border border-amber-300 bg-white text-xs font-bold text-slate-900 focus:outline-none focus:border-amber-600 shadow-2xs"
-                />
-                <button
-                  type="submit"
-                  class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shrink-0 cursor-pointer transition shadow-2xs"
-                >
-                  + Not Ekle
-                </button>
-              </form>
-            </div>
-
-            <div class="mt-2.5 space-y-1.5">
-              ${activeTodos.length === 0 ? `
-                <div class="text-center py-3 text-xs font-semibold text-slate-500">
-                  🎉 Bekleyen yapılacak not kalmadı! Üstten yeni madde ekleyebilirsiniz.
-                </div>
-              ` : activeTodos.map((todo) => {
-                const isEditing = state.editingTodoId === todo.id;
-                return `
-                  <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-white/95 border border-amber-200/90 hover:border-amber-400 transition group">
-                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                      <button
-                        type="button"
-                        onclick="window.appActions.toggleTodoItem('${todo.id}')"
-                        class="w-5 h-5 rounded-md border-2 border-amber-500 bg-amber-50 hover:bg-emerald-500 hover:border-emerald-600 text-transparent hover:text-white flex items-center justify-center shrink-0 transition cursor-pointer font-black text-xs"
-                        title="Tamamlandı olarak işaretle"
-                      >
-                        ✓
-                      </button>
-                      <span class="text-amber-600 font-black text-sm select-none">•</span>
-                      ${isEditing ? `
-                        <div class="flex items-center gap-1.5 flex-1">
-                          <input
-                            id="editTodoInput-${todo.id}"
-                            type="text"
-                            value="${escapeHtml(todo.text)}"
-                            class="flex-1 px-2.5 py-1 rounded-lg border border-indigo-400 text-xs font-bold text-slate-900 bg-white"
-                          />
-                          <button
-                            type="button"
-                            onclick="window.appActions.saveEditedTodo('${todo.id}')"
-                            class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[11px] font-extrabold cursor-pointer"
-                          >
-                            Kaydet
-                          </button>
-                        </div>
-                      ` : `
-                        <span
-                          onclick="window.appActions.toggleTodoItem('${todo.id}')"
-                          class="text-xs sm:text-sm font-bold text-slate-800 cursor-pointer leading-snug break-words flex-1"
-                        >
-                          ${escapeHtml(todo.text)}
-                        </span>
-                      `}
-                    </div>
-
-                    <div class="flex items-center gap-1 shrink-0">
-                      <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-bold">
-                        ${escapeHtml(todo.addedBy || 'Ortak')}
-                      </span>
-                      <button
-                        type="button"
-                        onclick="window.appActions.startEditTodo('${todo.id}')"
-                        class="p-1 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 text-xs cursor-pointer"
-                        title="Notu Düzenle"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        type="button"
-                        onclick="window.appActions.deleteTodoItem('${todo.id}')"
-                        class="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 text-xs cursor-pointer"
-                        title="Sil"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </div>
-                `;
-              }).join("")}
-            </div>
-
-            ${completedTodos.length > 0 ? `
-              <div class="mt-3 pt-2.5 border-t border-amber-200/70">
-                <button
-                  type="button"
-                  onclick="window.appActions.toggleCompletedTodosFolder()"
-                  class="w-full py-2 px-3 rounded-xl bg-emerald-100/80 hover:bg-emerald-200/70 border border-emerald-300 text-emerald-950 font-extrabold text-xs flex items-center justify-between cursor-pointer transition"
-                >
-                  <span class="flex items-center gap-1.5">
-                    <span>📁 Tamamlandı Klasörü</span>
-                    <span class="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black">${completedTodos.length}</span>
-                  </span>
-                  <span>${state.showCompletedTodos ? '🔼 Gizle' : '🔽 Klasörü Aç'}</span>
-                </button>
-
-                ${state.showCompletedTodos ? `
-                  <div class="mt-2 space-y-1.5 pl-1">
-                    ${completedTodos.map((todo) => `
-                      <div class="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-emerald-50/70 border border-emerald-200">
-                        <div class="flex items-center gap-2 min-w-0 flex-1">
-                          <button
-                            type="button"
-                            onclick="window.appActions.toggleTodoItem('${todo.id}')"
-                            class="w-5 h-5 rounded-md bg-emerald-600 text-white flex items-center justify-center shrink-0 text-xs font-black cursor-pointer"
-                            title="Geri aktif listeye çıkar"
-                          >
-                            ✓
-                          </button>
-                          <span class="text-emerald-700 font-black text-xs">•</span>
-                          <span class="text-xs font-bold text-slate-500 line-through truncate">${escapeHtml(todo.text)}</span>
-                        </div>
-                        <button
-                          type="button"
-                          onclick="window.appActions.deleteTodoItem('${todo.id}')"
-                          class="p-1 rounded-lg text-rose-500 hover:bg-rose-100 text-xs cursor-pointer"
-                          title="Kalıcı Sil"
-                        >
-                          🗑️
-                        </button>
-                      </div>
-                    `).join("")}
-                  </div>
-                ` : ''}
-              </div>
-            ` : ''}
-          </div>
-        `;
       }
 
       function renderStatusBar() {
@@ -1464,8 +1684,8 @@
           container.innerHTML = `
             <div class="col-span-full bg-white rounded-3xl border-2 border-dashed border-slate-200 p-8 text-center">
               <div class="text-3xl mb-2">✈️🏨🍽️</div>
-              <h3 class="text-sm font-extrabold text-slate-800">Bu filtrede henüz bir plan yok</h3>
-              <p class="text-xs text-slate-500 mt-1 mb-4">Yeni bir uçuş, otel, restoran veya gezi planı ekleyebilirsiniz.</p>
+              <h3 class="text-sm font-extrabold text-slate-800">Bu kategoride henüz plan yok</h3>
+              <p class="text-xs text-slate-500 mt-1 mb-4">Yeni bir uçuş, konaklama, restoran veya gezi planı ekleyebilirsiniz.</p>
               <button onclick="window.appActions.openItemModal()" class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-extrabold cursor-pointer">
                 + Yeni Plan Ekle
               </button>
@@ -1477,7 +1697,8 @@
         container.innerHTML = filtered.map((item) => {
           const cat = CATEGORY_META[item.category] || CATEGORY_META.other;
           const st = STATUS_META[item.status] || STATUS_META.option;
-          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location || item.title + ' Tbilisi')}`;
+          const mapsUrl = resolveSmartMapsUrl(item);
+          const cleanLocText = formatCleanLocationText(item.location, item.city);
           const paidBadge = item.paidBy === "Göksel"
             ? "👦 Göksel"
             : item.paidBy === "Zeliş"
@@ -1485,10 +1706,10 @@
               : "🤝 Ortak";
 
           return `
-            <article class="${cat.cardBg} rounded-3xl border-2 ${cat.cardBorder} shadow-xs card-hover flex flex-col justify-between overflow-hidden">
+            <article class="${cat.cardBg} rounded-3xl border-2 ${cat.cardBorder} shadow-xs card-hover flex flex-col justify-between overflow-hidden min-w-0">
               <div class="h-1.5 w-full ${cat.strip}"></div>
-              <div class="p-4 space-y-2.5 flex-1 flex flex-col justify-between">
-                <div class="space-y-2">
+              <div class="p-4 space-y-2.5 flex-1 flex flex-col justify-between min-w-0">
+                <div class="space-y-2 min-w-0">
                   <div class="flex items-center justify-between gap-1.5 flex-wrap">
                     <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border ${cat.badge}">
                       ${cat.icon} ${cat.label}
@@ -1502,34 +1723,34 @@
                     </button>
                   </div>
 
-                  <div>
-                    <h3 class="text-sm sm:text-base font-extrabold text-slate-900 leading-snug">${escapeHtml(item.title)}</h3>
-                    ${item.subtitle ? `<p class="text-xs font-bold text-slate-600 mt-0.5">${escapeHtml(item.subtitle)}</p>` : ''}
+                  <div class="min-w-0">
+                    <h3 class="text-sm sm:text-base font-extrabold text-slate-900 leading-snug break-words">${escapeHtml(item.title)}</h3>
+                    ${item.subtitle ? `<p class="text-xs font-bold text-slate-600 mt-0.5 break-words">${escapeHtml(item.subtitle)}</p>` : ''}
                   </div>
 
                   <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold text-slate-700">
                     ${item.date ? `<span class="px-2 py-0.5 rounded-md bg-white/90 border border-slate-200">📅 ${formatDateTR(item.date)}</span>` : ''}
                     ${item.timeStart ? `<span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-950 border border-amber-300">⏰ ${escapeHtml(item.timeStart)}${item.timeEnd ? ' ➔ ' + escapeHtml(item.timeEnd) : ''}</span>` : ''}
-                    ${item.city ? `<span class="px-2 py-0.5 rounded-md bg-white/90 border border-slate-200">📍 ${escapeHtml(item.city)}</span>` : ''}
+                    <span class="px-2 py-0.5 rounded-md bg-white/90 border border-slate-200 truncate max-w-full">📍 ${escapeHtml(cleanLocText)}</span>
                   </div>
 
                   ${item.notes ? `
-                    <p class="text-xs text-slate-700 bg-white/80 p-2.5 rounded-xl border border-slate-200/80 leading-relaxed">
+                    <p class="text-xs text-slate-700 bg-white/80 p-2.5 rounded-xl border border-slate-200/80 leading-relaxed break-words">
                       📝 ${escapeHtml(item.notes)}
                     </p>
                   ` : ''}
                 </div>
 
-                <div class="pt-2.5 border-t border-slate-200/70 flex items-end justify-between gap-2">
-                  <div>
+                <div class="pt-2.5 border-t border-slate-200/70 flex items-end justify-between gap-2 flex-wrap">
+                  <div class="min-w-0">
                     <div class="text-[10px] font-bold text-slate-500">${paidBadge}</div>
-                    <div class="flex items-baseline gap-1.5">
+                    <div class="flex items-baseline gap-1.5 flex-wrap">
                       <span class="text-base font-black text-slate-900">${formatTL(item.price)}</span>
                       <span class="text-xs font-extrabold text-amber-800">${formatGEL(item.price)}</span>
                     </div>
                   </div>
 
-                  <div class="flex items-center gap-1">
+                  <div class="flex items-center gap-1 shrink-0">
                     <button
                       onclick="window.appActions.openReminderModal('${item.id}')"
                       class="p-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-extrabold cursor-pointer"
@@ -1538,21 +1759,22 @@
                       🔔
                     </button>
                     <a
-                      href="${mapsUrl}"
+                      href="${escapeHtml(mapsUrl)}"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="p-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold"
-                      title="Google Maps'te Aç"
+                      class="px-2.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold flex items-center gap-1 shadow-2xs"
+                      title="Google Maps'te Doğrudan Aç"
                     >
-                      🗺️
+                      <span>🗺️</span>
+                      <span>Harita</span>
                     </a>
-                    ${item.link ? `
+                    ${item.link && !isMapsUrl(item.link) ? `
                       <a
                         href="${escapeHtml(item.link)}"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="p-2 rounded-xl bg-white hover:bg-slate-100 text-indigo-600 border border-slate-200 text-xs font-bold"
-                        title="Linki Aç"
+                        title="Web Linkini Aç"
                       >
                         🔗
                       </a>
@@ -1577,6 +1799,302 @@
             </article>
           `;
         }).join("");
+      }
+
+      // SEKME 5: NOTLAR -> 1. KISIM: YAPILACAKLAR LİSTESİ & "📁 YAPILDI KLASÖRÜ" (Statik input kutusuna dokunmaz)
+      function renderTodoSingleBox() {
+        const container = document.getElementById("todoListDynamicArea");
+        const countBadge = document.getElementById("todoActiveCountBadge");
+        if (!container) return;
+
+        const todos = Array.isArray(state.data.todos) ? state.data.todos : [];
+        const activeTodos = todos.filter((t) => !t.completed);
+        const completedTodos = todos.filter((t) => t.completed);
+
+        if (countBadge) {
+          countBadge.textContent = `${activeTodos.length} aktif`;
+        }
+
+        container.innerHTML = `
+          <div class="space-y-1.5">
+            ${activeTodos.length === 0 ? `
+              <div class="text-center py-3 text-xs font-semibold text-slate-500">
+                🎉 Bekleyen yapılacak not kalmadı! Üstteki kutudan yeni not ekleyebilirsiniz.
+              </div>
+            ` : activeTodos.map((todo) => {
+              const isEditing = state.editingTodoId === todo.id;
+              return `
+                <div class="flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl bg-white/95 border border-amber-200/90 hover:border-amber-400 transition group">
+                  <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                    <button
+                      type="button"
+                      onclick="window.appActions.toggleTodoItem('${todo.id}')"
+                      class="w-5 h-5 rounded-md border-2 border-amber-500 bg-amber-50 hover:bg-emerald-500 hover:border-emerald-600 text-transparent hover:text-white flex items-center justify-center shrink-0 transition cursor-pointer font-black text-xs"
+                      title="Yapıldı olarak işaretle"
+                    >
+                      ✓
+                    </button>
+                    <span class="text-amber-600 font-black text-sm select-none shrink-0">•</span>
+                    ${isEditing ? `
+                      <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                        <input
+                          id="editTodoInput-${todo.id}"
+                          type="text"
+                          value="${escapeHtml(todo.text)}"
+                          class="flex-1 min-w-0 px-2.5 py-1 rounded-lg border border-indigo-400 text-xs font-bold text-slate-900 bg-white"
+                        />
+                        <button
+                          type="button"
+                          onclick="window.appActions.saveEditedTodo('${todo.id}')"
+                          class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[11px] font-extrabold cursor-pointer shrink-0"
+                        >
+                          Kaydet
+                        </button>
+                      </div>
+                    ` : `
+                      <span
+                        onclick="window.appActions.toggleTodoItem('${todo.id}')"
+                        class="text-xs sm:text-sm font-bold text-slate-800 cursor-pointer leading-snug break-words min-w-0 flex-1"
+                      >
+                        ${escapeHtml(todo.text)}
+                      </span>
+                    `}
+                  </div>
+
+                  <div class="flex items-center gap-1 shrink-0">
+                    <span class="hidden sm:inline-block px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-bold">
+                      ${escapeHtml(todo.addedBy || 'Ortak')}
+                    </span>
+                    <button
+                      type="button"
+                      onclick="window.appActions.startEditTodo('${todo.id}')"
+                      class="p-1 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 text-xs cursor-pointer"
+                      title="Notu Düzenle"
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      type="button"
+                      onclick="window.appActions.deleteTodoItem('${todo.id}')"
+                      class="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 text-xs cursor-pointer"
+                      title="Sil"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+
+          <!-- 📁 YAPILDI KLASÖRÜ (Her Zaman Görünür / Açılır-Kapanır) -->
+          <div class="mt-3.5 pt-3 border-t border-amber-200/80">
+            <button
+              type="button"
+              onclick="window.appActions.toggleCompletedTodosFolder()"
+              class="w-full py-2.5 px-3.5 rounded-2xl bg-emerald-100/85 hover:bg-emerald-200/75 border border-emerald-300 text-emerald-950 font-extrabold text-xs flex items-center justify-between cursor-pointer transition"
+            >
+              <span class="flex items-center gap-2">
+                <span>📁 Yapıldı Klasörü</span>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] font-black">${completedTodos.length}</span>
+              </span>
+              <span>${state.showCompletedTodos ? '🔼 Klasörü Gizle' : '🔽 Klasörü Aç'}</span>
+            </button>
+
+            ${state.showCompletedTodos ? `
+              <div class="mt-2 space-y-1.5 pl-1">
+                ${completedTodos.length === 0 ? `
+                  <div class="p-3 rounded-xl bg-white/80 border border-emerald-200 text-center text-xs text-slate-500 font-semibold">
+                    Henüz yapıldı olarak işaretlenen bir not yok.
+                  </div>
+                ` : completedTodos.map((todo) => `
+                  <div class="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-emerald-50/80 border border-emerald-200">
+                    <div class="flex items-center gap-2 min-w-0 flex-1">
+                      <button
+                        type="button"
+                        onclick="window.appActions.toggleTodoItem('${todo.id}')"
+                        class="w-5 h-5 rounded-md bg-emerald-600 text-white flex items-center justify-center shrink-0 text-xs font-black cursor-pointer"
+                        title="Geri yapılacaklar listesine çıkar"
+                      >
+                        ✓
+                      </button>
+                      <span class="text-emerald-700 font-black text-xs shrink-0">•</span>
+                      <span class="text-xs font-bold text-slate-500 line-through break-words min-w-0">${escapeHtml(todo.text)}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onclick="window.appActions.deleteTodoItem('${todo.id}')"
+                      class="p-1 rounded-lg text-rose-500 hover:bg-rose-100 text-xs cursor-pointer shrink-0"
+                      title="Kalıcı Sil"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                `).join("")}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // SEKME 5: NOTLAR -> 2. KISIM: "📂 BEKLENTİMİZ KLASÖRÜ" (Göksel & Zeliş 5 Yıldızlı Beklenti Şablonu)
+      function renderNewExpectationStars(owner) {
+        const barId = owner === "Göksel" ? "gokselNewExpStarBar" : "zelisNewExpStarBar";
+        const bar = document.getElementById(barId);
+        if (!bar) return;
+        const val = owner === "Göksel" ? state.newExpStarsGoksel : state.newExpStarsZelis;
+        let html = "";
+        for (let s = 1; s <= 5; s++) {
+          const filled = s <= val;
+          html += `
+            <button
+              type="button"
+              onclick="window.appActions.setNewExpStar('${owner}', ${s})"
+              class="text-base leading-none cursor-pointer transition transform hover:scale-110 ${filled ? 'text-amber-400' : 'text-slate-300'}"
+            >${filled ? '★' : '☆'}</button>
+          `;
+        }
+        html += `<span class="ml-1 text-[11px] font-black text-amber-700">${val}/5</span>`;
+        bar.innerHTML = html;
+      }
+
+      function renderExpectationsFolder() {
+        const folderContent = document.getElementById("expectationsFolderContent");
+        const folderToggleLabel = document.getElementById("expFolderToggleLabel");
+        const folderTotalBadge = document.getElementById("expFolderTotalBadge");
+
+        if (folderContent) {
+          folderContent.classList.toggle("hidden", !state.showExpectationsFolder);
+        }
+        if (folderToggleLabel) {
+          folderToggleLabel.textContent = state.showExpectationsFolder ? "🔼 Klasörü Kapat" : "🔽 Klasörü Aç";
+        }
+
+        renderNewExpectationStars("Göksel");
+        renderNewExpectationStars("Zeliş");
+
+        const gokselListEl = document.getElementById("gokselExpectationsList");
+        const zelisListEl = document.getElementById("zelisExpectationsList");
+        const gokselBadge = document.getElementById("gokselExpCountBadge");
+        const zelisBadge = document.getElementById("zelisExpCountBadge");
+        const sortBtn = document.getElementById("expSortBtn");
+        if (!gokselListEl || !zelisListEl) return;
+
+        if (sortBtn) {
+          sortBtn.className = state.expSortByStars
+            ? "px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-extrabold cursor-pointer transition shadow-xs shrink-0"
+            : "px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 text-xs font-extrabold cursor-pointer transition shrink-0";
+          sortBtn.textContent = state.expSortByStars ? "🔥 Puana Göre Sıralı (5★ ➔ 1★)" : "🔥 Yıldız Puanına Göre Sırala";
+        }
+
+        const allExp = Array.isArray(state.data.expectations) ? state.data.expectations.slice() : [];
+        if (folderTotalBadge) {
+          folderTotalBadge.textContent = `${allExp.length} istek`;
+        }
+
+        if (state.expSortByStars) {
+          allExp.sort((a, b) => (Number(b.stars) || 0) - (Number(a.stars) || 0));
+        }
+
+        const gokselItems = allExp.filter((e) => e.owner === "Göksel");
+        const zelisItems = allExp.filter((e) => e.owner === "Zeliş");
+
+        if (gokselBadge) gokselBadge.textContent = String(gokselItems.length);
+        if (zelisBadge) zelisBadge.textContent = String(zelisItems.length);
+
+        function buildOwnerListHtml(items, ownerColor) {
+          if (items.length === 0) {
+            return `
+              <div class="p-5 rounded-2xl bg-white/80 border border-dashed border-slate-300 text-center text-xs text-slate-500 font-semibold">
+                Henüz beklenti veya istek notu eklenmemiş. Yukarıdan yazıp yıldız vererek ekleyebilirsiniz!
+              </div>
+            `;
+          }
+          return items.map((exp) => {
+            const stars = Number(exp.stars) || 0;
+            const isEditing = state.editingExpId === exp.id;
+            let starsHtml = "";
+            for (let s = 1; s <= 5; s++) {
+              const filled = s <= stars;
+              starsHtml += `
+                <button
+                  type="button"
+                  onclick="window.appActions.rateExpectation('${exp.id}', ${s})"
+                  class="text-base leading-none cursor-pointer transition transform hover:scale-125 ${filled ? 'text-amber-400' : 'text-slate-300 hover:text-amber-300'}"
+                  title="${s} Yıldız"
+                >${filled ? '★' : '☆'}</button>
+              `;
+            }
+
+            return `
+              <div class="p-3 rounded-2xl bg-white border ${exp.completed ? 'border-emerald-300 opacity-75' : ownerColor} shadow-2xs flex flex-col gap-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-start gap-2 min-w-0 flex-1">
+                    <button
+                      type="button"
+                      onclick="window.appActions.toggleExpectationDone('${exp.id}')"
+                      class="mt-0.5 w-5 h-5 rounded-md border-2 ${exp.completed ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300 bg-white text-transparent hover:border-emerald-500'} flex items-center justify-center shrink-0 text-xs font-black cursor-pointer"
+                      title="Gerçekleşti olarak işaretle"
+                    >
+                      ✓
+                    </button>
+                    ${isEditing ? `
+                      <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                        <input
+                          id="editExpInput-${exp.id}"
+                          type="text"
+                          value="${escapeHtml(exp.text)}"
+                          class="flex-1 min-w-0 px-2.5 py-1 rounded-lg border border-indigo-400 text-xs font-bold text-slate-900"
+                        />
+                        <button
+                          type="button"
+                          onclick="window.appActions.saveEditedExpectation('${exp.id}')"
+                          class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[11px] font-extrabold cursor-pointer shrink-0"
+                        >
+                          Kaydet
+                        </button>
+                      </div>
+                    ` : `
+                      <span class="text-xs sm:text-sm font-extrabold ${exp.completed ? 'line-through text-slate-400' : 'text-slate-900'} break-words min-w-0 flex-1 leading-snug">
+                        ${escapeHtml(exp.text)}
+                      </span>
+                    `}
+                  </div>
+
+                  <div class="flex items-center gap-1 shrink-0">
+                    <button
+                      type="button"
+                      onclick="window.appActions.startEditExpectation('${exp.id}')"
+                      class="p-1 rounded-lg text-slate-400 hover:text-indigo-600 text-xs cursor-pointer"
+                      title="Düzenle"
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      type="button"
+                      onclick="window.appActions.deleteExpectation('${exp.id}')"
+                      class="p-1 rounded-lg text-slate-400 hover:text-rose-600 text-xs cursor-pointer"
+                      title="Sil"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-1.5 border-t border-slate-100">
+                  <span class="text-[10px] font-bold text-slate-400">İstek Derecesi:</span>
+                  <div class="flex items-center gap-0.5 bg-amber-50/80 px-2 py-0.5 rounded-lg border border-amber-200">
+                    ${starsHtml}
+                    <span class="ml-1 text-[11px] font-black text-amber-800">${stars}/5</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+
+        gokselListEl.innerHTML = buildOwnerListHtml(gokselItems, "border-blue-200");
+        zelisListEl.innerHTML = buildOwnerListHtml(zelisItems, "border-pink-200");
       }
 
       function renderRecommendationsTab() {
@@ -1625,7 +2143,7 @@
                       <div class="text-[10px] font-bold opacity-80">${recCounts[k]} öneri</div>
                     </div>
                   </div>
-                  <span class="px-2 py-0.5 rounded-full text-xs font-black ${isSelected ? 'bg-white/25 text-white' : 'bg-white/90 text-slate-900'}">
+                  <span class="px-2 py-0.5 rounded-full text-xs font-black shrink-0 ${isSelected ? 'bg-white/25 text-white' : 'bg-white/90 text-slate-900'}">
                     ${recCounts[k]}
                   </span>
                 </button>
@@ -1675,7 +2193,7 @@
               const userStars = Number(ratings[rec.id]) || 0;
               const tlCost = Math.round(rec.gel * rate);
               const catTheme = CATEGORY_META[rec.planCat] || CATEGORY_META.other;
-              const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(rec.location || rec.title)}`;
+              const mapsUrl = resolveSmartMapsUrl(rec);
 
               let starsHtml = "";
               for (let s = 1; s <= 5; s++) {
@@ -1691,9 +2209,9 @@
               }
 
               return `
-                <div class="${catTheme.cardBg} rounded-3xl border-2 ${catTheme.cardBorder} p-4 flex flex-col justify-between gap-3 shadow-xs card-hover">
-                  <div class="space-y-2">
-                    <div class="flex items-center justify-between gap-2">
+                <div class="${catTheme.cardBg} rounded-3xl border-2 ${catTheme.cardBorder} p-4 flex flex-col justify-between gap-3 shadow-xs card-hover min-w-0">
+                  <div class="space-y-2 min-w-0">
+                    <div class="flex items-center justify-between gap-2 flex-wrap">
                       <div class="flex items-center gap-1.5">
                         <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border ${catTheme.badge}">
                           ${REC_CATEGORY_BOXES[rec.group]?.icon || '📍'} ${REC_CATEGORY_BOXES[rec.group]?.label || 'Öneri'}
@@ -1707,27 +2225,27 @@
                       </div>
                     </div>
 
-                    <div>
-                      <h4 class="text-sm sm:text-base font-extrabold text-slate-900">${escapeHtml(rec.title)}</h4>
+                    <div class="min-w-0">
+                      <h4 class="text-sm sm:text-base font-extrabold text-slate-900 break-words">${escapeHtml(rec.title)}</h4>
                       <div class="text-[11px] font-bold text-slate-500">📍 ${escapeHtml(rec.area)} • ⏰ Önerilen: ${escapeHtml(rec.time)}</div>
                     </div>
 
-                    <p class="text-xs text-slate-700 bg-white/80 p-2.5 rounded-xl border border-slate-200/70 leading-relaxed">
+                    <p class="text-xs text-slate-700 bg-white/80 p-2.5 rounded-xl border border-slate-200/70 leading-relaxed break-words">
                       ${escapeHtml(rec.desc)}
                     </p>
                   </div>
 
-                  <div class="pt-2.5 border-t border-slate-200/70 flex items-center justify-between gap-2">
+                  <div class="pt-2.5 border-t border-slate-200/70 flex items-center justify-between gap-2 flex-wrap">
                     <div>
                       <span class="text-sm font-black text-slate-900">${rec.gel === 0 ? 'Ücretsiz' : formatTL(tlCost)}</span>
                       ${rec.gel > 0 ? `<span class="text-xs font-extrabold text-amber-800 ml-1">(~${rec.gel} ₾)</span>` : ''}
                     </div>
-                    <div class="flex items-center gap-1.5">
+                    <div class="flex items-center gap-1.5 shrink-0">
                       <a
-                        href="${mapsUrl}"
+                        href="${escapeHtml(mapsUrl)}"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="px-2.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-bold"
+                        class="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold"
                       >
                         🗺️ Harita
                       </a>
@@ -1749,6 +2267,9 @@
       function renderBudgetTab() {
         const container = document.getElementById("budgetAnalysisContainer");
         if (!container) return;
+
+        const prevGelVal = document.getElementById("budgetGelInput")?.value || "";
+        const prevTlVal = document.getElementById("budgetTlInput")?.value || "";
 
         const items = state.data.items || [];
         const target = Number(state.data.tripInfo.targetBudget) || 25000;
@@ -1818,13 +2339,14 @@
                 <div class="text-xs font-extrabold text-amber-300">💱 CANLI GÜRCİSTAN LARİSİ (₾) ⇄ TÜRK LİRASI (₺) ÇEVİRİCİ</div>
                 <div class="text-xs text-slate-300 mt-0.5">Sabit Kur: <strong>1 Lari (₾) = ${rate.toFixed(2)} ₺</strong></div>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <div class="bg-white/10 border border-white/20 rounded-2xl px-3 py-2 flex items-center gap-1.5">
                   <span class="text-xs font-extrabold text-amber-300">₾</span>
                   <input
                     id="budgetGelInput"
                     type="number"
                     step="any"
+                    value="${escapeHtml(prevGelVal)}"
                     placeholder="Lari yazın"
                     oninput="window.appActions.convertBudgetGel(this.value)"
                     class="w-24 bg-transparent text-white font-extrabold text-sm focus:outline-none"
@@ -1837,6 +2359,7 @@
                     id="budgetTlInput"
                     type="number"
                     step="any"
+                    value="${escapeHtml(prevTlVal)}"
                     placeholder="TL yazın"
                     oninput="window.appActions.convertBudgetTl(this.value)"
                     class="w-24 bg-transparent text-white font-extrabold text-sm focus:outline-none"
@@ -1871,6 +2394,7 @@
         `;
       }
 
+      // SEKME 4: AKIŞ (MOBİL TAŞMA SORUNU %100 GİDERİLDİ & MAPS LİNKLERİ DOĞRUDAN ÇALIŞIR)
       function renderFlowTab() {
         const container = document.getElementById("flowContainer");
         if (!container) return;
@@ -1899,66 +2423,71 @@
           const cat = CATEGORY_META[item.category] || CATEGORY_META.other;
           const isFirst = idx === 0;
           const isLast = idx === activeItems.length - 1;
-          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location || item.title + ' Tbilisi')}`;
+          const mapsUrl = resolveSmartMapsUrl(item);
+          const cleanLocText = formatCleanLocationText(item.location, item.city);
           const isEditingNote = state.flowEditingNoteId === item.id;
 
           return `
-            <div class="flex flex-col items-center">
-              <div class="w-full max-w-2xl ${cat.cardBg} rounded-3xl border-2 ${isFirst ? 'border-indigo-600 ring-4 ring-indigo-500/15' : cat.cardBorder} p-4 shadow-sm transition">
-                <div class="flex items-start gap-3">
+            <div class="flex flex-col items-center w-full max-w-full">
+              <div class="w-full max-w-2xl ${cat.cardBg} rounded-3xl border-2 ${isFirst ? 'border-indigo-600 ring-2 sm:ring-4 ring-indigo-500/15' : cat.cardBorder} p-3.5 sm:p-4 shadow-sm transition overflow-hidden box-border">
+                <div class="flex items-start gap-2.5 sm:gap-3 min-w-0">
                   <button
                     type="button"
                     onclick="window.appActions.toggleItemCompleted('${item.id}')"
-                    class="mt-1 w-7 h-7 rounded-xl border-2 border-slate-400 bg-white hover:border-emerald-600 hover:bg-emerald-50 flex items-center justify-center text-transparent hover:text-emerald-600 font-black text-sm transition cursor-pointer shrink-0 shadow-2xs"
+                    class="mt-0.5 w-7 h-7 rounded-xl border-2 border-slate-400 bg-white hover:border-emerald-600 hover:bg-emerald-50 flex items-center justify-center text-transparent hover:text-emerald-600 font-black text-sm transition cursor-pointer shrink-0 shadow-2xs"
                     title="Tamamlandı olarak işaretle"
                   >
                     ✓
                   </button>
 
                   <div class="flex-1 min-w-0 space-y-2">
-                    <div class="flex items-center justify-between gap-2 flex-wrap">
-                      <div class="flex items-center gap-1.5 flex-wrap">
+                    <div class="flex items-center justify-between gap-1.5 flex-wrap">
+                      <div class="flex items-center gap-1.5 flex-wrap min-w-0">
                         ${isFirst ? `
-                          <span class="px-2.5 py-0.5 rounded-lg bg-indigo-600 text-white text-[11px] font-black tracking-wide animate-pulse">
+                          <span class="px-2 py-0.5 rounded-lg bg-indigo-600 text-white text-[10px] sm:text-[11px] font-black tracking-wide animate-pulse">
                             🚩 SIRADA BU VAR
                           </span>
                         ` : `
-                          <span class="px-2 py-0.5 rounded-lg bg-slate-900 text-white text-[11px] font-extrabold">
+                          <span class="px-2 py-0.5 rounded-lg bg-slate-900 text-white text-[10px] sm:text-[11px] font-extrabold">
                             #${idx + 1}
                           </span>
                         `}
-                        <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border ${cat.badge}">
+                        <span class="px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-extrabold border ${cat.badge}">
                           ${cat.icon} ${cat.label}
                         </span>
                       </div>
 
-                      <div class="flex items-center gap-1.5 text-xs font-extrabold">
-                        <span class="px-2.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-800">
+                      <div class="flex items-center gap-1 text-[11px] font-extrabold flex-wrap">
+                        <span class="px-2 py-0.5 rounded-xl bg-white border border-slate-200 text-slate-800">
                           📅 ${formatDateTR(item.date)}
                         </span>
-                        <span class="px-2.5 py-1 rounded-xl bg-amber-100 border border-amber-300 text-amber-950">
+                        <span class="px-2 py-0.5 rounded-xl bg-amber-100 border border-amber-300 text-amber-950">
                           ⏰ ${escapeHtml(item.timeStart || 'Saat Yok')}${item.timeEnd ? ' ➔ ' + escapeHtml(item.timeEnd) : ''}
                         </span>
                       </div>
                     </div>
 
-                    <h4 class="text-base font-extrabold text-slate-900 leading-snug">${escapeHtml(item.title)}</h4>
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 leading-snug break-words">${escapeHtml(item.title)}</h4>
 
-                    <div class="flex items-center justify-between gap-2 text-xs text-slate-600 font-bold">
-                      <span>📍 ${escapeHtml(item.location || item.city || 'Tiflis Merkez')}</span>
+                    <!-- Konum ve Yol Tarifi Butonu: Asla Karttan Dışarı Taşmaz -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-0.5 min-w-0">
+                      <div class="text-xs text-slate-700 font-bold min-w-0 flex-1 break-words">
+                        📍 ${escapeHtml(cleanLocText)}
+                      </div>
                       <a
-                        href="${mapsUrl}"
+                        href="${escapeHtml(mapsUrl)}"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-indigo-600 hover:bg-indigo-50 text-[11px] font-extrabold shrink-0"
+                        class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-extrabold shrink-0 shadow-2xs flex items-center gap-1"
                       >
-                        🗺️ Yol Tarifi
+                        <span>🗺️</span>
+                        <span>Yol Tarifi</span>
                       </a>
                     </div>
 
                     ${item.notes ? `
-                      <div class="p-3 rounded-2xl bg-white/90 border border-slate-200/90 text-xs text-slate-800 flex items-start justify-between gap-2">
-                        <div>
+                      <div class="p-2.5 sm:p-3 rounded-2xl bg-white/90 border border-slate-200/90 text-xs text-slate-800 flex items-start justify-between gap-2 min-w-0">
+                        <div class="min-w-0 flex-1 break-words">
                           <span class="font-extrabold text-indigo-900">📝 Not:</span>
                           <span class="ml-1 font-medium">${escapeHtml(item.notes)}</span>
                         </div>
@@ -1981,17 +2510,17 @@
                     `}
 
                     ${isEditingNote ? `
-                      <div class="flex items-center gap-1.5 pt-1">
+                      <div class="flex items-center gap-1.5 pt-1 min-w-0">
                         <input
                           id="inlineNoteInput-${item.id}"
                           type="text"
                           value="${escapeHtml(item.notes || '')}"
                           placeholder="Notunuzu yazın..."
-                          class="flex-1 px-3 py-1.5 rounded-xl border border-indigo-300 bg-white text-xs font-semibold"
+                          class="flex-1 min-w-0 px-3 py-1.5 rounded-xl border border-indigo-300 bg-white text-xs font-semibold"
                         />
                         <button
                           onclick="window.appActions.saveInlineFlowNote('${item.id}')"
-                          class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-extrabold cursor-pointer"
+                          class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-extrabold cursor-pointer shrink-0"
                         >
                           Kaydet
                         </button>
@@ -2002,12 +2531,12 @@
               </div>
 
               ${!isLast ? `
-                <div class="py-2 flex flex-col items-center justify-center text-slate-400">
-                  <div class="w-0.5 h-3 bg-slate-300"></div>
+                <div class="py-1.5 flex flex-col items-center justify-center text-slate-400">
+                  <div class="w-0.5 h-2.5 bg-slate-300"></div>
                   <div class="w-7 h-7 rounded-full bg-white border-2 border-slate-300 flex items-center justify-center text-slate-600 font-black text-sm shadow-2xs">
                     ↓
                   </div>
-                  <div class="w-0.5 h-3 bg-slate-300"></div>
+                  <div class="w-0.5 h-2.5 bg-slate-300"></div>
                 </div>
               ` : ''}
             </div>
@@ -2015,7 +2544,7 @@
         }).join("");
 
         const completedHtml = `
-          <div class="max-w-2xl mx-auto pt-4">
+          <div class="max-w-2xl mx-auto pt-4 w-full">
             <button
               type="button"
               onclick="window.appActions.toggleCompletedFlowSection()"
@@ -2035,8 +2564,8 @@
                     Henüz tamamlandı olarak işaretlenmiş bir plan bulunmuyor.
                   </div>
                 ` : completedItems.map((item) => `
-                  <div class="p-3.5 rounded-2xl bg-white/80 border border-emerald-200 flex items-center justify-between gap-3 opacity-80">
-                    <div class="flex items-center gap-3 min-w-0">
+                  <div class="p-3.5 rounded-2xl bg-white/80 border border-emerald-200 flex items-center justify-between gap-3 opacity-80 min-w-0">
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
                       <button
                         type="button"
                         onclick="window.appActions.toggleItemCompleted('${item.id}')"
@@ -2045,7 +2574,7 @@
                       >
                         ✓
                       </button>
-                      <div class="min-w-0">
+                      <div class="min-w-0 flex-1">
                         <div class="text-xs sm:text-sm font-extrabold text-slate-600 line-through truncate">${escapeHtml(item.title)}</div>
                         <div class="text-[11px] font-semibold text-slate-400">📅 ${formatDateTR(item.date)} ${item.timeStart ? '• ⏰ ' + escapeHtml(item.timeStart) : ''}</div>
                       </div>
@@ -2066,7 +2595,7 @@
 
         container.innerHTML = `
           <div class="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 p-3.5 flex items-center justify-between gap-2">
-            <div>
+            <div class="min-w-0">
               <h2 class="text-sm sm:text-base font-extrabold text-slate-900">⏳ Zaman Sıralı Tiflis Akışımız</h2>
               <p class="text-[11px] text-slate-500 font-semibold">Tarih (GG.AA.YYYY) ve saate göre otomatik sıralanır • Kutucuğu tikleyince Tamamlanmış kısmına geçer</p>
             </div>
@@ -2077,7 +2606,7 @@
               + Ekle
             </button>
           </div>
-          <div class="space-y-0">
+          <div class="space-y-0 mt-3">
             ${activeHtml}
           </div>
           ${completedHtml}
@@ -2087,18 +2616,20 @@
       function renderAll() {
         renderHeader();
         renderCategoryGrid();
-        renderTodoSingleBox();
         renderStatusBar();
         renderPlannerItems();
         renderRecommendationsTab();
         renderBudgetTab();
         renderFlowTab();
+        renderTodoSingleBox();
+        renderExpectationsFolder();
+        renderThemeColorPicker();
       }
 
       window.appActions = {
         switchTab: function (tabName) {
           state.activeTab = tabName;
-          const tabs = ["planner", "recommendations", "budget", "flow"];
+          const tabs = ["planner", "recommendations", "budget", "flow", "notes"];
           tabs.forEach((t) => {
             const view = document.getElementById("view-" + t);
             const deskBtn = document.getElementById("tabBtn-" + t);
@@ -2113,11 +2644,22 @@
             }
             if (mobBtn) {
               mobBtn.className = isActive
-                ? "flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 bg-indigo-50 font-extrabold text-[11px] cursor-pointer"
-                : "flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[11px] cursor-pointer";
+                ? "flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 bg-indigo-50 font-extrabold text-[10px] cursor-pointer"
+                : "flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[10px] cursor-pointer";
             }
           });
           renderAll();
+        },
+
+        setThemeColor: function (themeId) {
+          if (!THEME_PRESETS[themeId]) return;
+          pushUndoSnapshot("Arka Plan Rengi");
+          state.data.tripInfo.bgTheme = themeId;
+          state.data.tripInfo.updatedAt = Date.now();
+          applyBackgroundTheme(themeId);
+          renderThemeColorPicker();
+          saveData();
+          showToast(`🎨 Tema "${THEME_PRESETS[themeId].name}" olarak ayarlandı!`);
         },
 
         undoLastAction: function () {
@@ -2130,8 +2672,11 @@
             state.data.tripInfo = last.snapshot.tripInfo;
             state.data.items = last.snapshot.items || [];
             state.data.todos = last.snapshot.todos || [];
+            state.data.expectations = last.snapshot.expectations || [];
+            state.data.deletedIds = last.snapshot.deletedIds || [];
             state.data.tipRatings = last.snapshot.tipRatings || {};
             state.data.customTips = last.snapshot.customTips || [];
+            applyBackgroundTheme(state.data.tripInfo?.bgTheme || "slate");
             saveData();
             renderAll();
             showToast(`↩️ Geri alındı: ${last.label}`, false);
@@ -2142,7 +2687,7 @@
           const picker = document.getElementById(pickerId);
           if (!picker) return;
           if (!picker.value) {
-            picker.value = getTodayIsoOffset(0);
+            picker.value = state.data.tripInfo?.startDate || DEFAULT_START_DATE;
           }
           try {
             if (typeof picker.showPicker === "function") {
@@ -2158,12 +2703,13 @@
 
         onDatePickerChange: function (pickerEl, displaySpanId) {
           const spanEl = document.getElementById(displaySpanId);
-          const isoVal = pickerEl.value || getTodayIsoOffset(0);
+          const isoVal = pickerEl.value || state.data.tripInfo?.startDate || DEFAULT_START_DATE;
           if (spanEl) {
             spanEl.textContent = formatDateTR(isoVal);
           }
         },
 
+        // NOTLAR SEKME İŞLEMLERİ (YAPILACAKLAR & YAPILDI KLASÖRÜ)
         addTodoItem: function (e) {
           e.preventDefault();
           const input = document.getElementById("newTodoInput");
@@ -2174,31 +2720,41 @@
           pushUndoSnapshot("Not Eklendi");
           if (!Array.isArray(state.data.todos)) state.data.todos = [];
           state.data.todos.unshift({
-            id: "todo-" + Date.now(),
+            id: "todo-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
             text: text.replace(/^[•\-*]\s*/, ""),
             addedBy: state.activeUser,
-            completed: false
+            completed: false,
+            updatedAt: Date.now()
           });
           input.value = "";
           saveData();
-          renderAll();
-          showToast("📝 Yapılacaklar listesine eklendi", true);
+          renderTodoSingleBox();
+          renderHeader();
+          showToast("📝 Notlar listesine eklendi", true);
         },
 
         toggleTodoItem: function (todoId) {
           if (!Array.isArray(state.data.todos)) return;
           const todo = state.data.todos.find((t) => t.id === todoId);
           if (!todo) return;
-          pushUndoSnapshot(todo.completed ? "Not Aktife Alındı" : "Not Tamamlandı");
+          pushUndoSnapshot(todo.completed ? "Not Aktife Alındı" : "Not Yapıldı");
           todo.completed = !todo.completed;
+          todo.updatedAt = Date.now();
           saveData();
-          renderAll();
-          showToast(todo.completed ? "📁 Tamamlandı klasörüne taşındı" : "📝 Tekrar yapılacaklar listesine alındı", true);
+          renderTodoSingleBox();
+          renderHeader();
+          showToast(todo.completed ? "📁 Yapıldı klasörüne taşındı" : "📝 Tekrar aktif notlara alındı", true);
         },
 
         startEditTodo: function (todoId) {
           state.editingTodoId = state.editingTodoId === todoId ? null : todoId;
           renderTodoSingleBox();
+          if (state.editingTodoId) {
+            setTimeout(() => {
+              const el = document.getElementById("editTodoInput-" + todoId);
+              if (el) el.focus();
+            }, 30);
+          }
         },
 
         saveEditedTodo: function (todoId) {
@@ -2208,9 +2764,10 @@
           if (todo && input.value.trim()) {
             pushUndoSnapshot("Not Düzenlendi");
             todo.text = input.value.trim();
+            todo.updatedAt = Date.now();
             state.editingTodoId = null;
             saveData();
-            renderAll();
+            renderTodoSingleBox();
             showToast("📝 Not güncellendi", true);
           }
         },
@@ -2220,15 +2777,116 @@
           const target = state.data.todos.find((t) => t.id === todoId);
           if (!target) return;
           pushUndoSnapshot("Not Silindi");
+          if (!Array.isArray(state.data.deletedIds)) state.data.deletedIds = [];
+          state.data.deletedIds.push(todoId);
           state.data.todos = state.data.todos.filter((t) => t.id !== todoId);
           saveData();
-          renderAll();
+          renderTodoSingleBox();
+          renderHeader();
           showToast("🗑️ Not silindi", true);
         },
 
         toggleCompletedTodosFolder: function () {
           state.showCompletedTodos = !state.showCompletedTodos;
           renderTodoSingleBox();
+        },
+
+        // NOTLAR SEKMESİ İÇİNDEKİ "📂 BEKLENTİMİZ KLASÖRÜ" İŞLEMLERİ
+        toggleExpectationsFolder: function () {
+          state.showExpectationsFolder = !state.showExpectationsFolder;
+          renderExpectationsFolder();
+        },
+
+        setNewExpStar: function (owner, starVal) {
+          if (owner === "Göksel") state.newExpStarsGoksel = starVal;
+          else state.newExpStarsZelis = starVal;
+          renderNewExpectationStars(owner);
+        },
+
+        addExpectation: function (e, owner) {
+          e.preventDefault();
+          const inputId = owner === "Göksel" ? "gokselExpInput" : "zelisExpInput";
+          const input = document.getElementById(inputId);
+          if (!input) return;
+          const text = input.value.trim();
+          if (!text) return;
+
+          const stars = owner === "Göksel" ? state.newExpStarsGoksel : state.newExpStarsZelis;
+          pushUndoSnapshot(`${owner} Beklenti Ekledi`);
+          if (!Array.isArray(state.data.expectations)) state.data.expectations = [];
+          state.data.expectations.unshift({
+            id: "exp-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+            owner: owner,
+            text: text,
+            stars: stars,
+            completed: false,
+            updatedAt: Date.now()
+          });
+          input.value = "";
+          saveData();
+          renderExpectationsFolder();
+          renderHeader();
+          showToast(`🎯 ${owner}'in beklenti listesine eklendi (${stars}★)`, true);
+        },
+
+        rateExpectation: function (expId, starVal) {
+          if (!Array.isArray(state.data.expectations)) return;
+          const exp = state.data.expectations.find((x) => x.id === expId);
+          if (!exp) return;
+          pushUndoSnapshot("Beklenti Yıldızı");
+          exp.stars = starVal;
+          exp.updatedAt = Date.now();
+          saveData();
+          renderExpectationsFolder();
+          showToast(`⭐ İstek derecesi ${starVal}/5 olarak güncellendi`, true);
+        },
+
+        toggleExpectationDone: function (expId) {
+          if (!Array.isArray(state.data.expectations)) return;
+          const exp = state.data.expectations.find((x) => x.id === expId);
+          if (!exp) return;
+          pushUndoSnapshot("Beklenti Durumu");
+          exp.completed = !exp.completed;
+          exp.updatedAt = Date.now();
+          saveData();
+          renderExpectationsFolder();
+        },
+
+        startEditExpectation: function (expId) {
+          state.editingExpId = state.editingExpId === expId ? null : expId;
+          renderExpectationsFolder();
+        },
+
+        saveEditedExpectation: function (expId) {
+          const input = document.getElementById("editExpInput-" + expId);
+          if (!input || !Array.isArray(state.data.expectations)) return;
+          const exp = state.data.expectations.find((x) => x.id === expId);
+          if (exp && input.value.trim()) {
+            pushUndoSnapshot("Beklenti Düzenlendi");
+            exp.text = input.value.trim();
+            exp.updatedAt = Date.now();
+            state.editingExpId = null;
+            saveData();
+            renderExpectationsFolder();
+            showToast("🎯 Beklenti notu güncellendi", true);
+          }
+        },
+
+        deleteExpectation: function (expId) {
+          if (!Array.isArray(state.data.expectations)) return;
+          pushUndoSnapshot("Beklenti Silindi");
+          if (!Array.isArray(state.data.deletedIds)) state.data.deletedIds = [];
+          state.data.deletedIds.push(expId);
+          state.data.expectations = state.data.expectations.filter((x) => x.id !== expId);
+          saveData();
+          renderExpectationsFolder();
+          renderHeader();
+          showToast("🗑️ Beklenti silindi", true);
+        },
+
+        toggleExpectationsSort: function () {
+          state.expSortByStars = !state.expSortByStars;
+          renderExpectationsFolder();
         },
 
         setCategory: function (cat) {
@@ -2262,6 +2920,7 @@
           const order = ["booked", "favorite", "option"];
           const nextIdx = (order.indexOf(item.status) + 1) % order.length;
           item.status = order[nextIdx];
+          item.updatedAt = Date.now();
           saveData();
           renderAll();
           showToast("Durum güncellendi", true);
@@ -2271,6 +2930,8 @@
           const target = (state.data.items || []).find((i) => i.id === id);
           if (!target) return;
           pushUndoSnapshot(`Silindi: ${target.title}`);
+          if (!Array.isArray(state.data.deletedIds)) state.data.deletedIds = [];
+          state.data.deletedIds.push(id);
           state.data.items = (state.data.items || []).filter((i) => i.id !== id);
           saveData();
           renderAll();
@@ -2284,7 +2945,7 @@
           form.reset();
           document.getElementById("formGelHelperInput").value = "";
 
-          const todayIso = getTodayIsoOffset(0);
+          const defaultTripStart = toIsoDate(state.data.tripInfo?.startDate || DEFAULT_START_DATE);
 
           if (editId) {
             const item = (state.data.items || []).find((i) => i.id === editId);
@@ -2298,7 +2959,7 @@
             document.getElementById("formPrice").value = item.price ?? 0;
             document.getElementById("formPaidBy").value = item.paidBy || state.activeUser;
 
-            const isoDate = toIsoDate(item.date || todayIso);
+            const isoDate = toIsoDate(item.date || defaultTripStart);
             document.getElementById("formDatePicker").value = isoDate;
             document.getElementById("formDateDisplayText").textContent = formatDateTR(isoDate);
 
@@ -2315,8 +2976,8 @@
             document.getElementById("formStatus").value = "booked";
             document.getElementById("formPaidBy").value = state.activeUser;
 
-            document.getElementById("formDatePicker").value = todayIso;
-            document.getElementById("formDateDisplayText").textContent = formatDateTR(todayIso);
+            document.getElementById("formDatePicker").value = defaultTripStart;
+            document.getElementById("formDateDisplayText").textContent = formatDateTR(defaultTripStart);
           }
 
           modal.classList.remove("hidden");
@@ -2339,11 +3000,11 @@
         saveItemForm: function (e) {
           e.preventDefault();
           const id = document.getElementById("formItemId").value;
-          const pickerVal = document.getElementById("formDatePicker").value || getTodayIsoOffset(0);
+          const pickerVal = document.getElementById("formDatePicker").value || state.data.tripInfo?.startDate || DEFAULT_START_DATE;
           const isoDate = toIsoDate(pickerVal);
 
           const payload = {
-            id: id || "item-" + Date.now(),
+            id: id || "item-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
             category: document.getElementById("formCategory").value,
             status: document.getElementById("formStatus").value,
             title: document.getElementById("formTitle").value.trim(),
@@ -2356,7 +3017,8 @@
             subtitle: document.getElementById("formSubtitle").value.trim(),
             location: document.getElementById("formLocation").value.trim(),
             link: document.getElementById("formLink").value.trim(),
-            notes: document.getElementById("formNotes").value.trim()
+            notes: document.getElementById("formNotes").value.trim(),
+            updatedAt: Date.now()
           };
 
           if (!Array.isArray(state.data.items)) state.data.items = [];
@@ -2391,14 +3053,15 @@
           pushUndoSnapshot("Öneri Yıldız Puanı");
           if (!state.data.tipRatings) state.data.tipRatings = {};
           if (state.data.tipRatings[recId] === starValue) {
-            delete state.data.tipRatings[recId];
+            state.data.tipRatings[recId] = 0;
             showToast("Yıldız puanı kaldırıldı", true);
           } else {
             state.data.tipRatings[recId] = starValue;
             showToast(`⭐ ${starValue} yıldız verildi!`, true);
           }
           saveData();
-          renderAll();
+          renderRecommendationsTab();
+          renderHeader();
         },
 
         addNewRecommendationToTop: function () {
@@ -2429,15 +3092,17 @@
 
           const chosen = candidates[0];
           const newRec = Object.assign({}, chosen, {
-            id: "rec-custom-" + Date.now(),
-            isCustomNew: true
+            id: "rec-custom-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+            isCustomNew: true,
+            updatedAt: Date.now()
           });
 
           pushUndoSnapshot(`Yeni Öneri: ${newRec.title}`);
           state.data.customTips.unshift(newRec);
           state.recStarFilter = "all";
           saveData();
-          renderAll();
+          renderRecommendationsTab();
+          renderHeader();
           showToast(`✨ "${newRec.title}" listenin en üstüne eklendi!`, true);
         },
 
@@ -2447,7 +3112,7 @@
           pushUndoSnapshot(`Plana Eklendi: ${rec.title}`);
           const tlPrice = Math.round(rec.gel * getRate());
           const newItem = {
-            id: "item-" + Date.now(),
+            id: "item-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
             category: rec.planCat || "food",
             status: "favorite",
             title: rec.title,
@@ -2455,13 +3120,14 @@
             city: rec.area,
             price: tlPrice,
             paidBy: "Ortak",
-            date: toIsoDate(state.data.tripInfo.startDate || getTodayIsoOffset(0)),
+            date: toIsoDate(state.data.tripInfo.startDate || DEFAULT_START_DATE),
             timeStart: rec.time || "14:00",
             timeEnd: "",
             location: rec.location || rec.title + ", Tbilisi",
             link: "",
             notes: rec.desc,
-            completed: false
+            completed: false,
+            updatedAt: Date.now()
           };
           if (!Array.isArray(state.data.items)) state.data.items = [];
           state.data.items.unshift(newItem);
@@ -2490,8 +3156,10 @@
           if (!item) return;
           pushUndoSnapshot(`${item.title} Akış Durumu`);
           item.completed = !item.completed;
+          item.updatedAt = Date.now();
           saveData();
-          renderAll();
+          renderFlowTab();
+          renderHeader();
           showToast(item.completed ? "✅ Tamamlanmış planlara taşındı!" : "⏳ Tekrar aktif akışa alındı!", true);
         },
 
@@ -2503,6 +3171,12 @@
         openInlineFlowNote: function (id) {
           state.flowEditingNoteId = state.flowEditingNoteId === id ? null : id;
           renderFlowTab();
+          if (state.flowEditingNoteId) {
+            setTimeout(() => {
+              const el = document.getElementById("inlineNoteInput-" + id);
+              if (el) el.focus();
+            }, 30);
+          }
         },
 
         saveInlineFlowNote: function (id) {
@@ -2511,9 +3185,11 @@
           if (item && input) {
             pushUndoSnapshot(`${item.title} Notu`);
             item.notes = input.value.trim();
+            item.updatedAt = Date.now();
             state.flowEditingNoteId = null;
             saveData();
-            renderAll();
+            renderFlowTab();
+            renderPlannerItems();
             showToast("📝 Not kaydedildi!", true);
           }
         },
@@ -2524,8 +3200,8 @@
           document.getElementById("setTripTitle").value = info.title || "";
           document.getElementById("setTripDest").value = info.destination || "";
 
-          const startIso = toIsoDate(info.startDate || getTodayIsoOffset(0));
-          const endIso = toIsoDate(info.endDate || getTodayIsoOffset(3));
+          const startIso = toIsoDate(info.startDate || DEFAULT_START_DATE);
+          const endIso = toIsoDate(info.endDate || DEFAULT_END_DATE);
 
           document.getElementById("setStartDatePicker").value = startIso;
           document.getElementById("setStartDateDisplayText").textContent = formatDateTR(startIso);
@@ -2536,6 +3212,7 @@
           document.getElementById("setTargetBudget").value = info.targetBudget || 25000;
           document.getElementById("setGelRate").value = info.gelRate || DEFAULT_GEL_RATE;
           renderHeader();
+          renderThemeColorPicker();
           modal.classList.remove("hidden");
           modal.classList.add("flex");
         },
@@ -2555,20 +3232,12 @@
           state.data.tripInfo.endDate = toIsoDate(document.getElementById("setEndDatePicker").value);
           state.data.tripInfo.targetBudget = Number(document.getElementById("setTargetBudget").value) || 25000;
           state.data.tripInfo.gelRate = Number(document.getElementById("setGelRate").value) || DEFAULT_GEL_RATE;
+          state.data.tripInfo.updatedAt = Date.now();
 
           saveData();
           this.closeSettingsModal();
           renderAll();
           showToast("⚙️ Ayarlar kaydedildi!", true);
-        },
-
-        resetToSampleWithCurrentDates: function () {
-          pushUndoSnapshot("Varsayılan Paket Yüklendi");
-          state.data = getDefaultSampleData();
-          saveData();
-          this.closeSettingsModal();
-          renderAll();
-          showToast("🔄 Varsayılan paket bugünün tarihiyle yüklendi!", true);
         },
 
         forceCloudSync: function () {
@@ -2640,9 +3309,9 @@
           if (!item) return;
           document.getElementById("remItemId").value = item.id;
           document.getElementById("remItemTitle").textContent = item.title;
-          document.getElementById("remItemLocation").textContent = item.location || item.city || "Tiflis";
+          document.getElementById("remItemLocation").textContent = formatCleanLocationText(item.location, item.city);
 
-          const isoDate = toIsoDate(item.date || state.data.tripInfo.startDate || getTodayIsoOffset(0));
+          const isoDate = toIsoDate(item.date || state.data.tripInfo.startDate || DEFAULT_START_DATE);
           document.getElementById("remDatePicker").value = isoDate;
           document.getElementById("remDateDisplayText").textContent = formatDateTR(isoDate);
 
@@ -2665,13 +3334,14 @@
           const item = (state.data.items || []).find((i) => i.id === id);
           if (!item) return;
 
-          const dateVal = toIsoDate(document.getElementById("remDatePicker").value || getTodayIsoOffset(0));
+          const dateVal = toIsoDate(document.getElementById("remDatePicker").value || DEFAULT_START_DATE);
           const tStart = document.getElementById("remTimeStartInput").value || "10:00";
           const tEnd = document.getElementById("remTimeEndInput").value || "11:30";
 
           item.date = dateVal;
           item.timeStart = tStart;
           item.timeEnd = tEnd;
+          item.updatedAt = Date.now();
           saveData();
           renderAll();
 
@@ -2716,7 +3386,7 @@
       loadLocalData();
       renderAll();
       pullFromFirebase(false);
-      setInterval(() => pullFromFirebase(false), 12000);
+      setInterval(() => pullFromFirebase(false), 7000);
     })();
   </script>
 </body>
