@@ -1,0 +1,3473 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Göksel & Zeliş • Tiflis Rotası 🇬🇪</title>
+
+  <!-- iOS / iPhone Tam Ekran Web App (PWA) Meta Etiketleri -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Tiflis Rotamız" />
+  <meta name="theme-color" content="#1e1b4b" />
+  <link rel="apple-touch-icon" href="https://placehold.co/180x180/db2777/ffffff?text=G%26Z" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: 96px;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .hero-mesh {
+      background: radial-gradient(circle at 12% 18%, rgba(236, 72, 153, 0.38) 0%, transparent 45%),
+                  radial-gradient(circle at 88% 12%, rgba(99, 102, 241, 0.42) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.25) 0%, transparent 50%),
+                  linear-gradient(135deg, #1e1b4b 0%, #311042 52%, #0f172a 100%);
+    }
+    .card-hover {
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px -8px rgba(15, 23, 42, 0.12);
+    }
+    .fade-in { animation: fadeIn 0.22s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ÜST GÖKSEL & ZELİŞ KODSUZ OTOMATİK SENKRONİZASYON BARI -->
+  <div class="bg-slate-950 text-white border-b border-white/10 px-3 sm:px-6 py-2.5 text-xs sticky top-0 z-40 backdrop-blur-md bg-slate-950/95">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <!-- Sol: Otomatik Oda & Canlı Kur Bilgisi -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-pink-500/25 to-purple-500/25 border border-pink-400/40 text-pink-200 font-extrabold text-[11px]">
+          🇬🇪 Göksel & Zeliş Ortak Hafıza
+        </span>
+
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 font-extrabold text-[11px]">
+          💱 Kur: 1 Lari (₾) = <span id="topGelRateDisplay">19.50</span> ₺
+        </span>
+
+        <span id="syncStatusBadge" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-bold text-[11px]">
+          <span id="syncDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="syncStatusText">Otomatik Kayıt Aktif</span>
+        </span>
+
+        <button
+          onclick="window.appActions.forceCloudSync()"
+          class="bg-white/10 hover:bg-white/20 text-indigo-200 px-2.5 py-1 rounded-lg font-bold transition cursor-pointer text-[11px]"
+          title="Buluttan son değişiklikleri şimdi çek"
+        >
+          🔄 Eşitle
+        </button>
+      </div>
+
+      <!-- Sağ: Kim Düzenliyor & Google Sites / İndir Butonu -->
+      <div class="flex items-center gap-2">
+        <div class="inline-flex rounded-xl bg-white/10 p-0.5 border border-white/15">
+          <button
+            id="userBtnGoksel"
+            onclick="window.appActions.setActiveUser('Göksel')"
+            class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer bg-indigo-600 text-white text-[11px]"
+          >
+            👦 Göksel
+          </button>
+          <button
+            id="userBtnZelis"
+            onclick="window.appActions.setActiveUser('Zeliş')"
+            class="px-2.5 py-1 rounded-lg font-bold transition cursor-pointer text-pink-200 hover:text-white text-[11px]"
+          >
+            👩 Zeliş
+          </button>
+        </div>
+
+        <button
+          onclick="window.appActions.openExportSitesModal()"
+          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold transition cursor-pointer text-[11px] shadow"
+          title="Google Sites Kodu Kopyala & iPhone App Kurulumu"
+        >
+          <span>📤 Google Sites & App Kur</span>
+        </button>
+
+        <button
+          onclick="window.appActions.openShareModal()"
+          class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition cursor-pointer text-[11px]"
+          title="Yedekleme ve Sıfırlama"
+        >
+          <span>⚙️ Yedek</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENKLİ HERO HEADER & ÖZET KARTLARI -->
+  <header class="hero-mesh text-white shadow-xl relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-5 sm:py-6 relative z-10">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/15 backdrop-blur-md border border-white/20 text-pink-200">
+              ✨ Vizesiz & Kimlikle • 1 Lari (₾) = <span id="heroGelRateText">19,50</span> ₺ Hesaplı
+            </span>
+            <span id="tripDatesBadge" class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 border border-emerald-400/30 text-emerald-200">
+              📅 15 May 2027 - 18 May 2027
+            </span>
+          </div>
+          <div class="flex items-center gap-3 mt-2.5 flex-wrap">
+            <h1 id="tripTitleDisplay" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+              Göksel & Zeliş • Tiflis Rotası 🇬🇪
+            </h1>
+            <button
+              onclick="window.appActions.openTripSettingsModal()"
+              class="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-xs font-bold text-indigo-100 transition cursor-pointer backdrop-blur-sm border border-white/15"
+            >
+              ✏️ Kur (19.50₺) & Bütçe Ayarla
+            </button>
+          </div>
+          <p id="tripDestDisplay" class="text-xs sm:text-sm text-indigo-100/90 mt-1">
+            📍 Eski Tiflis (Old Town), Sololaki, Marjanishvili & Fabrika • Tüm Fiyatlar 1 ₾ = 19,50 ₺ Kuruyla Güncellendi
+          </p>
+        </div>
+
+        <!-- Sağ: Canlı Lari ⇄ TL Mini Çevirici + Hızlı Butonlar -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+          <!-- Hızlı Lari -> TL Çevirici Kutusu -->
+          <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-3 py-2 flex items-center gap-2">
+            <span class="text-[11px] font-extrabold text-amber-300 whitespace-nowrap">₾➔₺ Çevir:</span>
+            <input
+              id="quickGelCalcInput"
+              type="number"
+              step="any"
+              placeholder="Lari (₾)"
+              oninput="window.appActions.updateQuickGelCalc(this.value)"
+              class="w-20 px-2 py-1 rounded-lg bg-slate-900/80 border border-white/20 text-white text-xs font-bold focus:outline-none"
+            />
+            <span id="quickGelCalcResult" class="text-xs font-extrabold text-emerald-300 whitespace-nowrap">= 0 ₺</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              onclick="window.appActions.openSmartLinkModal()"
+              class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-amber-500/25 transition cursor-pointer"
+            >
+              <span>🪄 Linkten Doldur</span>
+            </button>
+            <button
+              onclick="window.appActions.openItemModal()"
+              class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/25 transition cursor-pointer"
+            >
+              <span>➕ Ekle</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4'LÜ RENKLİ ÖZET KARTLARI (TL & LARİ KARŞILIKLI) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-5">
+        <div onclick="window.appActions.switchTab('itinerary')" class="bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 rounded-2xl p-3.5 sm:p-4 cursor-pointer transition">
+          <div class="flex items-center justify-between text-xs text-emerald-200 font-semibold">
+            <span>✅ Kesinleşen (Tutulan)</span>
+            <span class="text-base">💳</span>
+          </div>
+          <div id="statBookedTotal" class="text-xl sm:text-2xl font-extrabold text-white mt-1">0 ₺</div>
+          <div id="statBookedCount" class="text-[11px] text-emerald-200 mt-1 font-semibold">0 kalem</div>
+        </div>
+
+        <div onclick="window.appActions.switchTab('budget')" class="bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 rounded-2xl p-3.5 sm:p-4 cursor-pointer transition">
+          <div class="flex items-center justify-between text-xs text-amber-200 font-semibold">
+            <span>⭐ Kesin + Favori Plan</span>
+            <span class="text-base">📊</span>
+          </div>
+          <div id="statPlannedTotal" class="text-xl sm:text-2xl font-extrabold text-white mt-1">0 ₺</div>
+          <div id="statPerPerson" class="text-[11px] text-amber-200 mt-1 font-semibold">Kişi Başı: 0 ₺</div>
+        </div>
+
+        <div onclick="window.appActions.openTripSettingsModal()" class="bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 rounded-2xl p-3.5 sm:p-4 cursor-pointer transition">
+          <div class="flex items-center justify-between text-xs text-indigo-200 font-semibold">
+            <span>🎯 Hedef Bütçemiz</span>
+            <span class="text-base">🎯</span>
+          </div>
+          <div id="statTargetBudget" class="text-xl sm:text-2xl font-extrabold text-white mt-1">35.000 ₺</div>
+          <div id="statRemainingBudget" class="text-[11px] text-emerald-300 mt-1 font-semibold">Bütçeden Kalan: 0 ₺</div>
+        </div>
+
+        <div onclick="window.appActions.switchTab('budget')" class="bg-gradient-to-br from-pink-500/25 to-purple-600/25 hover:from-pink-500/35 hover:to-purple-600/35 backdrop-blur-md border border-pink-400/30 rounded-2xl p-3.5 sm:p-4 cursor-pointer transition">
+          <div class="flex items-center justify-between text-xs text-pink-200 font-semibold">
+            <span>💑 Göksel & Zeliş Hesabı</span>
+            <span class="text-base">⚖️</span>
+          </div>
+          <div id="statSplitSummary" class="text-sm sm:text-base font-extrabold text-white mt-1 leading-snug">
+            Hesaplanıyor...
+          </div>
+          <div class="text-[11px] text-pink-200 mt-1">Detaylı analiz için dokunun ➔</div>
+        </div>
+      </div>
+
+      <!-- MASAÜSTÜ SEKMELER (TABS) -->
+      <div class="hidden md:flex flex-wrap items-center gap-2 mt-6 border-t border-white/15 pt-4">
+        <button
+          id="tabBtn-planner"
+          onclick="window.appActions.switchTab('planner')"
+          class="px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm transition cursor-pointer bg-white text-slate-900 shadow"
+        >
+          📋 Bilet, Otel & Restoran Planımız (<span id="tabCountAll">0</span>)
+        </button>
+        <button
+          id="tabBtn-recommendations"
+          onclick="window.appActions.switchTab('recommendations')"
+          class="px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm transition cursor-pointer bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow"
+        >
+          💡 Kategorili Tiflis Önerileri & Yeni Öneri Bul (40+ Mekan)
+        </button>
+        <button
+          id="tabBtn-budget"
+          onclick="window.appActions.switchTab('budget')"
+          class="px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm transition cursor-pointer bg-white/10 text-white hover:bg-white/20"
+        >
+          📊 Hesap Kitap & Göksel-Zeliş Bütçesi (TL)
+        </button>
+        <button
+          id="tabBtn-itinerary"
+          onclick="window.appActions.switchTab('itinerary')"
+          class="px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm transition cursor-pointer bg-white/10 text-white hover:bg-white/20"
+        >
+          📍 Kesinleşen Plan & Haritalar (<span id="tabCountBooked">0</span>)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ANA İÇERİK ALANI -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-5">
+
+    <!-- SEKME 1: SEÇENEKLER & PLANLAMA + HIZLI LİNK YAPIŞTIRMA BARI -->
+    <section id="view-planner" class="space-y-5 fade-in">
+
+      <!-- YENİ: HIZLI AKILLI LİNK YAPIŞTIRMA VE OTOMATİK DOLDURMA BARI -->
+      <div class="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl p-4 sm:p-5 shadow-md border border-indigo-400/30">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 text-xs font-extrabold text-amber-300">
+              <span>🪄 AKILLI LİNK ASİSTANI (OTEL, AIRBNB, UÇAK BİLETİ, SAAT & HARİTA)</span>
+            </div>
+            <p class="text-xs text-indigo-100">
+              Booking, Airbnb, AJet, Pegasus veya Google Maps linkini, fiyatı, tarihi ve <strong>kalkış/rezervasyon saatini</strong> girin; <strong>adını, semtini ve harita konumunu otomatik çıkartıp</strong> kaydedelim!
+            </p>
+          </div>
+        </div>
+
+        <form onsubmit="window.appActions.handleQuickSmartLinkAdd(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 mt-3.5">
+          <div class="sm:col-span-4">
+            <input
+              id="quickSmartUrl"
+              type="text"
+              required
+              placeholder="🔗 Booking, Airbnb, Uçuş veya Maps linkini yapıştırın..."
+              class="w-full px-3.5 py-2.5 rounded-xl bg-white/15 border border-white/25 text-white placeholder-indigo-200 text-xs focus:bg-white focus:text-slate-900 focus:outline-none"
+            />
+          </div>
+          <div class="sm:col-span-2 flex gap-1">
+            <input
+              id="quickSmartPrice"
+              type="number"
+              step="any"
+              placeholder="💰 Tutar"
+              class="w-full px-2.5 py-2.5 rounded-xl bg-white/15 border border-white/25 text-white placeholder-indigo-200 text-xs font-bold focus:bg-white focus:text-slate-900 focus:outline-none"
+            />
+            <select
+              id="quickSmartCurrency"
+              class="px-2 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-extrabold text-xs focus:outline-none cursor-pointer"
+              title="Para Birimi Seçin (Lari seçerseniz 19.50 ile çarpılır)"
+            >
+              <option value="TRY">₺</option>
+              <option value="GEL">₾</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <input
+              id="quickSmartDate"
+              type="date"
+              value="2027-05-15"
+              class="w-full px-2.5 py-2.5 rounded-xl bg-white/15 border border-white/25 text-white text-xs focus:bg-white focus:text-slate-900 focus:outline-none"
+            />
+          </div>
+          <div class="sm:col-span-2">
+            <input
+              id="quickSmartTime"
+              type="time"
+              value="10:25"
+              title="Uçuş Kalkış veya Rezervasyon Saati"
+              class="w-full px-2.5 py-2.5 rounded-xl bg-white/15 border border-white/25 text-white text-xs font-bold focus:bg-white focus:text-slate-900 focus:outline-none"
+            />
+          </div>
+          <div class="sm:col-span-2 flex gap-1.5">
+            <button
+              id="quickSmartBtn"
+              type="submit"
+              class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-extrabold text-xs cursor-pointer transition shadow"
+            >
+              🪄 Çıkar & Ekle
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Kategori ve Durum Filtre Barı -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-3.5 sm:p-4 shadow-xs space-y-3">
+        <!-- Kategori Butonları -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" id="categoryFilterBar">
+          <!-- JS ile doldurulur -->
+        </div>
+
+        <!-- Alt Filtre: Durum & Arama & Yeni Ekle -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-2.5 border-t border-slate-100">
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar" id="statusFilterBar">
+            <!-- JS ile doldurulur -->
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="relative flex-1 sm:w-60">
+              <input
+                id="searchInput"
+                type="text"
+                oninput="window.appActions.handleSearch(this.value)"
+                placeholder="Otel, restoran, Khinkali, uçuş ara..."
+                class="w-full pl-3 pr-8 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs focus:bg-white focus:outline-none focus:border-indigo-500"
+              />
+            </div>
+            <button
+              onclick="window.appActions.openItemModal()"
+              class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shrink-0 cursor-pointer transition"
+            >
+              + Yeni Ekle
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kartlar Listesi -->
+      <div id="itemsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- JS ile doldurulur -->
+      </div>
+    </section>
+
+    <!-- SEKME 2: KATEGORİLİ TİFLİS GEZGİN ÖNERİLERİ & YENİ ÖNERİ ÜRETİCİ -->
+    <section id="view-recommendations" class="space-y-6 hidden fade-in">
+      <div id="recommendationsContainer">
+        <!-- JS ile doldurulur -->
+      </div>
+    </section>
+
+    <!-- SEKME 3: HESAP KİTAP & GÖKSEL-ZELİŞ HARCAMA ANALİZİ (TL) -->
+    <section id="view-budget" class="space-y-6 hidden fade-in">
+      <div id="budgetAnalysisContainer">
+        <!-- JS ile doldurulur -->
+      </div>
+    </section>
+
+    <!-- SEKME 4: KESİNLEŞEN PLAN & KONUMLAR -->
+    <section id="view-itinerary" class="space-y-6 hidden fade-in">
+      <div id="itineraryContainer">
+        <!-- JS ile doldurulur -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- iPHONE / MOBİL ALT YÜZEN UYGULAMA MENÜSÜ (TAB BAR) -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t border-slate-200 px-2 py-1.5 shadow-2xl">
+    <div class="grid grid-cols-4 gap-1 max-w-md mx-auto">
+      <button
+        id="mobTab-planner"
+        onclick="window.appActions.switchTab('planner')"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 font-extrabold text-[11px] cursor-pointer"
+      >
+        <span class="text-base">📋</span>
+        <span>Planımız</span>
+      </button>
+      <button
+        id="mobTab-recommendations"
+        onclick="window.appActions.switchTab('recommendations')"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[11px] cursor-pointer"
+      >
+        <span class="text-base">💡</span>
+        <span>Tiflis Öneri</span>
+      </button>
+      <button
+        id="mobTab-budget"
+        onclick="window.appActions.switchTab('budget')"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[11px] cursor-pointer"
+      >
+        <span class="text-base">📊</span>
+        <span>Hesap Kitap</span>
+      </button>
+      <button
+        id="mobTab-itinerary"
+        onclick="window.appActions.switchTab('itinerary')"
+        class="flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[11px] cursor-pointer"
+      >
+        <span class="text-base">📍</span>
+        <span>Haritalar</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MODAL: YENİ SEÇENEK EKLE / DÜZENLE (AKILLI LİNK ÇÖZÜCÜ DAHİL) -->
+  <div id="itemModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200 my-8 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <h3 id="modalTitle" class="text-lg font-extrabold text-slate-900">Yeni Seçenek / Harcama Ekle</h3>
+        <button onclick="window.appActions.closeItemModal()" class="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer text-lg font-bold">✕</button>
+      </div>
+
+      <!-- MODAL İÇİ AKILLI LİNK DOLDURUCU -->
+      <div class="mb-4 p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-300 space-y-2">
+        <div class="text-xs font-extrabold text-amber-950 flex items-center justify-between">
+          <span>🪄 Linkten Otomatik Doldur (Booking, Airbnb, Uçak Bileti, Google Maps)</span>
+          <span id="modalSmartStatus" class="text-[11px] text-emerald-700 font-bold"></span>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input
+            id="modalSmartUrlInput"
+            type="text"
+            placeholder="Otel, Airbnb veya uçuş linkini buraya yapıştırın..."
+            class="flex-1 px-3 py-2 rounded-xl border border-amber-300 bg-white text-xs"
+          />
+          <button
+            type="button"
+            onclick="window.appActions.autoFillModalFromUrl()"
+            class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs cursor-pointer shrink-0 transition"
+          >
+            ✨ Bilgileri & Haritayı Çıkar
+          </button>
+        </div>
+      </div>
+
+      <form id="itemForm" onsubmit="window.appActions.saveItemForm(event)" class="space-y-4 text-xs sm:text-sm">
+        <input type="hidden" id="formItemId" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Başlık / Kategori *</label>
+            <select id="formCategory" required class="w-full px-3 py-2.5 border border-slate-300 rounded-xl bg-white font-semibold">
+              <option value="flight">✈️ Uçak Bileti & Ulaşım</option>
+              <option value="hotel">🏨 Oda & Konaklama (Otel / Airbnb)</option>
+              <option value="food">🍽️ Restoran, Kahvaltı & Kafe</option>
+              <option value="museum">🎟️ Müze, Hamam & Etkinlik Bileti</option>
+              <option value="other">🛍️ Harç, e-SIM, Taksi & Diğer</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Durumu *</label>
+            <select id="formStatus" required class="w-full px-3 py-2.5 border border-slate-300 rounded-xl bg-white font-semibold">
+              <option value="option">🤔 Seçenek (Alternatif / Düşünülüyor)</option>
+              <option value="favorite">⭐ Favori (Göksel & Zeliş Önceliği)</option>
+              <option value="booked">✅ Tutuldu / Satın Alındı (Kesinleşti)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Mekan / Otel / Uçuş Adı *</label>
+            <input
+              id="formTitle"
+              type="text"
+              required
+              placeholder="Örn: Unfound Door Design Hotel veya Zodiaqo Restoran"
+              class="w-full px-3 py-2 border border-slate-300 rounded-xl font-semibold"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Bölge / Semt</label>
+            <input
+              id="formCity"
+              type="text"
+              placeholder="Örn: Eski Tiflis, Sololaki"
+              class="w-full px-3 py-2 border border-slate-300 rounded-xl"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-indigo-50/70 p-3.5 rounded-2xl border border-indigo-100">
+          <div>
+            <label class="block text-xs font-bold text-indigo-950 mb-1">Toplam Tutar (TL ₺) *</label>
+            <input
+              id="formPrice"
+              type="number"
+              step="any"
+              min="0"
+              required
+              placeholder="Örn: 1170"
+              class="w-full px-3 py-2 border border-indigo-300 rounded-xl font-extrabold text-slate-900 bg-white"
+            />
+            <div class="mt-1.5 flex items-center gap-1.5">
+              <input
+                id="formGelHelperInput"
+                type="number"
+                step="any"
+                placeholder="Lari (₾) yaz..."
+                oninput="window.appActions.convertModalGelToTl(this.value)"
+                class="w-28 px-2 py-1 text-[11px] border border-amber-400 rounded-lg bg-amber-50 font-bold text-slate-900"
+              />
+              <span class="text-[10px] font-bold text-indigo-800">₾ girerseniz x19,50 ₺ çevrilir</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-indigo-950 mb-1">Ödemeyi Kim Yaptı?</label>
+            <select id="formPaidBy" class="w-full px-3 py-2 border border-indigo-300 rounded-xl bg-white font-semibold">
+              <option value="Göksel">👦 Göksel Ödedi</option>
+              <option value="Zeliş">👩 Zeliş Ödedi</option>
+              <option value="Ortak">🤝 Ortak (Yarı Yarıya)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-indigo-950 mb-1">📅 Tarih</label>
+            <input
+              id="formDate"
+              type="date"
+              class="w-full px-3 py-2 border border-indigo-300 rounded-xl bg-white font-semibold"
+            />
+          </div>
+        </div>
+
+        <!-- YENİ: KALKIŞ / BAŞLANGIÇ SAATİ VE VARIŞ / BİTİŞ SAATİ ALANLARI -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-amber-50/90 p-3.5 rounded-2xl border border-amber-300">
+          <div>
+            <label class="block text-xs font-extrabold text-amber-950 mb-1">
+              ⏰ Kalkış / Başlangıç / Rezervasyon Saati
+            </label>
+            <input
+              id="formTimeStart"
+              type="time"
+              class="w-full px-3 py-2 border border-amber-400 rounded-xl bg-white font-extrabold text-slate-900"
+            />
+            <span class="text-[10px] text-amber-800 font-semibold mt-0.5 block">
+              Örn: Uçuş kalkış saati (10:25), Otel giriş (14:00) veya Akşam yemeği (20:00)
+            </span>
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold text-amber-950 mb-1">
+              🛬 Varış / Bitiş Saati (Opsiyonel)
+            </label>
+            <input
+              id="formTimeEnd"
+              type="time"
+              class="w-full px-3 py-2 border border-amber-300 rounded-xl bg-white font-bold text-slate-900"
+            />
+            <span class="text-[10px] text-amber-800 font-semibold mt-0.5 block">
+              Örn: Tiflis'e iniş saati (13:50) veya Hamam bitiş saati
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Fiyat Detayı / Gecelik Ücret / Ortalama Menü Fiyatı</label>
+            <input
+              id="formSubtitle"
+              type="text"
+              placeholder="Örn: Gecelik 2.150 ₺ veya 2 Kişi Ortalama 700 ₺"
+              class="w-full px-3 py-2 border border-slate-300 rounded-xl"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">İlan / Bilet / Mekan Linki (Booking, Airbnb, Uçuş)</label>
+            <input
+              id="formLink"
+              type="url"
+              placeholder="https://..."
+              class="w-full px-3 py-2 border border-slate-300 rounded-xl"
+            />
+          </div>
+        </div>
+
+        <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200 space-y-1.5">
+          <label class="block text-xs font-bold text-emerald-950">
+            📍 Tam Konum / Adres (Google Haritalar'da Otomatik Açılır)
+          </label>
+          <input
+            id="formLocation"
+            type="text"
+            placeholder="Örn: 111 David Agmashenebeli Ave, Tbilisi, Gürcistan"
+            class="w-full px-3 py-2 border border-emerald-300 rounded-xl bg-white"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Gezgin Yorumu / Ne Yenir? / Neden Seçtik?</label>
+          <textarea
+            id="formNotes"
+            rows="2"
+            placeholder="Örn: Michelin rehberine girdi, Khinkali tanesi 25 TL, önceden gitmek lazım..."
+            class="w-full px-3 py-2 border border-slate-300 rounded-xl"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+          <button
+            type="button"
+            onclick="window.appActions.closeItemModal()"
+            class="px-4 py-2.5 rounded-xl text-slate-600 hover:bg-slate-100 font-bold cursor-pointer"
+          >
+            Vazgeç
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold cursor-pointer shadow-md"
+          >
+            💾 Kaydet (Otomatik Senkronize)
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: SEYAHAT & BÜTÇE AYARLARI -->
+  <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <h3 class="text-lg font-extrabold text-slate-900">Göksel & Zeliş • Rota Ayarları</h3>
+        <button onclick="window.appActions.closeTripSettingsModal()" class="p-1 text-slate-400 hover:text-slate-600 cursor-pointer font-bold">✕</button>
+      </div>
+      <form onsubmit="window.appActions.saveTripSettings(event)" class="space-y-4 text-sm">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Seyahat Başlığı</label>
+          <input id="setTripTitle" type="text" required class="w-full px-3 py-2 border border-slate-300 rounded-xl font-semibold" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Odak Bölgeler / Semtler</label>
+          <input id="setTripDest" type="text" required class="w-full px-3 py-2 border border-slate-300 rounded-xl" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">1. İsim</label>
+            <input id="setPartner1" type="text" required class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">2. İsim</label>
+            <input id="setPartner2" type="text" required class="w-full px-3 py-2 border border-slate-300 rounded-xl font-bold" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Başlangıç Tarihi</label>
+            <input id="setStartDate" type="date" required class="w-full px-3 py-2 border border-slate-300 rounded-xl" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Bitiş Tarihi</label>
+            <input id="setEndDate" type="date" required class="w-full px-3 py-2 border border-slate-300 rounded-xl" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Toplam Hedef Bütçeniz (TL ₺)</label>
+            <input id="setTargetBudget" type="number" required class="w-full px-3 py-2 border border-slate-300 rounded-xl font-extrabold" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-amber-800 mb-1">1 Gürcü Larisi (₾) Kuru (TL)</label>
+            <input id="setGelRate" type="number" step="0.01" required value="19.50" class="w-full px-3 py-2 border border-amber-400 bg-amber-50 rounded-xl font-extrabold text-slate-900" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+          <button type="button" onclick="window.appActions.closeTripSettingsModal()" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-100 cursor-pointer font-semibold">Vazgeç</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold cursor-pointer">Kaydet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- YENİ MODAL: iPHONE ANIMSATICI & TAKVİM KURULUM PENCERESİ (.ICS + GOOGLE TAKVİM) -->
+  <div id="reminderModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-9 h-9 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg font-extrabold">🔔</span>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900">iPhone Anımsatıcı & Takvim Kur</h3>
+            <p class="text-[11px] text-slate-500 font-semibold">Uçuş veya rezervasyon saatini kaçırmayın</p>
+          </div>
+        </div>
+        <button onclick="window.appActions.closeReminderModal()" class="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer font-bold">✕</button>
+      </div>
+
+      <input type="hidden" id="remItemId" />
+
+      <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+        <div id="remItemCategoryBadge" class="text-[11px] font-extrabold text-indigo-600 uppercase">✈️ UÇUŞ & ULAŞIM</div>
+        <div id="remItemTitle" class="text-sm font-extrabold text-slate-900">AJet Direkt Uçuş</div>
+        <div id="remItemLocation" class="text-xs text-slate-600">📍 Sabiha Gökçen Havalimanı</div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-amber-50/80 p-3.5 rounded-2xl border border-amber-300 text-xs">
+        <div>
+          <label class="block font-extrabold text-amber-950 mb-1">📅 Tarih</label>
+          <input id="remDateInput" type="date" class="w-full px-2.5 py-2 rounded-xl border border-amber-300 bg-white font-bold text-slate-900" />
+        </div>
+        <div>
+          <label class="block font-extrabold text-amber-950 mb-1">⏰ Başlangıç / Kalkış</label>
+          <input id="remTimeStartInput" type="time" class="w-full px-2.5 py-2 rounded-xl border border-amber-400 bg-white font-extrabold text-slate-900" />
+        </div>
+        <div>
+          <label class="block font-extrabold text-amber-950 mb-1">🛬 Varış / Bitiş</label>
+          <input id="remTimeEndInput" type="time" class="w-full px-2.5 py-2 rounded-xl border border-amber-300 bg-white font-bold text-slate-900" />
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <label class="block text-xs font-extrabold text-slate-700">🔔 iPhone Uyarı Zamanı (Otomatik Alarm)</label>
+        <select id="remAlarmMinutes" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800">
+          <option value="flight_smart">✈️ Uçuş Modu: 3 Saat Önce (Check-in) + 1 Saat Önce Uyar</option>
+          <option value="60">⏰ 1 Saat Önce Bildirim Gönder</option>
+          <option value="120">⏰ 2 Saat Önce Bildirim Gönder</option>
+          <option value="30">⏰ 30 Dakika Önce Bildirim Gönder</option>
+          <option value="1440">📅 1 Gün Önce + 1 Saat Önce Bildirim Gönder</option>
+        </select>
+      </div>
+
+      <div class="space-y-2 pt-2">
+        <button
+          type="button"
+          onclick="window.appActions.triggerAppleCalendarIcs()"
+          class="w-full py-3 px-4 rounded-2xl bg-slate-950 hover:bg-slate-800 text-white font-extrabold text-xs sm:text-sm cursor-pointer shadow-lg flex items-center justify-center gap-2 transition"
+        >
+          <span>🍎 iPhone Takvim & Anımsatıcıya Tek Tuşla Ekle</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="window.appActions.triggerGoogleCalendarUrl()"
+          class="w-full py-2.5 px-4 rounded-2xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 font-extrabold text-xs cursor-pointer flex items-center justify-center gap-2 transition"
+        >
+          <span>📆 Google Takvim'e Ekle (Web / Android / iOS)</span>
+        </button>
+      </div>
+
+      <p class="text-[11px] text-slate-500 text-center leading-relaxed">
+        💡 Saati değiştirdiyseniz kartın üzerindeki saat bilgisi de otomatik güncellenir. iPhone'da açılan ekranda sağ üstten <strong>"Ekle"</strong> demeniz yeterlidir.
+      </p>
+    </div>
+  </div>
+
+  <!-- YENİ MODAL: GOOGLE SITES DIŞA AKTARMA & EN İYİ iPHONE APP KURULUM REHBERİ -->
+  <div id="exportSitesModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 space-y-5 my-8 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800">Çözüm & Kurulum Rehberi</span>
+          <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">📤 Google Sites'a Ekleme & iPhone'da En İyi Uygulama Deneyimi</h3>
+        </div>
+        <button onclick="window.appActions.closeExportSitesModal()" class="p-1.5 text-slate-400 hover:text-slate-600 cursor-pointer font-bold text-lg">✕</button>
+      </div>
+
+      <!-- SEÇENEK 1: GOOGLE SITES İÇİN TEK TIKLA KOD KOPYALA -->
+      <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200 space-y-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="font-extrabold text-indigo-950 text-sm">
+            1️⃣ Google Sites İçine Gömmek İçin Tek Tıkla Kopyala
+          </div>
+          <span class="text-[11px] font-bold text-indigo-700 bg-white px-2.5 py-0.5 rounded-full border border-indigo-200">Sandbox & Iframe Uyumlu</span>
+        </div>
+        <p class="text-xs text-indigo-900 leading-relaxed">
+          Sağdaki kod editörüyle uğraşmanıza gerek yok! Aşağıdaki <strong>"Google Sites Kodunu Tek Tıkla Kopyala"</strong> butonuna basın, ardından Google Sites'ta <strong>Ekle (&lt;&gt; Göm) ➔ Kodu Gömmek (Embed Code)</strong> kısmına doğrudan yapıştırın:
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <button
+            onclick="window.appActions.copyFullAppHtmlForSites()"
+            class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs cursor-pointer shadow transition"
+          >
+            📋 Google Sites İçin Tüm HTML Kodunu Tek Tıkla Kopyala
+          </button>
+          <button
+            onclick="window.appActions.downloadFullAppHtmlFile()"
+            class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-indigo-900 border border-indigo-300 font-extrabold text-xs cursor-pointer transition"
+          >
+            💾 Çalışır .HTML Dosyası Olarak İndir
+          </button>
+        </div>
+      </div>
+
+      <!-- SEÇENEK 2: TELEFONDA SORUNSUZ GERÇEK APP ÖNERİSİ (NETLIFY DROP / TIINY.HOST) -->
+      <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 space-y-2.5">
+        <div class="font-extrabold text-emerald-950 text-sm flex items-center gap-1.5">
+          <span>🏆 İPhone'da Sorunsuz Kullanım İçin En İyi Öneri (Google Sites Yerine!)</span>
+        </div>
+        <p class="text-xs text-emerald-900 leading-relaxed">
+          <strong>Neden Google Sites iPhone'da Kısıtlıdır?</strong> Google Sites, kodu güvenlik amacıyla iç içe bir çerçeve (iframe) içine hapseder ve iPhone Safari'nin "Tam Ekran App" özelliğini ve bazen yerel çerezlerini kısıtlar.
+        </p>
+        <div class="bg-white p-3.5 rounded-xl border border-emerald-200 text-xs text-slate-700 space-y-1.5">
+          <div class="font-extrabold text-slate-900">🚀 30 Saniyede Gerçek iPhone Uygulaması Yapma Yöntemi:</div>
+          <div>1. Yukarıdaki <strong>"💾 Çalışır .HTML Dosyası Olarak İndir"</strong> butonuna basıp dosyayı bilgisayarınıza veya telefonunuza indirin.</div>
+          <div>2. Ücretsiz <strong><a href="https://app.netlify.com/drop" target="_blank" class="text-indigo-600 underline font-bold">app.netlify.com/drop</a></strong> veya <strong><a href="https://tiiny.host" target="_blank" class="text-indigo-600 underline font-bold">tiiny.host</a></strong> adresine girip indirdiğiniz HTML dosyasını sürükleyip bırakın.</div>
+          <div>3. Size verilen özel linki Göksel ve Zeliş'in iPhone'unda Safari ile açıp <strong>Paylaş ➔ Ana Ekrana Ekle</strong> yapın.</div>
+          <div class="text-emerald-700 font-bold pt-1">✅ Sonuç: Google Sites çerçevesi olmadan %100 tam ekran açılır, bildirim ve hafızası asla silinmez!</div>
+        </div>
+      </div>
+
+      <div class="flex justify-end">
+        <button
+          onclick="window.appActions.closeExportSitesModal()"
+          class="px-5 py-2 rounded-xl bg-slate-900 text-white text-xs font-extrabold cursor-pointer"
+        >
+          Tamam, Anlaşıldı
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: YEDEKLEME & SIFIRLAMA -->
+  <div id="shareModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4 my-8 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="text-lg font-extrabold text-slate-900">⚙️ Otomatik Bulut Hafızası & Yedekleme</h3>
+        <button onclick="window.appActions.closeShareModal()" class="p-1 text-slate-400 hover:text-slate-600 cursor-pointer font-bold">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs sm:text-sm text-slate-600">
+        <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 space-y-1.5">
+          <div class="font-extrabold flex items-center justify-between">
+            <span>🟢 Kodsuz Otomatik Kayıt Sistemi Aktif</span>
+          </div>
+          <p class="text-xs leading-relaxed">
+            Uygulamayı iPhone Ana Ekranınızdan her açtığınızda <strong>hiçbir kod girmenize gerek kalmadan</strong> Göksel & Zeliş ortak bulut veritabanından ve telefon hafızasından son değişiklikleriniz otomatik yüklenir.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-pink-50 border border-pink-200 text-pink-950 space-y-2.5">
+          <div class="font-extrabold">📋 Manuel Yedek Alma / Geri Yükleme:</div>
+          <div class="flex flex-wrap gap-2">
+            <button
+              onclick="window.appActions.copyPlanDataText()"
+              class="px-3.5 py-2 rounded-xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-xs cursor-pointer shadow-xs"
+            >
+              📋 Plan Yedeğini Kopyala
+            </button>
+            <button
+              onclick="window.appActions.downloadBackupJSON()"
+              class="px-3 py-2 rounded-xl bg-white border border-pink-300 text-pink-800 font-bold text-xs cursor-pointer"
+            >
+              💾 JSON Dosyası İndir
+            </button>
+          </div>
+          <div class="pt-2 space-y-1.5">
+            <textarea
+              id="importJsonTextarea"
+              rows="2"
+              placeholder="Yedek metnini buraya yapıştırıp yükleyebilirsiniz..."
+              class="w-full px-3 py-2 border border-pink-300 rounded-xl text-xs font-mono bg-white"
+            ></textarea>
+            <button
+              onclick="window.appActions.importPlanDataText()"
+              class="w-full py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs cursor-pointer"
+            >
+              📥 Yedeği Yükle
+            </button>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-700">Varsayılan Tiflis Paketine Dön:</span>
+          <button
+            onclick="window.appActions.loadSampleData()"
+            class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-bold cursor-pointer"
+          >
+            🇬🇪 İlk Tiflis Paketini Yükle
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BİLDİRİM TOAST -->
+  <div id="toastNotification" class="fixed bottom-20 md:bottom-6 right-4 z-50 hidden bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl border border-white/15 text-xs font-bold items-center gap-2">
+    <span id="toastText">İşlem tamamlandı</span>
+  </div>
+
+  <!-- ANA UYGULAMA JAVASCRIPT KODU -->
+  <script>
+    (function () {
+      // SABİT ORTAK ODA KODU (Kullanıcının her seferinde girmesine gerek kalmaz!)
+      const FIXED_ROOM_ID = "GOKSEL-ZELIS-TIFLIS-2026-MAIN";
+      const STORAGE_KEY = "goksel_zelis_permanent_v7_1950";
+      const USER_PREF_KEY = "goksel_zelis_user_profile_v7";
+      const DEFAULT_GEL_RATE = 19.50;
+
+      // --- ANA PLAN KATEGORİLERİ ---
+      const CATEGORIES = {
+        all: { id: 'all', label: '🌟 Tüm Başlıklar', short: 'Tümü', badge: 'bg-slate-100 text-slate-800', bar: 'bg-indigo-500' },
+        flight: { id: 'flight', label: '✈️ Uçak Biletleri', short: 'Uçak & Ulaşım', badge: 'bg-sky-100 text-sky-800 border-sky-200', bar: 'bg-sky-500' },
+        hotel: { id: 'hotel', label: '🏨 Merkez Otel & Airbnb (<3000₺)', short: 'Konaklama', badge: 'bg-violet-100 text-violet-800 border-violet-200', bar: 'bg-violet-500' },
+        food: { id: 'food', label: '🍽️ Restoranlar (1₾=19,5₺)', short: 'Restoran & Kafe', badge: 'bg-rose-100 text-rose-800 border-rose-200', bar: 'bg-rose-500' },
+        museum: { id: 'museum', label: '🎟️ Hamam, Teleferik & Gezi', short: 'Etkinlik & Bilet', badge: 'bg-amber-100 text-amber-800 border-amber-200', bar: 'bg-amber-500' },
+        other: { id: 'other', label: '🛍️ Harç, SIM & Taksi', short: 'Hazırlık & Diğer', badge: 'bg-emerald-100 text-emerald-800 border-emerald-200', bar: 'bg-emerald-500' }
+      };
+
+      // --- KATEGORİLİ TİFLİS ÖNERİLERİ ALT SEKMELERİ ---
+      const REC_CATEGORIES = {
+        restoran: {
+          id: 'restoran',
+          label: '🍽️ Restoran & Gurme',
+          title: 'Gezginlerin Önerdiği Restoranlar & Kahvaltı Noktaları (1 ₾ = 19,50 ₺)',
+          desc: 'Khinkali, Haçapuri, güveç yemekleri ve sabah kahvaltısı için yüksek puanlı mekanlar (Güncel 19,50 TL kuruyla)',
+          planCat: 'food',
+          btnText: '✨ Bana Yeni Restoran Önerisi Bul'
+        },
+        gezi: {
+          id: 'gezi',
+          label: '🏛️ Gezilecek Yerler & Manzara',
+          title: 'Tiflis’te Mutlaka Görülmesi Gereken Gezi & Fotoğraf Noktaları',
+          desc: 'Kaleler, tarihi sokaklar, saat kulesi, teleferik hatları ve panoramik seyir tepeleri',
+          planCat: 'museum',
+          btnText: '✨ Bana Yeni Gezi Yeri Önerisi Bul'
+        },
+        kafe: {
+          id: 'kafe',
+          label: '☕ Kafe, Şarap & Akşam',
+          title: 'Tasarım Kafeler, Bohem Avlular & Şarap Tadım Mekanları',
+          desc: 'Fabrika avlusu, tarihi kütüphane kafeler, doğal Gürcü şarabı barları ve tatlı durakları',
+          planCat: 'food',
+          btnText: '✨ Bana Yeni Kafe / Bar Önerisi Bul'
+        },
+        deneyim: {
+          id: 'deneyim',
+          label: '♨️ Hamam & Özel Deneyim',
+          title: 'Kükürt Hamamları, Nehir Turu & Eşsiz Tiflis Deneyimleri',
+          desc: 'Çiftlere özel termal kükürt odaları, Kura nehri tekne turu, antika pazarı ve yakın rotalar',
+          planCat: 'museum',
+          btnText: '✨ Bana Yeni Deneyim Önerisi Bul'
+        },
+        konaklama: {
+          id: 'konaklama',
+          label: '🏨 Merkez Otel / Airbnb (<3.000₺)',
+          title: 'Geceliği 3.000 TL Altı Seçmece Merkez Oteller & Airbnb Evleri',
+          desc: 'Sololaki, Eski Tiflis, Rustaveli ve Fabrika bölgesinde yüksek puanlı ekonomik konaklamalar (1 ₾ = 19,50 ₺)',
+          planCat: 'hotel',
+          btnText: '✨ Bana Yeni Otel / Airbnb Önerisi Bul'
+        }
+      };
+
+      // --- BAŞLANGIÇTA GÖRÜNEN KATEGORİLİ ÖNERİLER (1 LARİ = 19.50 TL HESABIYLA) ---
+      const INITIAL_RECOMMENDATIONS = [
+        // RESTORANLAR (1 GEL = 19.50 TL)
+        {
+          id: "rec-rest-1",
+          recCat: "restoran",
+          badge: "🥟 #1 Khinkali Noktası",
+          title: "Zodiaqo Restaurant (Michelin Rehberi Önerisi)",
+          area: "Özgürlük Meydanı (Chanturia Sokak)",
+          whoRecommends: "Michelin Guide & Tüm Türk/Yabancı Gurme Gezginler",
+          avgPriceText: "2 Kişi Ortalama ~60 ₾ = 1.170 ₺ (Khinkali adet 2 ₾ = 39 ₺, Haçapuri 16 ₾ = 312 ₺)",
+          estimatedPriceTL: 1170,
+          location: "6 Giorgi Chanturia St, Tbilisi, Georgia (Zodiaqo)",
+          website: "https://www.google.com/maps/search/?api=1&query=Zodiaqo+Tbilisi",
+          description: "Tiflis'te en sulu ve lezzetli Khinkali (Gürcü mantısı) için tartışmasız 1 numara. Kalabalık olmadan öğlen veya akşam 18:30 gibi gitmek en iyisi."
+        },
+        {
+          id: "rec-rest-2",
+          recCat: "restoran",
+          badge: "🍲 Fiyat/Performans Kralı",
+          title: "Mapshalia (Geleneksel Ev Yemekleri Lokantası)",
+          area: "Marjanishvili Bulvarı",
+          whoRecommends: "Bütçe Dostu Gezginler & Yerel Halk",
+          avgPriceText: "2 Kişi Tıka Basa Yemek ~40 ₾ = 780 ₺ (Ostri Güveç 12 ₾ = 234 ₺, Pkhali 8 ₾ = 156 ₺)",
+          estimatedPriceTL: 780,
+          location: "137 David Agmashenebeli Ave, Tbilisi, Georgia (Mapshalia)",
+          website: "https://www.google.com/maps/search/?api=1&query=Mapshalia+Tbilisi",
+          description: "Ostri (dana güveç), cevizli patlıcan (Pkhali), Megrelian Haçapuri ve armut gazozu... İki kişi toplam 40 Lari'ye (780 TL) ziyafet çekebileceğiniz en samimi lokanta."
+        },
+        {
+          id: "rec-rest-3",
+          recCat: "restoran",
+          badge: "🥐 En İyi Sabah Kahvaltısı",
+          title: "Puri Guliani (Nehir Kenarı Fırın & Kahvaltı)",
+          area: "Saarbrucken Meydanı (Dry Bridge Yakını)",
+          whoRecommends: "Sabah Kahvaltısı Arayan Çiftler & Bloggerlar",
+          avgPriceText: "2 Kişi Kahvaltı + Sıcak Ponchiki ~55 ₾ = 1.070 ₺ (Ponchiki 7 ₾ = 136 ₺)",
+          estimatedPriceTL: 1070,
+          location: "Saarbrucken Square, Tbilisi, Georgia (Puri Guliani)",
+          website: "https://www.google.com/maps/search/?api=1&query=Puri+Guliani+Tbilisi",
+          description: "Kura Nehri'ne bakan terasında taş fırından yeni çıkmış peynirli hamurlar, Eggs Benedict ve içi sıcak vanilyalı krema dolu meşhur Ponchiki tatlısı harika."
+        },
+        {
+          id: "rec-rest-4",
+          recCat: "restoran",
+          badge: "🍷 Şık & Otantik Akşam Yemeği",
+          title: "Salobie Bia (Şef Giorgi Iosava'nın Mekanı)",
+          area: "Rustaveli Caddesi (Tiyatro Altı)",
+          whoRecommends: "Michelin Bib Gourmand & Gastronomi Meraklıları",
+          avgPriceText: "2 Kişi Akşam Yemeği ~75 ₾ = 1.460 ₺ (Shkmeruli 24 ₾ = 468 ₺, Lobio 15 ₾ = 292 ₺)",
+          estimatedPriceTL: 1460,
+          location: "17 Shota Rustaveli Ave, Tbilisi, Georgia (Salobie Bia)",
+          website: "https://www.google.com/maps/search/?api=1&query=Salobie+Bia+Tbilisi",
+          description: "Toprak güveçte fasulye (Lobio), mısır ekmeği, erik soslu tavuk (Shkmeruli) ve ev yapımı şaraplarıyla hem müze gibi şık hem de çok kaliteli."
+        },
+
+        // GEZİLECEK YERLER (1 GEL = 19.50 TL)
+        {
+          id: "rec-gezi-1",
+          recCat: "gezi",
+          badge: "🚡 En İyi Gün Batımı",
+          title: "Narikala Kalesi & Gürcü Anası (Kartlis Deda) Teleferik Turu",
+          area: "Rike Park ➔ Sololaki Tepesi",
+          whoRecommends: "Tiflis'e Giden Herkesin #1 Manzara Noktası",
+          avgPriceText: "Teleferik 2 Kişi Toplam ~5 ₾ = 98 ₺ (Kişi Başı 2.5 ₾ = 49 ₺)",
+          estimatedPriceTL: 98,
+          location: "Rike Park Aerial Tramway Station, Tbilisi, Georgia",
+          website: "https://www.google.com/maps/search/?api=1&query=Rike+Park+Cable+Car+Tbilisi",
+          description: "Barış Köprüsü yanından teleferikle 2 dakikada tepeye çıkın, gün batımında tüm şehri izleyip aşağıya tarihi oymalı balkonlu sokaklardan yürüyerek inin."
+        },
+        {
+          id: "rec-gezi-2",
+          recCat: "gezi",
+          badge: "🕰️ Masalsı Saat Kulesi",
+          title: "Rezo Gabriadze Kukla Tiyatrosu & Eğik Saat Kulesi",
+          area: "Shavteli Sokak (Eski Tiflis)",
+          whoRecommends: "Fotoğrafçılar & Romantik Rota Arayanlar",
+          avgPriceText: "Açık Hava Kukla Gösterisi: Ücretsiz (Saat 12:00 ve 19:00)",
+          estimatedPriceTL: 0,
+          location: "26 Ioane Shavteli St, Tbilisi, Georgia (Gabriadze Theater)",
+          website: "https://www.google.com/maps/search/?api=1&query=Gabriadze+Clock+Tower+Tbilisi",
+          description: "Her gün tam 12:00 ve 19:00'da kulenin pencereleri açılır ve müzik eşliğinde 'Yaşam Döngüsü' adlı çok tatlı bir kukla gösterisi gerçekleşir."
+        },
+        {
+          id: "rec-gezi-3",
+          recCat: "gezi",
+          badge: "🌈 Gizli Fotoğraf Noktası",
+          title: "Sololaki Tarihi Apartmanları & Gallery 27 (Vitraylı Merdiven)",
+          area: "Betlemi Sokak No:3 (Sololaki)",
+          whoRecommends: "Instagram Gezginleri & Mimari Tutkunları",
+          avgPriceText: "Giriş Ücretsiz (Sabah 10:00 - 11:30 arası güneş vururken)",
+          estimatedPriceTL: 0,
+          location: "3 Betlemi St, Tbilisi, Georgia (Gallery 27)",
+          website: "https://www.google.com/maps/search/?api=1&query=Gallery+27+Betlemi+St+Tbilisi",
+          description: "19. yüzyıldan kalma renkli vitray camlı tarihi apartman girişi. Sabah güneşi camlardan içeri vurduğunda Göksel & Zeliş için harika kareler çıkar."
+        },
+        {
+          id: "rec-gezi-4",
+          recCat: "gezi",
+          badge: "🗿 Devasa Anıt & Manzara",
+          title: "Chronicle of Georgia (Gürcistan Tarihi Anıtı)",
+          area: "Tiflis Denizi Tepesi",
+          whoRecommends: "Vloggerlar & Manzara Tutkunları",
+          avgPriceText: "Giriş Ücretsiz • Merkezden Bolt Taksi Gidiş-Dönüş ~25 ₾ = 490 ₺",
+          estimatedPriceTL: 490,
+          location: "Chronicle of Georgia, Tbilisi, Georgia",
+          website: "https://www.google.com/maps/search/?api=1&query=Chronicle+of+Georgia+Tbilisi",
+          description: "Tiflis Denizi'ne bakan tepede 35 metrelik 16 devasa sütundan oluşan büyüleyici anıt. Bolt taksi ile merkezden 20 dakikada ulaşılır."
+        },
+
+        // KAFE, BAR & AKŞAM (1 GEL = 19.50 TL)
+        {
+          id: "rec-kafe-1",
+          recCat: "kafe",
+          badge: "🎨 En Havalı Bohem Avlu",
+          title: "Fabrika Tbilisi (Kafeler, Barlar & Sanat Avlusu)",
+          area: "Chugureti / Marjanishvili",
+          whoRecommends: "TimeOut Tbilisi & Genç Gezginler",
+          avgPriceText: "2 Kişi Kahve veya Kokteyl/İçecek ~40 ₾ = 780 ₺",
+          estimatedPriceTL: 780,
+          location: "8 Egnate Ninoshvili St, Tbilisi, Georgia (Fabrika Tbilisi)",
+          website: "https://www.google.com/maps/search/?api=1&query=Fabrika+Tbilisi",
+          description: "Eski Sovyet dikiş fabrikasının dev avlusunda Moulin Electrique, Tone, Pipes Burger gibi onlarca mekan var. Akşamları atmosferi harika."
+        },
+        {
+          id: "rec-kafe-2",
+          recCat: "kafe",
+          badge: "📚 Dev Kütüphaneli Lobi",
+          title: "Cafe Stamba & Stamba Chocolaterie",
+          area: "Kostava Caddesi (Vera)",
+          whoRecommends: "Tasarım & Kahve Meraklıları",
+          avgPriceText: "2 Kişi Kahve & El Yapımı Çikolata/Tatlı ~50 ₾ = 975 ₺",
+          estimatedPriceTL: 975,
+          location: "14 Merab Kostava St, Tbilisi, Georgia (Cafe Stamba)",
+          website: "https://www.google.com/maps/search/?api=1&query=Cafe+Stamba+Tbilisi",
+          description: "Eski bir basımevi binasının içine kurulmuş, tavana kadar kitaplıklarla dolu muazzam bir tasarım kafe. Kahvaltısı ve tatlıları çok kaliteli."
+        },
+        {
+          id: "rec-kafe-3",
+          recCat: "kafe",
+          badge: "🍷 8000 Yıllık Şarap Kültürü",
+          title: "8000 Vintages (Gürcü Qvevri Şarap Tadım Barı)",
+          area: "Sololaki / Vake",
+          whoRecommends: "Şarap Severler & Sommelier Rehberleri",
+          avgPriceText: "2 Kişi Şarap Tadımı + Peynir Tabağı ~65 ₾ = 1.270 ₺",
+          estimatedPriceTL: 1270,
+          location: "26 Sulkhan Tsintsadze St, Tbilisi, Georgia (8000 Vintages)",
+          website: "https://www.google.com/maps/search/?api=1&query=8000+Vintages+Tbilisi",
+          description: "Gürcistan'ın UNESCO korumasındaki toprak küp (Qvevri) kehribar şaraplarını tadabileceğiniz, çalışanların her şişeyi hikayesiyle anlattığı harika mekan."
+        },
+
+        // HAMAM & DENEYİM (1 GEL = 19.50 TL)
+        {
+          id: "rec-den-1",
+          recCat: "deneyim",
+          badge: "♨️ Çiftlere Özel Termal Oda",
+          title: "Abanotubani Kükürt Hamamları (Gulo's Spa & Chreli Abano)",
+          area: "Abanotubani (Eski Tiflis)",
+          whoRecommends: "Çift Olarak Tiflis'e Giden Herkesin #1 Deneyimi",
+          avgPriceText: "Özel Çift Odası (1 Saat): 110 ₾ - 150 ₾ = 2.145 ₺ - 2.925 ₺",
+          estimatedPriceTL: 2145,
+          location: "Abano Street, Tbilisi, Georgia (Chreli Abano)",
+          website: "https://chreliabano.ge",
+          description: "Sadece Göksel ve Zeliş'e ait sıcak kükürtlü termal havuzlu özel oda kiralayabilirsiniz (110 Lari = 2.145 TL). Chreli Abano'nun mavi çinili cephesi önünde fotoğraf çekilmeyi unutmayın."
+        },
+        {
+          id: "rec-den-2",
+          recCat: "deneyim",
+          badge: "🎢 Tarihi Füniküler & Ponchiki",
+          title: "Mtatsminda Park Füniküleri & Panoramik Teras",
+          area: "Mtatsminda Dağı",
+          whoRecommends: "Aileler, Çiftler & Gurmeler",
+          avgPriceText: "2 Kişi Füniküler + Kremalı Ponchiki & Gazoz ~45 ₾ = 880 ₺",
+          estimatedPriceTL: 880,
+          location: "22 Daniel Chonkadze St, Tbilisi, Georgia (Tbilisi Funicular)",
+          website: "https://www.google.com/maps/search/?api=1&query=Tbilisi+Funicular",
+          description: "Dik yamaca tırmanan tarihi trenle tepeye çıkıp Funicular Restaurant terasında sıcak Ponchiki yerken tüm Tiflis'i ayaklarınızın altında izleyin."
+        },
+        {
+          id: "rec-den-3",
+          recCat: "deneyim",
+          badge: "📷 Antika & Sovyet Yadigarları",
+          title: "Dry Bridge (Kuru Köprü) Açık Hava Antika & Bit Pazarı",
+          area: "Dedaena Park Yanı",
+          whoRecommends: "Koleksiyonerler & Hediyelik Arayanlar",
+          avgPriceText: "Gezmesi Ücretsiz • Hediyelik Bütçesi ~30 ₾ = 585 ₺",
+          estimatedPriceTL: 585,
+          location: "Dry Bridge Market, Tbilisi, Georgia",
+          website: "https://www.google.com/maps/search/?api=1&query=Dry+Bridge+Market+Tbilisi",
+          description: "Eski Sovyet fotoğraf makineleri, plaklar, el yapımı takılar ve tablolarla dolu açık hava sergisi. Pazarlık yapmayı unutmayın!"
+        },
+
+        // MERKEZ OTEL & AIRBNB (<3.000 TL - 1 GEL = 19.50 TL)
+        {
+          id: "rec-kon-1",
+          recCat: "konaklama",
+          badge: "🏡 Gecelik ~2.250 ₺ (115 ₾)",
+          title: "Sololaki Oymalı Ahşap Balkonlu Airbnb Loft Daire",
+          area: "Sololaki / Özgürlük Meydanı",
+          whoRecommends: "Çiftler İçin En Romantik & Ekonomik Konum",
+          avgPriceText: "Gecelik: ~115 ₾ = 2.250 ₺ (3 Gece Toplam: 6.750 ₺)",
+          estimatedPriceTL: 6750,
+          location: "Lado Asatiani St, Sololaki, Tbilisi, Georgia",
+          website: "https://www.airbnb.com.tr/s/Tbilisi--Georgia/homes",
+          description: "Özgürlük Meydanı'na yürüyerek 4 dakika! Geleneksel Tiflis balkonlu, yüksek tavanlı daireler geceliği 3.000 TL'nin rahatlıkla altında ve çok fotojenik."
+        },
+        {
+          id: "rec-kon-2",
+          recCat: "konaklama",
+          badge: "✨ Gecelik ~2.850 ₺ (146 ₾)",
+          title: "Unfound Door - Design Hotel (Butik Tasarım Otel)",
+          area: "Marjanishvili Bulvarı No:111",
+          whoRecommends: "Tasarım Otel Sevenler (Booking Puanı: 9.3)",
+          avgPriceText: "Gecelik: ~146 ₾ = 2.850 ₺ (3 Gece Toplam: 8.550 ₺)",
+          estimatedPriceTL: 8550,
+          location: "111 David Agmashenebeli Ave, Tbilisi, Georgia",
+          website: "https://www.booking.com/searchresults.tr.html?ss=Unfound+Door+Design+Hotel+Tbilisi",
+          description: "19. yüzyıldan kalma tarihi binada, duvar freskleri korunarak dekore edilmiş muazzam bir butik otel. Geceliği 3.000 TL sınırının altında!"
+        },
+        {
+          id: "rec-kon-3",
+          recCat: "konaklama",
+          badge: "💎 Gecelik ~2.100 ₺ (108 ₾)",
+          title: "ibis Budget / ibis Styles Tbilisi Center",
+          area: "Rustaveli / Vera (Metroya 2 dk)",
+          whoRecommends: "Merkezde Güvenilir & Temiz Otel Arayanlar",
+          avgPriceText: "Gecelik: ~108 ₾ = 2.100 ₺ (3 Gece Toplam: 6.300 ₺)",
+          estimatedPriceTL: 6300,
+          location: "14 Merab Kostava St, Tbilisi, Georgia (ibis Budget Tbilisi Center)",
+          website: "https://www.booking.com/searchresults.tr.html?ss=ibis+budget+Tbilisi+Center",
+          description: "Rustaveli Metro istasyonunun ve Cafe Stamba'nın hemen yanında. Geceliği ~2.100 TL civarında, sıfır riskli modern merkez oteli."
+        }
+      ];
+
+      // --- "BANA YENİ ÖNERİ BUL" HAVUZU (1 GEL = 19.50 TL HESABIYLA) ---
+      const EXTRA_DISCOVERY_POOL = {
+        restoran: [
+          {
+            badge: "🥟 Lokal Khinkali Efsanesi",
+            title: "Klike's Khinkali (Sololaki'nin Favorisi)",
+            area: "Shio Chitadze Sokak (Sololaki)",
+            whoRecommends: "Lokal Gurmeler & Reddit Tbilisi Topluluğu",
+            avgPriceText: "2 Kişi Ortalama: 55 ₾ = 1.072 ₺ • Otlu ve Etli Khinkali (Adet 2.2 ₾ = 43 ₺)",
+            estimatedPriceTL: 1072,
+            location: "1 Shio Chitadze St, Tbilisi, Georgia (Klike's Khinkali)",
+            website: "https://www.google.com/maps/search/?api=1&query=Klike's+Khinkali+Tbilisi",
+            description: "Turist kalabalığından uzak, incecik hamurlu ve bol sulu Khinkali yapan çok şirin bir bodrum restoranı. Peynirli ve mantarlı Khinkalisi de harika."
+          },
+          {
+            badge: "🧀 En İyi Adjarian Haçapuri",
+            title: "Pasanauri Restaurant (Rustaveli Şubesi)",
+            area: "Griboedov / Rustaveli",
+            whoRecommends: "Haçapuri Severler & Gezi Rehberleri",
+            avgPriceText: "2 Kişi Ortalama: 50 ₾ = 975 ₺ (Adjarian Haçapuri 18 ₾ = 350 ₺)",
+            estimatedPriceTL: 975,
+            location: "37/49 Leonidze St, Tbilisi, Georgia (Pasanauri)",
+            website: "https://www.google.com/maps/search/?api=1&query=Pasanauri+Tbilisi",
+            description: "Ortasında erimiş peynir, tereyağı ve yumurta sarısı bulunan kayık şeklindeki Adjarian Haçapuri'yi Tiflis'te en iyi yapan köklü restoran."
+          },
+          {
+            badge: "🌿 Bahçe İçinde Gürcü Mutfağı",
+            title: "Shavi Lomi (Kara Aslan • Modern Gürcü Mutfağı)",
+            area: "Chugureti (Zurab Kvlividze Sokak)",
+            whoRecommends: "Lonely Planet & Gurme Gezginler",
+            avgPriceText: "2 Kişi Ortalama: 90 ₾ = 1.755 ₺ (Gobi Meze Tabağı Efsane)",
+            estimatedPriceTL: 1755,
+            location: "28 Zurab Kvlividze St, Tbilisi, Georgia (Shavi Lomi)",
+            website: "https://www.google.com/maps/search/?api=1&query=Shavi+Lomi+Tbilisi",
+            description: "Gizli bir kapıdan girilen yemyeşil incir ağaçlı avlusu ve ortaya söylenen dev meze tabağı 'Gobi' ile unutulmaz bir akşam yemeği deneyimi."
+          },
+          {
+            badge: "🥞 Kahvaltı & Kruvasan",
+            title: "Entrée Bakery (Fransız-Gürcü Fırın Kafe)",
+            area: "Rustaveli / Pekini / Marjanishvili",
+            whoRecommends: "Sabah Erken Kalkan Gezginler",
+            avgPriceText: "2 Kişi Kahvaltı & Kahve: 38 ₾ = 740 ₺",
+            estimatedPriceTL: 740,
+            location: "47a Shota Rustaveli Ave, Tbilisi, Georgia (Entree)",
+            website: "https://www.google.com/maps/search/?api=1&query=Entree+Rustaveli+Tbilisi",
+            description: "Taze bademli kruvasanlar, sandviçler, Kubdari (etli Gürcü böreği) ve kaliteli kahve için sabah hızlı ve ekonomik kahvaltı durağı."
+          },
+          {
+            badge: "🍖 Avlu & Canlı Atmosfer",
+            title: "Sofia Melnikova's Fantastic Douqan",
+            area: "Edebiyat Müzesi Avlusu (Chanturia Sokak)",
+            whoRecommends: "Sanatseverler & Romantik Çiftler",
+            avgPriceText: "2 Kişi Ortalama: 65 ₾ = 1.268 ₺",
+            estimatedPriceTL: 1268,
+            location: "8 Giorgi Chanturia St, Tbilisi, Georgia (Sofia Melnikova)",
+            website: "https://www.google.com/maps/search/?api=1&query=Sofia+Melnikova+Fantastic+Douqan+Tbilisi",
+            description: "Edebiyat Müzesi'nin sessiz ve sarmaşıklı iç avlusunda gizlenmiş, şairane atmosferli çok özel bir Gürcü restoranı."
+          }
+        ],
+        gezi: [
+          {
+            badge: "💦 Şehir Merkezinde Şelale",
+            title: "Leghvtakhevi Kanyonu & İncir Vadisi Şelalesi",
+            area: "Abanotubani Hamamlarının Hemen Arkası",
+            whoRecommends: "Doğa & Yürüyüş Sevenler",
+            avgPriceText: "Giriş Tamamen Ücretsiz (0 ₾)",
+            estimatedPriceTL: 0,
+            location: "Leghvtakhevi Waterfall, Tbilisi, Georgia",
+            website: "https://www.google.com/maps/search/?api=1&query=Leghvtakhevi+Waterfall+Tbilisi",
+            description: "Kükürt hamamlarının yanındaki ahşap yürüyüş yolundan kanyonun içine doğru 5 dakika yürüdüğünüzde karşınıza 22 metrelik harika bir doğal şelale çıkar!"
+          },
+          {
+            badge: "⛪ En Büyük Katedral",
+            title: "Sameba (Kutsal Teslis) Katedrali & Lagidze Suları",
+            area: "Avlabari Tepesi",
+            whoRecommends: "Kültür & Mimari Gezginleri",
+            avgPriceText: "Giriş Ücretsiz • Bahçede Haçapuri & Lagidze Gazozu: 20 ₾ = 390 ₺",
+            estimatedPriceTL: 390,
+            location: "Holy Trinity Cathedral of Tbilisi, Georgia",
+            website: "https://www.google.com/maps/search/?api=1&query=Holy+Trinity+Cathedral+of+Tbilisi",
+            description: "Altın kubbesi Tiflis'in her yerinden görünen devasa katedral. Bahçesindeki tarihi 'Lagidze Waters' kafesinde çikolatalı/kaymaklı doğal gazoz içmeyi unutmayın."
+          },
+          {
+            badge: "🌿 Doğa & Zipline",
+            title: "Tiflis Ulusal Botanik Bahçesi",
+            area: "Narikala Kalesi'nin Arka Yamacı",
+            whoRecommends: "Çiftler & Huzurlu Yürüyüş Arayanlar",
+            avgPriceText: "Giriş (2 Kişi Toplam 8 ₾ = 156 ₺)",
+            estimatedPriceTL: 156,
+            location: "National Botanical Garden of Georgia, Tbilisi",
+            website: "https://www.google.com/maps/search/?api=1&query=National+Botanical+Garden+Tbilisi",
+            description: "Narikala Kalesi'nin hemen arkasında devasa şelaleler, Japon bahçesi ve bambu ormanlarıyla dolu vaha."
+          },
+          {
+            badge: "🏛️ Altın Hazineler",
+            title: "Gürcistan Ulusal Müzesi (Arkeolojik Altın Hazinesi)",
+            area: "Rustaveli Caddesi No:3",
+            whoRecommends: "Tarih & Sanat Meraklıları",
+            avgPriceText: "Giriş (2 Kişi Toplam 60 ₾ = 1.170 ₺)",
+            estimatedPriceTL: 1170,
+            location: "3 Shota Rustaveli Ave, Tbilisi, Georgia (Georgian National Museum)",
+            website: "https://www.google.com/maps/search/?api=1&query=Georgian+National+Museum+Tbilisi",
+            description: "M.Ö. 3000 yıllarına uzanan Kolhis altın takıları ve Sovyet İşgali Müzesi katıyla Tiflis'in en etkileyici müzesi."
+          }
+        ],
+        kafe: [
+          {
+            badge: "🌱 Sera & Yeşillik İçinde",
+            title: "Hurma Cafe / Orangerie (Vera Park Yanı)",
+            area: "Vera / Rustaveli",
+            whoRecommends: "Kahvaltı & Kahve Bloggerları",
+            avgPriceText: "2 Kişi Kahve & Tatlı: 40 ₾ = 780 ₺",
+            estimatedPriceTL: 780,
+            location: "14 Merab Kostava St, Tbilisi, Georgia",
+            website: "https://www.google.com/maps/search/?api=1&query=Hurma+Cafe+Tbilisi",
+            description: "Bitkilerle dolu aydınlık atmosferiyle yürüyüş molası ve tatlı/kahve keyfi için harika bir durak."
+          },
+          {
+            badge: "🥂 Büyülü Avlu Barı",
+            title: "Wine Factory N1 (Tarihi Şarap Fabrikası Avlusu)",
+            area: "Petriashvili Sokak (Vera)",
+            whoRecommends: "Gece Hayatı & Akşam Yemeği Rehberleri",
+            avgPriceText: "2 Kişi Şarap/Kokteyl & Atıştırmalık: 70 ₾ = 1.365 ₺",
+            estimatedPriceTL: 1365,
+            location: "1 Vasil Petriashvili St, Tbilisi, Georgia (Wine Factory N1)",
+            website: "https://www.google.com/maps/search/?api=1&query=Wine+Factory+N1+Tbilisi",
+            description: "1896 yılında kurulmuş tarihi şarap mahzenlerinin etrafında açık hava barları, pizzacılar ve şarap tadım noktalarının toplandığı çok canlı bir kompleks."
+          },
+          {
+            badge: "☕ Özel Çekirdek Kahve",
+            title: "Shavi Coffee Roasters",
+            area: "Janashia Sokak (Vera)",
+            whoRecommends: "Üçüncü Nesil Kahve Tutkunları",
+            avgPriceText: "2 Kişi Nitelikli Kahve & Kurabiye: 28 ₾ = 546 ₺",
+            estimatedPriceTL: 546,
+            location: "28 Simon Janashia St, Tbilisi, Georgia (Shavi Coffee)",
+            website: "https://www.google.com/maps/search/?api=1&query=Shavi+Coffee+Roasters+Tbilisi",
+            description: "Tiflis'in en iyi espresso ve filtre kahve kavurucularından biri. Minimalist tasarımı ve lezzetli tatlılarıyla çok popüler."
+          }
+        ],
+        deneyim: [
+          {
+            badge: "🛥️ Kura Nehri Üzerinde",
+            title: "Kura (Mtkvari) Nehri Tekne Turu & Metekhi Kayalıkları",
+            area: "Barış Köprüsü İskelesi",
+            whoRecommends: "Çiftler & Akşamüstü Gezginleri",
+            avgPriceText: "2 Kişi Tekne Turu (30 dk): 60 ₾ = 1.170 ₺",
+            estimatedPriceTL: 1170,
+            location: "Bridge of Peace Pier, Tbilisi, Georgia",
+            website: "https://www.google.com/maps/search/?api=1&query=Bridge+of+Peace+Tbilisi",
+            description: "Metekhi Kilisesi'nin altındaki sarp kayalıkların ve tarihi balkonlu evlerin önünden geçen yarım saatlik keyifli nehir turu."
+          },
+          {
+            badge: "🏰 Yarım Günlük Yakın Rota",
+            title: "Mtskheta Antik Başkent & Jvari Manastırı (İki Nehrin Birleşimi)",
+            area: "Tiflis'e 25 dk Mesafede (Bolt Taksi İle)",
+            whoRecommends: "Tiflis'te 3+ Gün Kalan Tüm Gezginler",
+            avgPriceText: "Bolt Taksi Gidiş-Dönüş + Bekleme (2 Kişi): ~55 ₾ = 1.072 ₺",
+            estimatedPriceTL: 1072,
+            location: "Jvari Monastery, Mtskheta, Georgia",
+            website: "https://www.google.com/maps/search/?api=1&query=Jvari+Monastery+Mtskheta",
+            description: "Aragvi ve Kura nehirlerinin iki farklı renkte birleştiği o meşhur kartpostal manzarasını Jvari Tepesi'nden izleyip antik Mtskheta sokaklarını gezebilirsiniz."
+          }
+        ],
+        konaklama: [
+          {
+            badge: "🏨 Gecelik ~2.600 ₺ (133 ₾)",
+            title: "Pushkin 10 Boutique Hotel (Özgürlük Meydanı)",
+            area: "Pushkin Sokak (Tam Merkez)",
+            whoRecommends: "Booking Gezginleri (Puan: 9.0)",
+            avgPriceText: "Gecelik: ~133 ₾ = 2.600 ₺ (3 Gece: 7.800 ₺)",
+            estimatedPriceTL: 7800,
+            location: "10 Aleksandr Pushkin St, Tbilisi, Georgia",
+            website: "https://www.booking.com/searchresults.tr.html?ss=Pushkin+10+Hotel+Tbilisi",
+            description: "Özgürlük Meydanı'na ve Zodiaqo restoranına 2 dakika yürüme mesafesinde, geceliği 3.000 TL'nin altında tertemiz merkez oteli."
+          },
+          {
+            badge: "🏡 Gecelik ~1.950 ₺ (100 ₾)",
+            title: "Marjanishvili Tarihi Avlulu Airbnb Stüdyo Daire",
+            area: "Agmashenebeli Bulvarı (Yaya Yolu)",
+            whoRecommends: "Ekonomik & Merkezi Konaklama Arayanlar",
+            avgPriceText: "Gecelik: 100 ₾ = 1.950 ₺ (3 Gece: 5.850 ₺)",
+            estimatedPriceTL: 5850,
+            location: "David Agmashenebeli Ave, Tbilisi, Georgia",
+            website: "https://www.airbnb.com.tr/s/Tbilisi--Georgia/homes",
+            description: "Trafiğe kapalı kafeler caddesi Agmashenebeli üzerinde, metroya ve Mapshalia restoranına yürüyerek 3 dakika mesafede tam müstakil daire."
+          },
+          {
+            badge: "🌿 Gecelik ~2.450 ₺ (125 ₾)",
+            title: "Fabrika Hostel & Suites (Özel Çift Kişilik Banyolu Oda)",
+            area: "Ninoshvili Sokak (Chugureti)",
+            whoRecommends: "Genç Çiftler & Sosyal Atmosfer Sevenler",
+            avgPriceText: "Gecelik Özel Oda: ~125 ₾ = 2.450 ₺ (3 Gece: 7.350 ₺)",
+            estimatedPriceTL: 7350,
+            location: "8 Egnate Ninoshvili St, Tbilisi, Georgia (Fabrika)",
+            website: "https://www.booking.com/searchresults.tr.html?ss=Fabrika+Hostel+Suites+Tbilisi",
+            description: "Tiflis'in en popüler avlusunun üst katındaki özel tasarım çift kişilik odalar. Geceliği 2.450 TL civarında."
+          }
+        ]
+      };
+
+      // --- İLK BAŞLANGIÇ SEYAHAT PLANI VERİSİ (1 LARİ = 19.50 TL KURUYLA) ---
+      function getInitialSampleData() {
+        return {
+          tripInfo: {
+            title: "Göksel & Zeliş • Tiflis Rotası 🇬🇪",
+            destinations: "Eski Tiflis, Sololaki, Rustaveli, Marjanishvili",
+            startDate: "2027-05-15",
+            endDate: "2027-05-18",
+            targetBudget: 35000,
+            gelRate: 19.50,
+            partner1Name: "Göksel",
+            partner2Name: "Zeliş"
+          },
+          customRecommendations: [],
+          items: [
+            {
+              id: "tb-fl-1",
+              category: "flight",
+              title: "AJet Direkt Uçuş • İstanbul (SAW) ⇄ Tiflis (TBS)",
+              city: "Tiflis (Direkt Uçuş)",
+              date: "2027-05-15",
+              timeStart: "10:25",
+              timeEnd: "13:50",
+              subtitle: "Gidiş-Dönüş 2 Kişi Toplam (Kişi Başı ~4.900 ₺) • 8kg Kabin Bagajı",
+              price: 9800,
+              paidBy: "Göksel",
+              addedBy: "Göksel",
+              location: "Sabiha Gökçen Havalimanı ➔ Tbilisi International Airport (TBS)",
+              link: "https://www.ajet.com",
+              notes: "Pasaportsuz, sadece yeni tip T.C. Kimlik Kartı ile geçiş! Fiyat/performans olarak en makul direkt uçuş seçeneği.",
+              status: "booked"
+            },
+            {
+              id: "tb-fl-2",
+              category: "flight",
+              title: "Pegasus Direkt Uçuş • İstanbul (SAW) ⇄ Tiflis (TBS)",
+              city: "Tiflis (Alternatif Uçuş)",
+              date: "2027-05-15",
+              timeStart: "14:15",
+              timeEnd: "17:35",
+              subtitle: "Gidiş-Dönüş 2 Kişi Toplam (Kişi Başı ~5.200 ₺)",
+              price: 10400,
+              paidBy: "Ortak",
+              addedBy: "Zeliş",
+              location: "Sabiha Gökçen Havalimanı (SAW)",
+              link: "https://www.flypgs.com",
+              notes: "Saatleri AJet'e göre alternatif olarak tuttuğumuz ikinci uygun fiyatlı uçak bileti seçeneği.",
+              status: "option"
+            },
+            {
+              id: "tb-ht-1",
+              category: "hotel",
+              title: "Sololaki Tarihi Teraslı Airbnb Loft Daire (3 Gece)",
+              city: "Sololaki / Özgürlük Meydanı (Tam Merkez)",
+              date: "2027-05-15",
+              timeStart: "14:00",
+              timeEnd: "11:00",
+              subtitle: "Geceliği ~115 ₾ = 2.250 ₺ (3 Gece Toplam: 6.750 ₺) • Oymalı Tiflis Balkonlu",
+              price: 6750,
+              paidBy: "Zeliş",
+              addedBy: "Zeliş",
+              location: "Lado Asatiani Street, Sololaki, Tbilisi, Georgia",
+              link: "https://www.airbnb.com.tr/s/Tbilisi--Georgia/homes",
+              notes: "Özgürlük Meydanı'na ve Eski Tiflis'e 4 dk yürüme mesafesinde! Geceliği 3.000 TL'nin altında, geleneksel ahşap balkonlu çok romantik daire.",
+              status: "booked"
+            },
+            {
+              id: "tb-ht-2",
+              category: "hotel",
+              title: "Unfound Door - Design Hotel (Tasarım Butik Otel)",
+              city: "Marjanishvili / Chugureti (Fabrika Yakını)",
+              date: "2027-05-15",
+              timeStart: "14:00",
+              timeEnd: "12:00",
+              subtitle: "Geceliği ~146 ₾ = 2.850 ₺ (3 Gece Toplam: 8.550 ₺) • Çift Kişilik Tasarım Oda",
+              price: 8550,
+              paidBy: "Ortak",
+              addedBy: "Göksel",
+              location: "111 David Agmashenebeli Ave, Tbilisi, Georgia",
+              link: "https://www.booking.com/searchresults.tr.html?ss=Unfound+Door+Design+Hotel+Tbilisi",
+              notes: "Gezginlerin Tiflis'te fotoğraf ve ambiyans olarak en çok önerdiği tarihi tasarım otel! Geceliği 2.850 TL (3.000 TL altı), Fabrika'ya yürüyerek 6 dk.",
+              status: "favorite"
+            },
+            {
+              id: "tb-ht-3",
+              category: "hotel",
+              title: "ibis Budget Tbilisi Center",
+              city: "Rustaveli / Vera (Metroya 2 dk)",
+              date: "2027-05-15",
+              timeStart: "14:00",
+              timeEnd: "12:00",
+              subtitle: "Geceliği ~108 ₾ = 2.100 ₺ (3 Gece Toplam: 6.300 ₺) • Modern Çift Kişilik Oda",
+              price: 6300,
+              paidBy: "Ortak",
+              addedBy: "Göksel",
+              location: "14 Kostava St, Vera, Tbilisi, Georgia",
+              link: "https://www.booking.com/searchresults.tr.html?ss=ibis+budget+Tbilisi+Center",
+              notes: "Rustaveli Caddesi'nin hemen yanında, tertemiz, güvenilir ve geceliği 2.100 TL olan ekonomik merkez oteli.",
+              status: "option"
+            },
+            {
+              id: "tb-fd-1",
+              category: "food",
+              title: "Zodiaqo Restaurant (En İyi Khinkali • Michelin Önerisi)",
+              city: "Özgürlük Meydanı / Chanturia Sokak",
+              date: "2027-05-15",
+              timeStart: "19:30",
+              timeEnd: "21:30",
+              subtitle: "2 Kişi Ortalama ~60 ₾ = 1.170 ₺ (Khinkali Adet 2 ₾ = 39 ₺, Haçapuri 16 ₾ = 312 ₺)",
+              price: 1170,
+              paidBy: "Göksel",
+              addedBy: "Göksel",
+              location: "6 Giorgi Chanturia St, Tbilisi, Georgia",
+              link: "https://www.google.com/maps/search/?api=1&query=Zodiaqo+6+Giorgi+Chanturia+St+Tbilisi",
+              notes: "1 Lari = 19,50 TL kuruyla bile 10 adet Khinkali 390 TL! Gezginlerin Tiflis'te 1 numaralı mantı noktası.",
+              status: "booked"
+            },
+            {
+              id: "tb-fd-2",
+              category: "food",
+              title: "Mapshalia (Gezginlerin Gizli Favorisi Otantik Lokanta)",
+              city: "Marjanishvili Bulvarı",
+              date: "2027-05-16",
+              timeStart: "14:00",
+              timeEnd: "15:30",
+              subtitle: "2 Kişi Ortalama ~40 ₾ = 780 ₺ (Ostri Güveç 12 ₾ = 234 ₺, Cevizli Patlıcan 8 ₾ = 156 ₺)",
+              price: 780,
+              paidBy: "Zeliş",
+              addedBy: "Zeliş",
+              location: "137 David Agmashenebeli Ave, Tbilisi, Georgia",
+              link: "https://www.google.com/maps/search/?api=1&query=Mapshalia+Tbilisi",
+              notes: "Gerçek Gürcü ev yemekleri yapan salaş ve aşırı lezzetli esnaf lokantası. 2 kişi tıka basa yemek 40 Lari (780 TL)!",
+              status: "booked"
+            },
+            {
+              id: "tb-fd-3",
+              category: "food",
+              title: "Puri Guliani (Nehir Kenarı Kahvaltı & Meşhur Ponchiki)",
+              city: "Saarbrucken Meydanı / Kura Nehri",
+              date: "2027-05-16",
+              timeStart: "09:30",
+              timeEnd: "11:00",
+              subtitle: "2 Kişi Kahvaltı Ortalama ~55 ₾ = 1.070 ₺ (Sıcak Ponchiki 7 ₾ = 136 ₺, Kahve 9 ₾ = 175 ₺)",
+              price: 1070,
+              paidBy: "Zeliş",
+              addedBy: "Zeliş",
+              location: "Saarbrucken Square, Tbilisi, Georgia (Puri Guliani)",
+              link: "https://www.google.com/maps/search/?api=1&query=Puri+Guliani+Tbilisi",
+              notes: "Sabah kahvaltısı için gezginlerin favorisi! Taş fırından çıkan sıcak peynirli hamurlar ve sıcak kremalı Ponchiki muazzam.",
+              status: "booked"
+            },
+            {
+              id: "tb-act-1",
+              category: "museum",
+              title: "Abanotubani Kükürt Hamamı Özel Çift Odası (1 Saat)",
+              city: "Eski Tiflis (Abanotubani)",
+              date: "2027-05-16",
+              timeStart: "17:00",
+              timeEnd: "18:00",
+              subtitle: "Göksel & Zeliş'e Özel Sıcak Termal Havuzlu Oda (110 ₾ = 2.145 ₺)",
+              price: 2145,
+              paidBy: "Göksel",
+              addedBy: "Göksel",
+              location: "Abano St, Tbilisi, Georgia (Chreli Abano / Gulo's Spa)",
+              link: "https://www.google.com/search?q=Chreli+Abano+Tbilisi",
+              notes: "110 Lari (19.50 TL kurdan 2.145 TL) oda fiyatıdır, 2 kişi toplam tutardır.",
+              status: "booked"
+            },
+            {
+              id: "tb-oth-1",
+              category: "other",
+              title: "Yurt Dışı Çıkış Harcı (2 Kişi) + Magti Sınırsız SIM + Bolt Taksi",
+              city: "Genel Hazırlık & Şehir İçi Ulaşım",
+              date: "2027-05-15",
+              timeStart: "08:00",
+              timeEnd: "",
+              subtitle: "Havalimanı Bolt Taksi (25 ₾ = 488 ₺) + Magti Sınırsız İnternet (30 ₾ = 585 ₺) + Harçlar",
+              price: 2650,
+              paidBy: "Ortak",
+              addedBy: "Göksel",
+              location: "Tiflis Havalimanı Magti Standı & Bolt Uygulaması",
+              link: "https://www.magticom.ge/en",
+              notes: "Tiflis'te normal taksiye binmeyin, telefonunuza 'Bolt' uygulamasını indirin; şehir içi her yer 5-8 Lari (97-155 TL) tutuyor!",
+              status: "booked"
+            }
+          ]
+        };
+      }
+
+      // --- UYGULAMA DURUMU (STATE) ---
+      let state = {
+        activeUser: "Göksel",
+        activeTab: "planner", // planner | recommendations | budget | itinerary
+        activeRecCat: "restoran", // restoran | gezi | kafe | deneyim | konaklama
+        discoveryCursor: { restoran: 0, gezi: 0, kafe: 0, deneyim: 0, konaklama: 0 },
+        isGeneratingRec: false,
+        categoryFilter: "all",
+        statusFilter: "all",
+        searchQuery: "",
+        data: getInitialSampleData()
+      };
+
+      // --- KALICI DEPOLAMA (LocalStorage + IndexedDB Çift Koruma) ---
+      function saveToIndexedDB(dataObj) {
+        try {
+          const req = indexedDB.open("GokselZelisTbilisiDB", 1);
+          req.onupgradeneeded = function (e) {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("planStore")) {
+              db.createObjectStore("planStore");
+            }
+          };
+          req.onsuccess = function (e) {
+            const db = e.target.result;
+            const tx = db.transaction("planStore", "readwrite");
+            tx.objectStore("planStore").put(JSON.stringify(dataObj), "latestPlan");
+          };
+        } catch (err) {}
+      }
+
+      function loadFromIndexedDB(callback) {
+        try {
+          const req = indexedDB.open("GokselZelisTbilisiDB", 1);
+          req.onupgradeneeded = function (e) {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains("planStore")) {
+              db.createObjectStore("planStore");
+            }
+          };
+          req.onsuccess = function (e) {
+            const db = e.target.result;
+            const tx = db.transaction("planStore", "readonly");
+            const getReq = tx.objectStore("planStore").get("latestPlan");
+            getReq.onsuccess = function () {
+              if (getReq.result) {
+                try {
+                  callback(JSON.parse(getReq.result));
+                } catch (err) {}
+              }
+            };
+          };
+        } catch (err) {}
+      }
+
+      function loadInitialLocalState() {
+        try {
+          const savedUser = localStorage.getItem(USER_PREF_KEY);
+          if (savedUser === "Göksel" || savedUser === "Zeliş") {
+            state.activeUser = savedUser;
+          }
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.tripInfo && Array.isArray(parsed.items)) {
+              state.data = parsed;
+              return;
+            }
+          }
+        } catch (e) {}
+
+        // LocalStorage boşsa IndexedDB yedeğine bak
+        loadFromIndexedDB((idbData) => {
+          if (idbData && idbData.tripInfo && Array.isArray(idbData.items)) {
+            state.data = idbData;
+            renderAll();
+          }
+        });
+      }
+
+      function saveData() {
+        state.data.updatedAt = Date.now();
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+        } catch (e) {}
+        saveToIndexedDB(state.data);
+
+        if (window._cloudPushState) {
+          window._cloudPushState(FIXED_ROOM_ID, state.data, state.activeUser);
+        }
+        renderAll();
+      }
+
+      // --- AKILLI URL / LİNK ÇÖZÜCÜ (BOOKING, AIRBNB, UÇUŞ, GOOGLE MAPS) ---
+      function smartParseUrlAndText(rawUrl, priceVal, dateVal) {
+        const input = (rawUrl || "").trim();
+        let category = "hotel";
+        let title = "";
+        let city = "Tiflis Merkez";
+        let location = "Tbilisi, Georgia";
+        let subtitle = "";
+        let notes = "";
+        let link = input.startsWith("http") ? input : "";
+
+        const lower = input.toLowerCase();
+
+        // 1. Kategori tespiti
+        if (
+          lower.includes("ajet") ||
+          lower.includes("flypgs") ||
+          lower.includes("pegasus") ||
+          lower.includes("turkishairlines") ||
+          lower.includes("skyscanner") ||
+          lower.includes("ucuzabilet") ||
+          lower.includes("obilet") ||
+          lower.includes("enuygun") ||
+          lower.includes("flight") ||
+          lower.includes("ucus")
+        ) {
+          category = "flight";
+        } else if (
+          lower.includes("booking.com") ||
+          lower.includes("airbnb") ||
+          lower.includes("hotels.com") ||
+          lower.includes("agoda") ||
+          lower.includes("expedia") ||
+          lower.includes("otel") ||
+          lower.includes("hotel")
+        ) {
+          category = "hotel";
+        } else if (
+          lower.includes("maps.google") ||
+          lower.includes("google.com/maps") ||
+          lower.includes("goo.gl/maps") ||
+          lower.includes("maps.app.goo.gl") ||
+          lower.includes("tripadvisor")
+        ) {
+          category = "food";
+        }
+
+        // 2. URL içerisinden anlamlı isim (slug) çıkarma
+        try {
+          if (input.startsWith("http")) {
+            const urlObj = new URL(input);
+            const host = urlObj.hostname.replace("www.", "");
+
+            // Booking.com özel çözümleme: /hotel/ge/unfound-door.tr.html
+            if (host.includes("booking.com")) {
+              const pathParts = urlObj.pathname.split("/").filter(Boolean);
+              let slug = pathParts[pathParts.length - 1] || "";
+              slug = slug.replace(/\.(tr|en|de|ru|html|htm).*$/i, "").replace(/[-_]+/g, " ");
+              if (urlObj.searchParams.get("ss")) {
+                slug = urlObj.searchParams.get("ss");
+              }
+              if (slug && slug.length > 2 && slug.toLowerCase() !== "searchresults") {
+                title = slug
+                  .split(" ")
+                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                  .join(" ");
+              } else {
+                title = "Booking.com Tiflis Merkez Otel Seçeneği";
+              }
+              notes = "Booking.com linkinden otomatik eklendi.";
+            }
+            // Airbnb özel çözümleme
+            else if (host.includes("airbnb")) {
+              const roomMatch = urlObj.pathname.match(/rooms\/(\d+)/);
+              const qParam = urlObj.searchParams.get("query") || "";
+              title = roomMatch
+                ? `Tiflis Merkez Airbnb Daire (#${roomMatch[1].slice(-4)})`
+                : `Tiflis Airbnb Ev Seçeneği ${qParam}`;
+              city = "Sololaki / Eski Tiflis";
+              notes = "Airbnb ilan linkinden otomatik eklendi.";
+            }
+            // Google Maps linki çözümleme
+            else if (host.includes("google") && (urlObj.pathname.includes("maps") || host.includes("maps"))) {
+              const q = urlObj.searchParams.get("q") || urlObj.searchParams.get("query");
+              const placeMatch = urlObj.pathname.match(/\/place\/([^/]+)/);
+              if (q) {
+                title = decodeURIComponent(q.replace(/\+/g, " "));
+              } else if (placeMatch && placeMatch[1]) {
+                title = decodeURIComponent(placeMatch[1].replace(/\+/g, " "));
+              } else {
+                title = "Haritadan Seçilen Tiflis Mekanı";
+              }
+              location = `${title}, Tbilisi, Georgia`;
+              notes = "Google Haritalar linkinden otomatik çıkarıldı.";
+            }
+            // Uçuş siteleri
+            else if (category === "flight") {
+              if (host.includes("ajet")) title = "AJet İstanbul (SAW) ⇄ Tiflis (TBS) Uçuşu";
+              else if (host.includes("flypgs")) title = "Pegasus İstanbul (SAW) ⇄ Tiflis (TBS) Uçuşu";
+              else if (host.includes("turkishairlines")) title = "THY İstanbul (IST) ⇄ Tiflis (TBS) Uçuşu";
+              else if (host.includes("skyscanner")) title = "Skyscanner İstanbul ⇄ Tiflis Uçak Bileti";
+              else title = `${host.split(".")[0].toUpperCase()} Tiflis Uçak Bileti`;
+              city = "İstanbul ⇄ Tiflis (TBS)";
+              location = "Tbilisi International Airport (TBS), Georgia";
+              notes = "Uçuş linkinden otomatik kaydedildi.";
+            } else {
+              const lastSeg = urlObj.pathname.split("/").filter(Boolean).pop() || host;
+              title = decodeURIComponent(lastSeg.replace(/[-_]+/g, " ")).slice(0, 55);
+            }
+          } else {
+            title = input;
+          }
+        } catch (e) {
+          title = input.slice(0, 60) || "Yeni Tiflis Seçeneği";
+        }
+
+        // Semt tahmini
+        const textCheck = (title + " " + input).toLowerCase();
+        if (textCheck.includes("sololaki")) city = "Sololaki (Merkez)";
+        else if (textCheck.includes("fabrika") || textCheck.includes("marjanishvili") || textCheck.includes("agmashenebeli")) city = "Marjanishvili / Fabrika";
+        else if (textCheck.includes("rustaveli") || textCheck.includes("vera") || textCheck.includes("stamba")) city = "Rustaveli / Vera";
+        else if (textCheck.includes("old town") || textCheck.includes("abanotubani") || textCheck.includes("kote")) city = "Eski Tiflis (Old Town)";
+        else if (textCheck.includes("avlabari")) city = "Avlabari";
+
+        if (category === "hotel") {
+          location = `${title}, ${city}, Tbilisi, Georgia`;
+          const p = Number(priceVal) || 0;
+          if (p > 0) {
+            subtitle = p <= 3500
+              ? `Gecelik ~${p.toLocaleString('tr-TR')} ₺ (3 Gece: ${(p * 3).toLocaleString('tr-TR')} ₺)`
+              : `Toplam Konaklama: ${p.toLocaleString('tr-TR')} ₺ (Gecelik ~${Math.round(p / 3).toLocaleString('tr-TR')} ₺)`;
+          } else {
+            subtitle = "Merkez Konaklama Seçeneği";
+          }
+        } else if (category === "flight") {
+          subtitle = priceVal ? `Toplam Bilet: ${Number(priceVal).toLocaleString('tr-TR')} ₺` : "Direkt Tiflis Uçuş Seçeneği";
+        }
+
+        return {
+          category,
+          title: title || "Tiflis Seçeneği",
+          city,
+          location,
+          subtitle,
+          notes,
+          link,
+          price: Number(priceVal) || 0,
+          date: dateVal || state.data.tripInfo.startDate || "2027-05-15"
+        };
+      }
+
+      // --- YARDIMCI FONKSİYONLAR ---
+      function getGelRate() {
+        const r = Number(state.data?.tripInfo?.gelRate);
+        return r > 0 ? r : DEFAULT_GEL_RATE;
+      }
+
+      function formatTL(val) {
+        const num = Math.round(Number(val) || 0);
+        return num.toLocaleString('tr-TR') + ' ₺';
+      }
+
+      function formatGEL(tlVal) {
+        const rate = getGelRate();
+        const gel = Math.round((Number(tlVal) || 0) / rate);
+        return '~' + gel.toLocaleString('tr-TR') + ' ₾';
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function showToast(msg) {
+        const toast = document.getElementById('toastNotification');
+        const text = document.getElementById('toastText');
+        if (!toast || !text) return;
+        text.textContent = msg;
+        toast.classList.remove('hidden');
+        toast.classList.add('flex');
+        clearTimeout(window._toastTimer);
+        window._toastTimer = setTimeout(() => {
+          toast.classList.add('hidden');
+          toast.classList.remove('flex');
+        }, 3000);
+      }
+
+      // --- HESAPLAMALAR (GÖKSEL & ZELİŞ DETAYLI TL ANALİZİ) ---
+      function calculateStats() {
+        const items = state.data.items || [];
+        const p1Name = state.data.tripInfo.partner1Name || "Göksel";
+        const p2Name = state.data.tripInfo.partner2Name || "Zeliş";
+
+        let bookedTotal = 0;
+        let favoriteTotal = 0;
+        let optionTotal = 0;
+        let bookedCount = 0;
+
+        const catTotals = {
+          flight: { booked: 0, favorite: 0, countBooked: 0, itemsBooked: [] },
+          hotel: { booked: 0, favorite: 0, countBooked: 0, itemsBooked: [] },
+          food: { booked: 0, favorite: 0, countBooked: 0, itemsBooked: [] },
+          museum: { booked: 0, favorite: 0, countBooked: 0, itemsBooked: [] },
+          other: { booked: 0, favorite: 0, countBooked: 0, itemsBooked: [] }
+        };
+
+        let paidDirectP1 = 0;
+        let paidDirectP2 = 0;
+        let paidShared = 0;
+
+        items.forEach((it) => {
+          const price = Number(it.price) || 0;
+          const cat = catTotals[it.category] ? it.category : 'other';
+
+          if (it.status === 'booked') {
+            bookedTotal += price;
+            bookedCount++;
+            catTotals[cat].booked += price;
+            catTotals[cat].countBooked++;
+            catTotals[cat].itemsBooked.push(it);
+
+            if (it.paidBy === 'Göksel' || it.paidBy === 'Ben' || it.paidBy === p1Name) {
+              paidDirectP1 += price;
+            } else if (it.paidBy === 'Zeliş' || it.paidBy === 'Kız Arkadaşım' || it.paidBy === p2Name) {
+              paidDirectP2 += price;
+            } else {
+              paidShared += price;
+            }
+          } else if (it.status === 'favorite') {
+            favoriteTotal += price;
+            catTotals[cat].favorite += price;
+          } else {
+            optionTotal += price;
+          }
+        });
+
+        const plannedTotal = bookedTotal + favoriteTotal;
+        const targetBudget = Number(state.data.tripInfo.targetBudget) || 0;
+        const remainingBudget = targetBudget - bookedTotal;
+        const perPersonBooked = bookedTotal / 2;
+
+        const effectiveP1 = paidDirectP1 + paidShared / 2;
+        const effectiveP2 = paidDirectP2 + paidShared / 2;
+        const diff = Math.abs(effectiveP1 - effectiveP2) / 2;
+
+        return {
+          bookedTotal,
+          favoriteTotal,
+          optionTotal,
+          plannedTotal,
+          bookedCount,
+          totalCount: items.length,
+          targetBudget,
+          remainingBudget,
+          perPersonBooked,
+          catTotals,
+          paidDirectP1,
+          paidDirectP2,
+          paidShared,
+          effectiveP1,
+          effectiveP2,
+          diff,
+          p1Name,
+          p2Name
+        };
+      }
+
+      // --- ÜST ÖZET VE SEKMELERİ RENDER ET ---
+      function renderHeaderAndStats(stats) {
+        const info = state.data.tripInfo;
+        const rate = getGelRate();
+        const topRateEl = document.getElementById('topGelRateDisplay');
+        if (topRateEl) topRateEl.textContent = rate.toFixed(2);
+        const heroRateEl = document.getElementById('heroGelRateText');
+        if (heroRateEl) heroRateEl.textContent = rate.toFixed(2).replace('.', ',');
+
+        document.getElementById('tripTitleDisplay').textContent = info.title || 'Göksel & Zeliş • Tiflis Rotası 🇬🇪';
+        document.getElementById('tripDestDisplay').textContent =
+          `📍 Odak Bölgeler: ${info.destinations || '-'} • Kur: 1 Lari (₾) = ${rate.toFixed(2)} ₺`;
+        document.getElementById('tripDatesBadge').textContent =
+          `📅 ${info.startDate || ''} ➔ ${info.endDate || ''}`;
+
+        document.getElementById('statBookedTotal').textContent = formatTL(stats.bookedTotal);
+        document.getElementById('statBookedCount').textContent =
+          `${stats.bookedCount} kalem (${formatGEL(stats.bookedTotal)})`;
+
+        document.getElementById('statPlannedTotal').textContent = formatTL(stats.plannedTotal);
+        document.getElementById('statPerPerson').textContent =
+          `Kişi Başı: ${formatTL(stats.perPersonBooked)} (${formatGEL(stats.perPersonBooked)})`;
+
+        document.getElementById('statTargetBudget').textContent = formatTL(stats.targetBudget);
+        const remEl = document.getElementById('statRemainingBudget');
+        if (stats.remainingBudget >= 0) {
+          remEl.textContent = `Bütçeden Kalan: ${formatTL(stats.remainingBudget)}`;
+          remEl.className = 'text-[11px] text-emerald-300 mt-1 font-semibold';
+        } else {
+          remEl.textContent = `Bütçe Aşımı: ${formatTL(Math.abs(stats.remainingBudget))}`;
+          remEl.className = 'text-[11px] text-rose-300 mt-1 font-bold';
+        }
+
+        const splitEl = document.getElementById('statSplitSummary');
+        if (stats.diff < 1) {
+          splitEl.textContent = '🎉 Göksel & Zeliş tam eşit!';
+        } else if (stats.effectiveP1 > stats.effectiveP2) {
+          splitEl.textContent = `${stats.p2Name} ➔ ${stats.p1Name}: ${formatTL(stats.diff)}`;
+        } else {
+          splitEl.textContent = `${stats.p1Name} ➔ ${stats.p2Name}: ${formatTL(stats.diff)}`;
+        }
+
+        document.getElementById('tabCountAll').textContent = stats.totalCount;
+        document.getElementById('tabCountBooked').textContent = stats.bookedCount;
+
+        // Aktif kullanıcı butonu (Göksel / Zeliş)
+        const btnGoksel = document.getElementById('userBtnGoksel');
+        const btnZelis = document.getElementById('userBtnZelis');
+        if (state.activeUser === 'Göksel') {
+          btnGoksel.className = 'px-2.5 py-1 rounded-lg font-bold transition cursor-pointer bg-indigo-600 text-white text-[11px] shadow';
+          btnZelis.className = 'px-2.5 py-1 rounded-lg font-bold transition cursor-pointer text-pink-200 hover:text-white text-[11px]';
+        } else {
+          btnZelis.className = 'px-2.5 py-1 rounded-lg font-bold transition cursor-pointer bg-pink-600 text-white text-[11px] shadow';
+          btnGoksel.className = 'px-2.5 py-1 rounded-lg font-bold transition cursor-pointer text-indigo-200 hover:text-white text-[11px]';
+        }
+      }
+
+      // --- SEKME 1: SEÇENEKLER VE KARTLARI RENDER ET ---
+      function renderPlannerView() {
+        const catBar = document.getElementById('categoryFilterBar');
+        const items = state.data.items || [];
+        catBar.innerHTML = Object.values(CATEGORIES).map((c) => {
+          const count = c.id === 'all' ? items.length : items.filter((i) => i.category === c.id).length;
+          const active = state.categoryFilter === c.id;
+          return `
+            <button
+              onclick="window.appActions.setCategoryFilter('${c.id}')"
+              class="px-3.5 py-2 rounded-xl text-xs font-extrabold whitespace-nowrap transition cursor-pointer flex items-center gap-1.5 ${
+                active
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+              }"
+            >
+              <span>${c.label}</span>
+              <span class="px-1.5 py-0.5 rounded-full text-[10px] ${active ? 'bg-white/25 text-white' : 'bg-white text-slate-600'}">${count}</span>
+            </button>
+          `;
+        }).join('');
+
+        const statuses = [
+          { id: 'all', label: 'Tümü' },
+          { id: 'booked', label: '✅ Tutuldu / Alındı' },
+          { id: 'favorite', label: '⭐ Favorilerimiz' },
+          { id: 'option', label: '🤔 Alternatif Seçenekler' }
+        ];
+        const statusBar = document.getElementById('statusFilterBar');
+        statusBar.innerHTML = statuses.map((s) => {
+          const active = state.statusFilter === s.id;
+          return `
+            <button
+              onclick="window.appActions.setStatusFilter('${s.id}')"
+              class="px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition cursor-pointer ${
+                active ? 'bg-slate-900 text-white shadow-xs' : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+              }"
+            >
+              ${s.label}
+            </button>
+          `;
+        }).join('');
+
+        const filtered = items.filter((it) => {
+          if (state.categoryFilter !== 'all' && it.category !== state.categoryFilter) return false;
+          if (state.statusFilter !== 'all' && it.status !== state.statusFilter) return false;
+          if (state.searchQuery.trim() !== '') {
+            const q = state.searchQuery.toLowerCase();
+            const hay = `${it.title} ${it.city} ${it.subtitle} ${it.location} ${it.notes}`.toLowerCase();
+            if (!hay.includes(q)) return false;
+          }
+          return true;
+        });
+
+        const grid = document.getElementById('itemsGrid');
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full bg-white rounded-3xl border border-dashed border-slate-300 p-10 text-center space-y-3">
+              <div class="text-3xl">✈️🏨🥟</div>
+              <div class="text-base font-extrabold text-slate-800">Bu filtrede henüz bir seçenek bulunmuyor</div>
+              <p class="text-xs text-slate-500 max-w-md mx-auto">
+                Üstteki kutuya Booking, Airbnb veya uçuş linki yapıştırarak otomatik ekleyebilir ya da filtreyi "Tümü" yapabilirsiniz.
+              </p>
+              <button
+                onclick="window.appActions.openItemModal()"
+                class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold cursor-pointer"
+              >
+                + Yeni Seçenek Ekle
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = filtered.map((item) => {
+          const catInfo = CATEGORIES[item.category] || CATEGORIES.other;
+          let borderClass = 'border-slate-200 bg-white';
+          let statusBadge = '<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700">🤔 Seçenek</span>';
+          if (item.status === 'booked') {
+            borderClass = 'border-emerald-500 ring-2 ring-emerald-500/20 bg-emerald-50/15';
+            statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800">✅ Tutuldu</span>';
+          } else if (item.status === 'favorite') {
+            borderClass = 'border-amber-400 ring-1 ring-amber-400/30 bg-amber-50/15';
+            statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800">⭐ Favorimiz</span>';
+          }
+
+          const mapsUrl = item.location
+            ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`
+            : null;
+
+          const paidLabel =
+            item.paidBy === 'Göksel' || item.paidBy === 'Ben'
+              ? `👦 Göksel`
+              : item.paidBy === 'Zeliş' || item.paidBy === 'Kız Arkadaşım'
+              ? `👩 Zeliş`
+              : '🤝 Ortak';
+
+          const timeBadgeHtml = item.timeStart
+            ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-950 border border-amber-300 font-extrabold text-[11px]">
+                ⏰ ${escapeHtml(item.timeStart)}${item.timeEnd ? ` ➔ ${escapeHtml(item.timeEnd)}` : ''}
+               </span>`
+            : `<button onclick="window.appActions.openReminderModal('${item.id}')" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-900 border border-slate-200 font-bold text-[11px] cursor-pointer transition">
+                ⏰ Saat Ekle
+               </button>`;
+
+          return `
+            <div class="rounded-3xl border p-5 shadow-xs flex flex-col justify-between card-hover ${borderClass}">
+              <div>
+                <div class="flex items-start justify-between gap-2 mb-2.5">
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold border ${catInfo.badge}">
+                      ${catInfo.short}
+                    </span>
+                    ${statusBadge}
+                  </div>
+                  <div class="text-right shrink-0">
+                    <div class="text-lg font-extrabold text-slate-900">${formatTL(item.price)}</div>
+                    <div class="text-[10px] font-bold text-slate-500">${formatGEL(item.price)}</div>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-indigo-600 mb-1">
+                  <span>📍 ${escapeHtml(item.city || 'Tiflis')}</span>
+                  ${item.date ? `<span>• 📅 ${escapeHtml(item.date)}</span>` : ''}
+                  ${timeBadgeHtml}
+                </div>
+
+                <h3 class="text-base font-extrabold text-slate-900 leading-snug">${escapeHtml(item.title)}</h3>
+
+                ${item.subtitle ? `
+                  <div class="mt-2 px-3 py-1.5 rounded-xl bg-indigo-50/80 border border-indigo-100 text-xs font-bold text-indigo-950">
+                    💡 ${escapeHtml(item.subtitle)}
+                  </div>
+                ` : ''}
+
+                <div class="flex flex-wrap items-center justify-between gap-1.5 mt-2.5 text-[11px]">
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-bold">
+                      💳 Ödeyen: ${paidLabel}
+                    </span>
+                    ${item.addedBy ? `
+                      <span class="px-2.5 py-0.5 rounded-lg bg-pink-50 text-pink-700 font-bold">
+                        ✍️ ${escapeHtml(item.addedBy)}
+                      </span>
+                    ` : ''}
+                  </div>
+                  <button
+                    type="button"
+                    onclick="window.appActions.openReminderModal('${item.id}')"
+                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-300 hover:to-orange-300 text-slate-950 font-extrabold text-[11px] shadow-2xs cursor-pointer transition"
+                    title="iPhone Anımsatıcı ve Takvime Tek Tuşla Ekle"
+                  >
+                    🔔 Anımsatıcı Kur
+                  </button>
+                </div>
+
+                ${item.location ? `
+                  <div class="mt-3 p-3 rounded-2xl bg-slate-50 border border-slate-200/90 text-xs space-y-2">
+                    <div class="flex items-start gap-1.5 text-slate-700">
+                      <span class="shrink-0">🗺️</span>
+                      <span class="font-semibold leading-snug">${escapeHtml(item.location)}</span>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      <a
+                        href="${mapsUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] transition shadow-2xs"
+                      >
+                        📍 Google Maps'te Aç
+                      </a>
+                      <button
+                        type="button"
+                        onclick="window.appActions.copyText('${escapeHtml(item.location)}')"
+                        class="px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-bold text-[11px] transition cursor-pointer"
+                      >
+                        📋 Adresi Kopyala
+                      </button>
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${item.notes ? `
+                  <div class="mt-2.5 p-3 rounded-2xl bg-amber-50/70 border border-amber-200/70 text-xs text-slate-700 leading-relaxed">
+                    💬 ${escapeHtml(item.notes)}
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100 space-y-2.5">
+                <div class="flex items-center justify-between text-xs">
+                  <div>
+                    ${item.link ? `
+                      <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-800 font-extrabold inline-flex items-center gap-1">
+                        🔗 İlanı / Linki Aç ↗
+                      </a>
+                    ` : '<span class="text-slate-400">Link yok</span>'}
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button
+                      onclick="window.appActions.openItemModal('${item.id}')"
+                      class="px-2.5 py-1 rounded-lg text-slate-600 hover:bg-slate-100 font-bold cursor-pointer"
+                    >
+                      ✏️ Düzenle
+                    </button>
+                    <button
+                      onclick="window.appActions.deleteItem('${item.id}')"
+                      class="px-2 py-1 rounded-lg text-rose-600 hover:bg-rose-50 font-bold cursor-pointer"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-2xl text-[11px] font-extrabold">
+                  <button
+                    onclick="window.appActions.setItemStatus('${item.id}', 'option')"
+                    class="py-1.5 rounded-xl transition cursor-pointer ${item.status === 'option' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-900'}"
+                  >
+                    Seçenek
+                  </button>
+                  <button
+                    onclick="window.appActions.setItemStatus('${item.id}', 'favorite')"
+                    class="py-1.5 rounded-xl transition cursor-pointer ${item.status === 'favorite' ? 'bg-amber-500 text-white shadow-xs' : 'text-slate-500 hover:text-amber-700'}"
+                  >
+                    ⭐ Favori
+                  </button>
+                  <button
+                    onclick="window.appActions.setItemStatus('${item.id}', 'booked')"
+                    class="py-1.5 rounded-xl transition cursor-pointer ${item.status === 'booked' ? 'bg-emerald-600 text-white shadow-xs' : 'text-slate-500 hover:text-emerald-700'}"
+                  >
+                    ✅ Tutuldu
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // --- SEKME 2: KATEGORİLERE AYRILMIŞ TİFLİS ÖNERİLERİ & YENİ ÖNERİ ÜRETİCİ ---
+      function getAllRecommendations() {
+        const custom = Array.isArray(state.data.customRecommendations)
+          ? state.data.customRecommendations
+          : [];
+        return [...custom, ...INITIAL_RECOMMENDATIONS];
+      }
+
+      function renderRecommendationsView() {
+        const container = document.getElementById('recommendationsContainer');
+        const allRecs = getAllRecommendations();
+        const activeCatObj = REC_CATEGORIES[state.activeRecCat] || REC_CATEGORIES.restoran;
+
+        // Alt kategori butonları
+        const subTabsHtml = Object.values(REC_CATEGORIES).map((rc) => {
+          const count = allRecs.filter((r) => r.recCat === rc.id).length;
+          const isActive = state.activeRecCat === rc.id;
+          return `
+            <button
+              onclick="window.appActions.setRecCategory('${rc.id}')"
+              class="px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition cursor-pointer flex items-center gap-2 ${
+                isActive
+                  ? 'bg-slate-900 text-white shadow-md scale-[1.02]'
+                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+              }"
+            >
+              <span>${rc.label}</span>
+              <span class="px-2 py-0.5 rounded-full text-[11px] ${
+                isActive ? 'bg-amber-400 text-slate-950 font-black' : 'bg-slate-100 text-slate-600'
+              }">${count}</span>
+            </button>
+          `;
+        }).join('');
+
+        const filteredRecs = allRecs.filter((r) => r.recCat === state.activeRecCat);
+
+        const cardsHtml = filteredRecs.map((rec) => {
+          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(rec.location)}`;
+          return `
+            <div class="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between card-hover fade-in">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-2.5">
+                  <span class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 border border-amber-300">
+                    ${escapeHtml(rec.badge)}
+                  </span>
+                  <span class="text-xs font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200">
+                    ${rec.estimatedPriceTL > 0 ? '~' + formatTL(rec.estimatedPriceTL) : 'Ücretsiz'}
+                  </span>
+                </div>
+
+                <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider">
+                  📍 ${escapeHtml(rec.area)}
+                </div>
+                <h3 class="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5 leading-snug">
+                  ${escapeHtml(rec.title)}
+                </h3>
+
+                <div class="mt-2.5 p-2.5 rounded-xl bg-pink-50/70 border border-pink-200/70 text-xs">
+                  <div class="font-extrabold text-pink-900">🌟 Kim Öneriyor?</div>
+                  <div class="text-pink-800 mt-0.5">${escapeHtml(rec.whoRecommends)}</div>
+                </div>
+
+                <div class="mt-2 p-2.5 rounded-xl bg-indigo-50/70 border border-indigo-200/70 text-xs">
+                  <div class="font-extrabold text-indigo-900">💰 Ortalama Fiyat Bilgisi:</div>
+                  <div class="text-indigo-800 font-semibold mt-0.5">${escapeHtml(rec.avgPriceText)}</div>
+                </div>
+
+                <p class="mt-3 text-xs text-slate-600 leading-relaxed">
+                  ${escapeHtml(rec.description)}
+                </p>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5">
+                  <a
+                    href="${mapsUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition"
+                  >
+                    🗺️ Google Maps'te Aç
+                  </a>
+                  <button
+                    onclick="window.appActions.copyText('${escapeHtml(rec.location)}')"
+                    class="px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer"
+                    title="Konumu Kopyala"
+                  >
+                    📋
+                  </button>
+                </div>
+
+                <button
+                  onclick="window.appActions.addRecommendationToPlan('${rec.id}')"
+                  class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold transition cursor-pointer shadow-xs"
+                >
+                  ➕ Bizim Plana Ekle
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        container.innerHTML = `
+          <div class="space-y-5">
+            <!-- Üst Kategori Seçim Barı -->
+            <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white rounded-3xl p-5 sm:p-6 shadow-lg">
+              <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="space-y-1.5">
+                  <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-black/20 backdrop-blur-xs">
+                    🇬🇪 Kategorilere Ayrılmış Tiflis Keşif Motoru
+                  </span>
+                  <h2 class="text-xl sm:text-2xl font-extrabold">
+                    💡 Göksel & Zeliş • Tiflis Gezi, Restoran & Otel Önerileri
+                  </h2>
+                  <p class="text-xs sm:text-sm text-white/95">
+                    Aşağıdan istediğiniz kategoriyi seçin. Daha fazla mekan görmek istediğinizde <strong>"${activeCatObj.btnText}"</strong> butonuna basarak anında yeni öneriler çıkartabilirsiniz!
+                  </p>
+                </div>
+
+                <!-- CANLI YENİ ÖNERİ İSTE BUTONU -->
+                <button
+                  onclick="window.appActions.discoverNewRecommendation()"
+                  ${state.isGeneratingRec ? 'disabled' : ''}
+                  class="px-5 py-3.5 rounded-2xl bg-slate-950 hover:bg-slate-900 text-amber-300 font-extrabold text-xs sm:text-sm shadow-xl border border-white/20 cursor-pointer shrink-0 transition flex items-center justify-center gap-2"
+                >
+                  <span>${state.isGeneratingRec ? '⏳ Yeni Öneri Bulunuyor...' : activeCatObj.btnText}</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- KATEGORİ SEKMELERİ (RESTORAN / GEZİ YERİ / KAFE / HAMAM / OTEL) -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+              ${subTabsHtml}
+            </div>
+
+            <!-- Seçili Kategori Başlığı ve Hızlı Yeni Öneri Barı -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900">${activeCatObj.title}</h3>
+                <p class="text-xs text-slate-500 mt-0.5">${activeCatObj.desc}</p>
+              </div>
+              <button
+                onclick="window.appActions.discoverNewRecommendation()"
+                class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-xs cursor-pointer shrink-0 shadow-xs transition"
+              >
+                🎲 Yeni ${activeCatObj.label.replace(/^[^\s]+\s/, '')} Öner!
+              </button>
+            </div>
+
+            <!-- Seçili Kategorideki Öneri Kartları -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              ${cardsHtml}
+            </div>
+          </div>
+        `;
+      }
+
+      // --- SEKME 3: DETAYLI HESAP KİTAP & GÖKSEL-ZELİŞ ANALİZİ RENDER ---
+      function renderBudgetView(stats) {
+        const container = document.getElementById('budgetAnalysisContainer');
+        const catOrder = ['flight', 'hotel', 'food', 'museum', 'other'];
+
+        const catCardsHtml = catOrder.map((catKey) => {
+          const catMeta = CATEGORIES[catKey];
+          const catData = stats.catTotals[catKey];
+          const pct = stats.bookedTotal > 0 ? Math.round((catData.booked / stats.bookedTotal) * 100) : 0;
+
+          const itemsRows = catData.itemsBooked.length === 0
+            ? `<div class="text-xs text-slate-400 italic py-2">Bu başlıkta henüz "✅ Tutuldu" olarak işaretlenen harcama yok.</div>`
+            : catData.itemsBooked.map((it) => `
+                <div class="py-2 flex items-center justify-between gap-2 text-xs border-b border-slate-100 last:border-0">
+                  <div>
+                    <span class="font-bold text-slate-800">${escapeHtml(it.title)}</span>
+                    <span class="ml-1.5 px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold">Ödeyen: ${escapeHtml(it.paidBy)}</span>
+                  </div>
+                  <span class="font-extrabold text-slate-900 shrink-0">${formatTL(it.price)}</span>
+                </div>
+              `).join('');
+
+          return `
+            <div class="bg-white rounded-3xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold border ${catMeta.badge}">
+                      ${catMeta.label}
+                    </span>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-xl font-extrabold text-slate-900">${formatTL(catData.booked)}</div>
+                    <div class="text-[11px] font-bold text-slate-500">Toplamın %${pct}'i</div>
+                  </div>
+                </div>
+
+                <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden mt-3">
+                  <div class="${catMeta.bar} h-full rounded-full transition-all" style="width: ${pct}%"></div>
+                </div>
+
+                <div class="mt-4">
+                  <div class="text-xs font-extrabold text-slate-700 mb-1.5">
+                    Kesinleşen Harcamalar (${catData.countBooked} Kalem):
+                  </div>
+                  <div class="bg-slate-50 rounded-2xl p-3 border border-slate-200/70">
+                    ${itemsRows}
+                  </div>
+                  ${catData.favorite > 0 ? `
+                    <div class="mt-2 flex items-center justify-between text-xs text-amber-900 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200">
+                      <span>⭐ Favorilerde Bekleyen Planlanan:</span>
+                      <span class="font-extrabold">+${formatTL(catData.favorite)}</span>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="text-slate-500">Kişi Başı Pay: <strong class="text-slate-900">${formatTL(catData.booked / 2)}</strong></span>
+                <button
+                  onclick="window.appActions.openItemModalWithCategory('${catKey}')"
+                  class="text-indigo-600 hover:text-indigo-800 font-extrabold cursor-pointer"
+                >
+                  + Bu Başlığa Ekle
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        let settlementHtml = '';
+        if (stats.diff < 1) {
+          settlementHtml = `<div class="text-sm font-extrabold text-emerald-900">🎉 Göksel ve Zeliş'in harcamaları tam eşit! Kimsenin kimseye borcu yok.</div>`;
+        } else if (stats.effectiveP1 > stats.effectiveP2) {
+          settlementHtml = `
+            <div class="text-sm font-bold text-emerald-950">
+              👉 <strong>👩 ${escapeHtml(stats.p2Name)}</strong>, <strong>👦 ${escapeHtml(stats.p1Name)}</strong>'e
+              <span class="px-2 py-0.5 rounded-lg bg-emerald-200 text-emerald-950 font-extrabold">${formatTL(stats.diff)}</span>
+              gönderirse tüm Tiflis masrafları yarı yarıya eşitlenir.
+            </div>
+          `;
+        } else {
+          settlementHtml = `
+            <div class="text-sm font-bold text-emerald-950">
+              👉 <strong>👦 ${escapeHtml(stats.p1Name)}</strong>, <strong>👩 ${escapeHtml(stats.p2Name)}</strong>'e
+              <span class="px-2 py-0.5 rounded-lg bg-emerald-200 text-emerald-950 font-extrabold">${formatTL(stats.diff)}</span>
+              gönderirse tüm Tiflis masrafları yarı yarıya eşitlenir.
+            </div>
+          `;
+        }
+
+        container.innerHTML = `
+          <div class="space-y-6">
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs">
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div>
+                  <h2 class="text-xl font-extrabold text-slate-900">📊 Göksel & Zeliş • Tiflis Hesap Kitap & Bütçe Analizi</h2>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-1">
+                    Uçak biletine, konaklamaya, restoranlara ve hamam/etkinliklere toplam ne kadar gittiğinin detaylı analizi:
+                  </p>
+                </div>
+                <button
+                  onclick="window.appActions.openItemModal()"
+                  class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold cursor-pointer self-start"
+                >
+                  + Yeni Harcama Ekle
+                </button>
+              </div>
+
+              <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 mt-4">
+                <div class="p-3.5 rounded-2xl bg-sky-50 border border-sky-200">
+                  <div class="text-[11px] font-extrabold text-sky-800">✈️ Uçak Biletleri</div>
+                  <div class="text-lg font-extrabold text-slate-900 mt-1">${formatTL(stats.catTotals.flight.booked)}</div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-violet-50 border border-violet-200">
+                  <div class="text-[11px] font-extrabold text-violet-800">🏨 Konaklama</div>
+                  <div class="text-lg font-extrabold text-slate-900 mt-1">${formatTL(stats.catTotals.hotel.booked)}</div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-rose-50 border border-rose-200">
+                  <div class="text-[11px] font-extrabold text-rose-800">🍽️ Restoran & Kafe</div>
+                  <div class="text-lg font-extrabold text-slate-900 mt-1">${formatTL(stats.catTotals.food.booked)}</div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+                  <div class="text-[11px] font-extrabold text-amber-800">🎟️ Hamam & Etkinlik</div>
+                  <div class="text-lg font-extrabold text-slate-900 mt-1">${formatTL(stats.catTotals.museum.booked)}</div>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 col-span-2 lg:col-span-1">
+                  <div class="text-[11px] font-extrabold text-emerald-800">🛍️ Harç, SIM & Taksi</div>
+                  <div class="text-lg font-extrabold text-slate-900 mt-1">${formatTL(stats.catTotals.other.booked)}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
+              <h3 class="text-base sm:text-lg font-extrabold text-slate-900">
+                💑 Göksel & Zeliş Ödeme Dağılımı ve Mahsuplaşma
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 rounded-2xl bg-indigo-50 border border-indigo-200">
+                  <div class="text-xs font-extrabold text-indigo-800">👦 ${escapeHtml(stats.p1Name)} Tarafından Ödenen</div>
+                  <div class="text-xl font-extrabold text-slate-900 mt-1">${formatTL(stats.paidDirectP1)}</div>
+                  <div class="text-[11px] text-slate-600 mt-1">Ortak ödemeler dahil toplam payı: ${formatTL(stats.effectiveP1)}</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-pink-50 border border-pink-200">
+                  <div class="text-xs font-extrabold text-pink-800">👩 ${escapeHtml(stats.p2Name)} Tarafından Ödenen</div>
+                  <div class="text-xl font-extrabold text-slate-900 mt-1">${formatTL(stats.paidDirectP2)}</div>
+                  <div class="text-[11px] text-slate-600 mt-1">Ortak ödemeler dahil toplam payı: ${formatTL(stats.effectiveP2)}</div>
+                </div>
+                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 flex flex-col justify-center">
+                  <div class="text-xs font-extrabold text-emerald-800 uppercase mb-1">⚖️ Eşitleme Sonucu</div>
+                  ${settlementHtml}
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              ${catCardsHtml}
+            </div>
+          </div>
+        `;
+      }
+
+      // --- SEKME 4: KESİNLEŞEN PLAN & KONUMLAR RENDER ---
+      function renderItineraryView() {
+        const container = document.getElementById('itineraryContainer');
+        const bookedItems = (state.data.items || [])
+          .filter((i) => i.status === 'booked')
+          .sort((a, b) => {
+            const da = `${a.date || '9999-99-99'} ${a.timeStart || '23:59'}`;
+            const db = `${b.date || '9999-99-99'} ${b.timeStart || '23:59'}`;
+            return da.localeCompare(db);
+          });
+
+        if (bookedItems.length === 0) {
+          container.innerHTML = `
+            <div class="bg-white rounded-3xl border border-slate-200 p-10 text-center space-y-3">
+              <div class="text-3xl">📍</div>
+              <div class="text-base font-extrabold text-slate-800">Henüz kesinleşen (Tutuldu) bir yer işaretlemediniz</div>
+              <p class="text-xs text-slate-500">Kartların altındaki "✅ Tutuldu" butonuna bastığınızda tüm konumlar burada listelenir.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const rowsHtml = bookedItems.map((it) => {
+          const catMeta = CATEGORIES[it.category] || CATEGORIES.other;
+          const mapsUrl = it.location
+            ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(it.location)}`
+            : null;
+
+          return `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold border ${catMeta.badge}">${catMeta.short}</span>
+                  <span class="text-xs font-extrabold text-indigo-700">${escapeHtml(it.city || '')}</span>
+                  ${it.date ? `<span class="text-xs font-bold text-slate-600">📅 ${escapeHtml(it.date)}</span>` : ''}
+                  ${it.timeStart ? `<span class="px-2 py-0.5 rounded-lg bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-extrabold">⏰ ${escapeHtml(it.timeStart)}${it.timeEnd ? ` ➔ ${escapeHtml(it.timeEnd)}` : ''}</span>` : ''}
+                  <span class="text-xs font-extrabold text-slate-900">• ${formatTL(it.price)}</span>
+                </div>
+                <div class="text-base font-extrabold text-slate-900">${escapeHtml(it.title)}</div>
+                ${it.subtitle ? `<div class="text-xs text-indigo-900 font-semibold">${escapeHtml(it.subtitle)}</div>` : ''}
+                ${it.location ? `
+                  <div class="text-xs text-slate-800 font-medium pt-1">
+                    📍 <strong>Adres:</strong> ${escapeHtml(it.location)}
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2 shrink-0">
+                <button
+                  onclick="window.appActions.openReminderModal('${it.id}')"
+                  class="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-slate-950 text-xs font-extrabold transition cursor-pointer shadow-2xs"
+                >
+                  🔔 iPhone Anımsatıcı Kur
+                </button>
+                ${mapsUrl ? `
+                  <a
+                    href="${mapsUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition"
+                  >
+                    🗺️ Google Haritalar'da Aç
+                  </a>
+                ` : ''}
+                ${it.location ? `
+                  <button
+                    onclick="window.appActions.copyText('${escapeHtml(it.location)}')"
+                    class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-xs font-bold cursor-pointer"
+                  >
+                    📋 Adresi Kopyala
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        container.innerHTML = `
+          <div class="space-y-6">
+            <div class="bg-emerald-900 text-white rounded-3xl p-6 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/25 border border-emerald-400/40 text-emerald-200">
+                  ✅ Kesinleşen Tiflis Rehberimiz
+                </span>
+                <h2 class="text-xl sm:text-2xl font-extrabold mt-2">
+                  📍 Göksel & Zeliş • Tutulan Yerler, Saatler & Tam Konumlar (${bookedItems.length})
+                </h2>
+                <p class="text-xs sm:text-sm text-emerald-100 mt-1">
+                  Saat ve tarih sırasına göre dizilmiştir. Her kalemin yanındaki <strong>"🔔 iPhone Anımsatıcı Kur"</strong> butonuyla tek tuşla telefonunuza alarm ekleyebilirsiniz.
+                </p>
+              </div>
+              <button
+                onclick="window.print()"
+                class="px-4 py-2.5 rounded-2xl bg-white text-emerald-950 font-extrabold text-xs sm:text-sm hover:bg-emerald-50 cursor-pointer shrink-0 shadow"
+              >
+                🖨️ Yazdır / PDF
+              </button>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs space-y-3">
+              ${rowsHtml}
+            </div>
+          </div>
+        `;
+      }
+
+      // --- TÜM GÖRÜNÜMÜ GÜNCELLE ---
+      function renderAll() {
+        const stats = calculateStats();
+        renderHeaderAndStats(stats);
+
+        const tabs = ['planner', 'recommendations', 'budget', 'itinerary'];
+        tabs.forEach((t) => {
+          const sec = document.getElementById('view-' + t);
+          if (sec) {
+            if (state.activeTab === t) sec.classList.remove('hidden');
+            else sec.classList.add('hidden');
+          }
+
+          const dBtn = document.getElementById('tabBtn-' + t);
+          if (dBtn) {
+            if (state.activeTab === t) {
+              dBtn.className = 'px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm transition cursor-pointer bg-white text-slate-900 shadow';
+            } else if (t === 'recommendations') {
+              dBtn.className = 'px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm transition cursor-pointer bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow';
+            } else {
+              dBtn.className = 'px-4 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm transition cursor-pointer bg-white/10 text-white hover:bg-white/20';
+            }
+          }
+
+          const mBtn = document.getElementById('mobTab-' + t);
+          if (mBtn) {
+            if (state.activeTab === t) {
+              mBtn.className = 'flex flex-col items-center justify-center py-1.5 rounded-xl text-indigo-600 bg-indigo-50 font-extrabold text-[11px] cursor-pointer';
+            } else {
+              mBtn.className = 'flex flex-col items-center justify-center py-1.5 rounded-xl text-slate-500 font-bold text-[11px] cursor-pointer';
+            }
+          }
+        });
+
+        if (state.activeTab === 'planner') renderPlannerView();
+        if (state.activeTab === 'recommendations') renderRecommendationsView();
+        if (state.activeTab === 'budget') renderBudgetView(stats);
+        if (state.activeTab === 'itinerary') renderItineraryView();
+      }
+
+      // --- KULLANICI AKSİYONLARI (GLOBAL) ---
+      window.appActions = {
+        switchTab: function (tabName) {
+          state.activeTab = tabName;
+          renderAll();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        setRecCategory: function (recCatId) {
+          state.activeRecCat = recCatId;
+          renderAll();
+        },
+        setActiveUser: function (userName) {
+          state.activeUser = userName;
+          try {
+            localStorage.setItem(USER_PREF_KEY, userName);
+          } catch (e) {}
+          renderAll();
+          showToast(`Aktif düzenleyen: ${userName}`);
+        },
+        setCategoryFilter: function (cat) {
+          state.categoryFilter = cat;
+          renderPlannerView();
+        },
+        setStatusFilter: function (st) {
+          state.statusFilter = st;
+          renderPlannerView();
+        },
+        handleSearch: function (val) {
+          state.searchQuery = val || '';
+          renderPlannerView();
+        },
+        forceCloudSync: function () {
+          if (window._cloudFetchNow) {
+            window._cloudFetchNow();
+            showToast('🔄 Buluttan son değişiklikler kontrol edildi!');
+          } else {
+            saveData();
+            showToast('✅ Cihaz hafızası ile eşitlendi!');
+          }
+        },
+        updateQuickGelCalc: function (gelVal) {
+          const el = document.getElementById('quickGelCalcResult');
+          if (!el) return;
+          const num = Number(gelVal) || 0;
+          const tl = Math.round(num * getGelRate());
+          el.textContent = `= ${tl.toLocaleString('tr-TR')} ₺`;
+        },
+        convertModalGelToTl: function (gelVal) {
+          const num = Number(gelVal) || 0;
+          if (num > 0) {
+            const tl = Math.round(num * getGelRate());
+            const priceInput = document.getElementById('formPrice');
+            if (priceInput) priceInput.value = tl;
+          }
+        },
+        openExportSitesModal: function () {
+          const modal = document.getElementById('exportSitesModal');
+          if (modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+          }
+        },
+        closeExportSitesModal: function () {
+          const modal = document.getElementById('exportSitesModal');
+          if (modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+          }
+        },
+        copyFullAppHtmlForSites: function () {
+          const fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+          window.appActions.copyText(fullHtml);
+          showToast('📋 Tüm uygulama HTML kodu kopyalandı! Google Sites > Kodu Gömmek kısmına yapıştırabilirsiniz.');
+        },
+        downloadFullAppHtmlFile: function () {
+          const fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+          const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'goksel-zelis-tiflis-app.html';
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast('💾 Çalışır HTML uygulama dosyası indirildi!');
+        },
+        // ANA EKRANDAKİ AKILLI LİNK KUTUSUNDAN OTOMATİK EKLEME (TL VEYA LARİ + SAAT DESTEKLİ)
+        handleQuickSmartLinkAdd: async function (e) {
+          e.preventDefault();
+          const urlVal = document.getElementById('quickSmartUrl').value.trim();
+          const rawPrice = Number(document.getElementById('quickSmartPrice').value) || 0;
+          const currency = document.getElementById('quickSmartCurrency')?.value || 'TRY';
+          const dateVal = document.getElementById('quickSmartDate').value;
+          const timeVal = document.getElementById('quickSmartTime')?.value || '';
+          if (!urlVal) return;
+
+          const rate = getGelRate();
+          const finalPriceTL = currency === 'GEL' ? Math.round(rawPrice * rate) : Math.round(rawPrice);
+
+          const parsed = smartParseUrlAndText(urlVal, finalPriceTL, dateVal);
+          if (currency === 'GEL' && rawPrice > 0) {
+            parsed.subtitle = `${rawPrice} ₾ Lari (x${rate} = ${finalPriceTL.toLocaleString('tr-TR')} ₺) • ` + (parsed.subtitle || '');
+          }
+
+          const newItem = {
+            id: 'smart-' + Date.now(),
+            category: parsed.category,
+            status: 'favorite',
+            title: parsed.title,
+            city: parsed.city,
+            date: parsed.date,
+            timeStart: timeVal,
+            timeEnd: '',
+            subtitle: parsed.subtitle,
+            price: parsed.price,
+            paidBy: state.activeUser,
+            addedBy: state.activeUser,
+            location: parsed.location,
+            link: parsed.link,
+            notes: parsed.notes
+          };
+
+          state.data.items = [newItem, ...state.data.items];
+          saveData();
+
+          document.getElementById('quickSmartUrl').value = '';
+          document.getElementById('quickSmartPrice').value = '';
+          showToast(`🪄 "${parsed.title}" (${timeVal ? 'Saat ' + timeVal + ' • ' : ''}${formatTL(finalPriceTL)}) eklendi!`);
+        },
+        openSmartLinkModal: function () {
+          window.appActions.openItemModal();
+          setTimeout(() => {
+            const el = document.getElementById('modalSmartUrlInput');
+            if (el) el.focus();
+          }, 150);
+        },
+        // iPHONE ANIMSATICI & TAKVİM (.ICS + GOOGLE TAKVİM) MODALI AÇ / KAPAT / ÇALIŞTIR
+        openReminderModal: function (itemId) {
+          const item = (state.data.items || []).find((i) => i.id === itemId);
+          if (!item) return;
+
+          const catMeta = CATEGORIES[item.category] || CATEGORIES.other;
+          document.getElementById('remItemId').value = item.id;
+          document.getElementById('remItemCategoryBadge').textContent = catMeta.label;
+          document.getElementById('remItemTitle').textContent = item.title;
+          document.getElementById('remItemLocation').textContent = '📍 ' + (item.location || item.city || 'Tiflis');
+
+          document.getElementById('remDateInput').value = item.date || state.data.tripInfo.startDate || '2027-05-15';
+          document.getElementById('remTimeStartInput').value = item.timeStart || (item.category === 'flight' ? '10:25' : item.category === 'hotel' ? '14:00' : '19:30');
+          document.getElementById('remTimeEndInput').value = item.timeEnd || '';
+
+          const alarmSelect = document.getElementById('remAlarmMinutes');
+          alarmSelect.value = item.category === 'flight' ? 'flight_smart' : '60';
+
+          const modal = document.getElementById('reminderModal');
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        },
+        closeReminderModal: function () {
+          const modal = document.getElementById('reminderModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        },
+        _syncReminderInputsToItem: function () {
+          const id = document.getElementById('remItemId').value;
+          const dateVal = document.getElementById('remDateInput').value || '2027-05-15';
+          const tStart = document.getElementById('remTimeStartInput').value || '10:00';
+          const tEnd = document.getElementById('remTimeEndInput').value || '';
+
+          let updatedItem = null;
+          state.data.items = state.data.items.map((it) => {
+            if (it.id === id) {
+              updatedItem = Object.assign({}, it, {
+                date: dateVal,
+                timeStart: tStart,
+                timeEnd: tEnd
+              });
+              return updatedItem;
+            }
+            return it;
+          });
+          saveData();
+          return updatedItem;
+        },
+        triggerAppleCalendarIcs: function () {
+          const item = window.appActions._syncReminderInputsToItem();
+          if (!item) return;
+
+          const dateStr = (item.date || '2027-05-15').replace(/-/g, '');
+          const startParts = (item.timeStart || '10:00').split(':');
+          const sh = String(startParts[0] || '10').padStart(2, '0');
+          const sm = String(startParts[1] || '00').padStart(2, '0');
+          const dtStart = `${dateStr}T${sh}${sm}00`;
+
+          let dtEnd = '';
+          if (item.timeEnd && item.timeEnd.includes(':')) {
+            const endParts = item.timeEnd.split(':');
+            const eh = String(endParts[0] || sh).padStart(2, '0');
+            const em = String(endParts[1] || sm).padStart(2, '0');
+            dtEnd = `${dateStr}T${eh}${em}00`;
+          } else {
+            const nextHour = String((Number(sh) + 2) % 24).padStart(2, '0');
+            dtEnd = `${dateStr}T${nextHour}${sm}00`;
+          }
+
+          const alarmMode = document.getElementById('remAlarmMinutes').value;
+          let alarmsIcs = '';
+          if (alarmMode === 'flight_smart') {
+            alarmsIcs = [
+              'BEGIN:VALARM',
+              'TRIGGER:-PT3H',
+              'ACTION:DISPLAY',
+              `DESCRIPTION:✈️ Uçuşa 3 Saat Kaldı (Check-in & Havalimanı): ${item.title}`,
+              'END:VALARM',
+              'BEGIN:VALARM',
+              'TRIGGER:-PT1H',
+              'ACTION:DISPLAY',
+              `DESCRIPTION:🛫 Uçuşa 1 Saat Kaldı (Kapı Kontrolü): ${item.title}`,
+              'END:VALARM'
+            ].join('\r\n');
+          } else {
+            const mins = Number(alarmMode) || 60;
+            alarmsIcs = [
+              'BEGIN:VALARM',
+              `TRIGGER:-PT${mins}M`,
+              'ACTION:DISPLAY',
+              `DESCRIPTION:🔔 Göksel & Zeliş Tiflis Hatırlatıcı: ${item.title}`,
+              'END:VALARM'
+            ].join('\r\n');
+          }
+
+          const cleanDesc = [
+            item.subtitle ? `Detay: ${item.subtitle}` : '',
+            `Tutar: ${formatTL(item.price)} (${formatGEL(item.price)})`,
+            `Ödeyen: ${item.paidBy || 'Ortak'}`,
+            item.notes ? `Not: ${item.notes}` : '',
+            item.link ? `Link: ${item.link}` : ''
+          ].filter(Boolean).join('\\n');
+
+          const icsContent = [
+            'BEGIN:VCALENDAR',
+            'VERSION:2.0',
+            'PRODID:-//Goksel & Zelis Tiflis Rotasi//TR',
+            'CALSCALE:GREGORIAN',
+            'METHOD:PUBLISH',
+            'BEGIN:VEVENT',
+            `UID:tiflis-${item.id}-${Date.now()}@gokselzelis.app`,
+            `DTSTAMP:${dateStr}T080000Z`,
+            `DTSTART:${dtStart}`,
+            `DTEND:${dtEnd}`,
+            `SUMMARY:🇬🇪 ${item.title}`,
+            `LOCATION:${(item.location || item.city || 'Tbilisi, Georgia').replace(/,/g, '\\,')}`,
+            `DESCRIPTION:${cleanDesc}`,
+            alarmsIcs,
+            'END:VEVENT',
+            'END:VCALENDAR'
+          ].join('\r\n');
+
+          const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `tiflis-animosatici-${item.id}.ics`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+          window.appActions.closeReminderModal();
+          showToast('🍎 iPhone Takvim & Anımsatıcı kartı açıldı! "Ekle"ye dokunun.');
+        },
+        triggerGoogleCalendarUrl: function () {
+          const item = window.appActions._syncReminderInputsToItem();
+          if (!item) return;
+
+          const dateStr = (item.date || '2027-05-15').replace(/-/g, '');
+          const startParts = (item.timeStart || '10:00').split(':');
+          const sh = String(startParts[0] || '10').padStart(2, '0');
+          const sm = String(startParts[1] || '00').padStart(2, '0');
+          const dtStart = `${dateStr}T${sh}${sm}00`;
+
+          let dtEnd = '';
+          if (item.timeEnd && item.timeEnd.includes(':')) {
+            const endParts = item.timeEnd.split(':');
+            const eh = String(endParts[0] || sh).padStart(2, '0');
+            const em = String(endParts[1] || sm).padStart(2, '0');
+            dtEnd = `${dateStr}T${eh}${em}00`;
+          } else {
+            const nextHour = String((Number(sh) + 2) % 24).padStart(2, '0');
+            dtEnd = `${dateStr}T${nextHour}${sm}00`;
+          }
+
+          const details = `${item.subtitle || ''}\nTutar: ${formatTL(item.price)}\nNot: ${item.notes || ''}\n${item.link || ''}`;
+          const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('🇬🇪 ' + item.title)}&dates=${dtStart}/${dtEnd}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(item.location || item.city || 'Tbilisi, Georgia')}`;
+          window.open(gcalUrl, '_blank', 'noopener,noreferrer');
+          window.appActions.closeReminderModal();
+        },
+        // MODAL İÇİNDEKİ LİNK ÇÖZÜCÜ
+        autoFillModalFromUrl: function () {
+          const rawUrl = document.getElementById('modalSmartUrlInput').value.trim();
+          if (!rawUrl) {
+            showToast('Lütfen önce bir link veya mekan adı yapıştırın!');
+            return;
+          }
+          const curPrice = document.getElementById('formPrice').value;
+          const curDate = document.getElementById('formDate').value;
+          const parsed = smartParseUrlAndText(rawUrl, curPrice, curDate);
+
+          document.getElementById('formCategory').value = parsed.category;
+          document.getElementById('formTitle').value = parsed.title;
+          document.getElementById('formCity').value = parsed.city;
+          document.getElementById('formLocation').value = parsed.location;
+          if (parsed.link) document.getElementById('formLink').value = parsed.link;
+          if (parsed.subtitle) document.getElementById('formSubtitle').value = parsed.subtitle;
+          if (parsed.notes) document.getElementById('formNotes').value = parsed.notes;
+
+          const stEl = document.getElementById('modalSmartStatus');
+          if (stEl) stEl.textContent = '✅ Otomatik Dolduruldu!';
+          showToast('🪄 Otel/Uçuş adı ve Google Maps konumu otomatik dolduruldu!');
+        },
+        // YENİ ÖNERİ KEŞFETME MOTORU (HAVUZ + GEMINI AI)
+        discoverNewRecommendation: async function () {
+          const cat = state.activeRecCat || 'restoran';
+          const pool = EXTRA_DISCOVERY_POOL[cat] || [];
+          const allExistingTitles = getAllRecommendations().map((r) => r.title.toLowerCase());
+
+          // Önce yerel zengin havuzdan henüz eklenmemiş olanı bul
+          const availableFromPool = pool.filter((p) => !allExistingTitles.includes(p.title.toLowerCase()));
+
+          if (availableFromPool.length > 0) {
+            const pick = availableFromPool[0];
+            const newRec = Object.assign({}, pick, {
+              id: 'disc-' + Date.now(),
+              recCat: cat
+            });
+            if (!Array.isArray(state.data.customRecommendations)) {
+              state.data.customRecommendations = [];
+            }
+            state.data.customRecommendations = [newRec, ...state.data.customRecommendations];
+            saveData();
+            showToast(`✨ Yeni Öneri Bulundu: "${newRec.title}"!`);
+            return;
+          }
+
+          // Havuzdaki tüm öneriler eklendiyse Gemini API ile canlı yeni Tiflis önerisi üret
+          state.isGeneratingRec = true;
+          renderAll();
+          try {
+            const catLabel = REC_CATEGORIES[cat]?.title || 'Tiflis Mekanı';
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            const prompt = `Tiflis (Gürcistan) için "${catLabel}" kategorisinde daha önce şu listede olmayan (${allExistingTitles.slice(0, 12).join(', ')}) gerçek, çok popüler ve makul fiyatlı 1 yeni yer öner. JSON döndür.`;
+            const payload = {
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                  type: "OBJECT",
+                  properties: {
+                    badge: { type: "STRING" },
+                    title: { type: "STRING" },
+                    area: { type: "STRING" },
+                    whoRecommends: { type: "STRING" },
+                    avgPriceText: { type: "STRING" },
+                    estimatedPriceTL: { type: "NUMBER" },
+                    location: { type: "STRING" },
+                    description: { type: "STRING" }
+                  }
+                }
+              }
+            };
+            const res = await fetch(apiUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            const json = await res.json();
+            const text = json?.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (text) {
+              const parsed = JSON.parse(text);
+              const aiRec = {
+                id: 'ai-rec-' + Date.now(),
+                recCat: cat,
+                badge: parsed.badge || '✨ Yeni Keşif',
+                title: parsed.title,
+                area: parsed.area || 'Tiflis Merkez',
+                whoRecommends: parsed.whoRecommends || 'Gezginlerin Favorisi',
+                avgPriceText: parsed.avgPriceText || 'Ortalama 2 Kişi: ~650 ₺',
+                estimatedPriceTL: Number(parsed.estimatedPriceTL) || 650,
+                location: parsed.location || `${parsed.title}, Tbilisi, Georgia`,
+                website: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(parsed.title + ' Tbilisi')}`,
+                description: parsed.description || ''
+              };
+              state.data.customRecommendations = [aiRec, ...(state.data.customRecommendations || [])];
+              state.isGeneratingRec = false;
+              saveData();
+              showToast(`✨ Yeni Öneri Keşfedildi: "${aiRec.title}"!`);
+              return;
+            }
+          } catch (err) {
+            console.warn("AI öneri yedek moduna geçti");
+          }
+          state.isGeneratingRec = false;
+          renderAll();
+          showToast('Bu kategorideki tüm popüler Tiflis önerileri listenizde açık!');
+        },
+        copyText: function (text) {
+          if (!text) return;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+              showToast('Panoya kopyalandı!');
+            }).catch(() => fallbackCopy(text));
+          } else {
+            fallbackCopy(text);
+          }
+        },
+        setItemStatus: function (id, newStatus) {
+          state.data.items = state.data.items.map((it) =>
+            it.id === id ? Object.assign({}, it, { status: newStatus }) : it
+          );
+          saveData();
+          showToast('Durum güncellendi ve otomatik kaydedildi!');
+        },
+        deleteItem: function (id) {
+          state.data.items = state.data.items.filter((it) => it.id !== id);
+          saveData();
+          showToast('Seçenek silindi.');
+        },
+        addRecommendationToPlan: function (recId) {
+          const rec = getAllRecommendations().find((r) => r.id === recId);
+          if (!rec) return;
+          const catMeta = REC_CATEGORIES[rec.recCat] || REC_CATEGORIES.restoran;
+          const newItem = {
+            id: 'rec-added-' + Date.now(),
+            category: catMeta.planCat || 'food',
+            status: 'favorite',
+            title: rec.title,
+            city: rec.area,
+            date: state.data.tripInfo.startDate || '2027-05-16',
+            subtitle: rec.avgPriceText,
+            price: Number(rec.estimatedPriceTL) || 0,
+            paidBy: 'Ortak',
+            addedBy: state.activeUser,
+            location: rec.location,
+            link: rec.website || '',
+            notes: `Gezgin Önerisi (${rec.whoRecommends}): ${rec.description}`
+          };
+          state.data.items = [newItem, ...state.data.items];
+          saveData();
+          showToast(`"${rec.title}" Göksel & Zeliş planına eklendi!`);
+        },
+        openItemModal: function (editId) {
+          const modal = document.getElementById('itemModal');
+          const titleEl = document.getElementById('modalTitle');
+          const form = document.getElementById('itemForm');
+          form.reset();
+          document.getElementById('modalSmartUrlInput').value = '';
+          document.getElementById('modalSmartStatus').textContent = '';
+
+          if (editId) {
+            const found = state.data.items.find((i) => i.id === editId);
+            if (found) {
+              titleEl.textContent = 'Seçeneği / Harcamayı Düzenle';
+              document.getElementById('formItemId').value = found.id;
+              document.getElementById('formCategory').value = found.category || 'flight';
+              document.getElementById('formStatus').value = found.status || 'option';
+              document.getElementById('formTitle').value = found.title || '';
+              document.getElementById('formCity').value = found.city || '';
+              document.getElementById('formPrice').value = found.price || 0;
+              document.getElementById('formPaidBy').value = found.paidBy || 'Göksel';
+              document.getElementById('formDate').value = found.date || '';
+              document.getElementById('formTimeStart').value = found.timeStart || '';
+              document.getElementById('formTimeEnd').value = found.timeEnd || '';
+              document.getElementById('formSubtitle').value = found.subtitle || '';
+              document.getElementById('formLink').value = found.link || '';
+              document.getElementById('formLocation').value = found.location || '';
+              document.getElementById('formNotes').value = found.notes || '';
+            }
+          } else {
+            titleEl.textContent = `Yeni Seçenek Ekle (${state.activeUser})`;
+            document.getElementById('formItemId').value = '';
+            const defCat = state.categoryFilter !== 'all' ? state.categoryFilter : 'flight';
+            document.getElementById('formCategory').value = defCat;
+            document.getElementById('formStatus').value = 'favorite';
+            document.getElementById('formPaidBy').value = state.activeUser;
+            document.getElementById('formDate').value = state.data.tripInfo.startDate || '2027-05-15';
+            document.getElementById('formTimeStart').value = defCat === 'flight' ? '10:25' : defCat === 'hotel' ? '14:00' : '19:30';
+            document.getElementById('formTimeEnd').value = defCat === 'flight' ? '13:50' : '';
+          }
+
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        },
+        openItemModalWithCategory: function (catKey) {
+          window.appActions.openItemModal();
+          document.getElementById('formCategory').value = catKey;
+          document.getElementById('formStatus').value = 'booked';
+        },
+        closeItemModal: function () {
+          const modal = document.getElementById('itemModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        },
+        saveItemForm: function (e) {
+          e.preventDefault();
+          const id = document.getElementById('formItemId').value;
+          const titleVal = document.getElementById('formTitle').value.trim();
+          const cityVal = document.getElementById('formCity').value.trim() || 'Tiflis';
+          let locVal = document.getElementById('formLocation').value.trim();
+          if (!locVal && titleVal) {
+            locVal = `${titleVal}, ${cityVal}, Tbilisi, Georgia`;
+          }
+
+          const itemObj = {
+            id: id || 'item-' + Date.now(),
+            category: document.getElementById('formCategory').value,
+            status: document.getElementById('formStatus').value,
+            title: titleVal,
+            city: cityVal,
+            price: Number(document.getElementById('formPrice').value) || 0,
+            paidBy: document.getElementById('formPaidBy').value,
+            addedBy: state.activeUser,
+            date: document.getElementById('formDate').value,
+            timeStart: document.getElementById('formTimeStart').value || '',
+            timeEnd: document.getElementById('formTimeEnd').value || '',
+            subtitle: document.getElementById('formSubtitle').value.trim(),
+            link: document.getElementById('formLink').value.trim(),
+            location: locVal,
+            notes: document.getElementById('formNotes').value.trim()
+          };
+
+          if (id) {
+            state.data.items = state.data.items.map((it) => (it.id === id ? itemObj : it));
+          } else {
+            state.data.items = [itemObj, ...state.data.items];
+          }
+
+          saveData();
+          window.appActions.closeItemModal();
+          showToast('Saat ve detaylar Göksel & Zeliş ortak hafızasına kaydedildi!');
+        },
+        openTripSettingsModal: function () {
+          const info = state.data.tripInfo;
+          document.getElementById('setTripTitle').value = info.title || '';
+          document.getElementById('setTripDest').value = info.destinations || '';
+          document.getElementById('setPartner1').value = info.partner1Name || 'Göksel';
+          document.getElementById('setPartner2').value = info.partner2Name || 'Zeliş';
+          document.getElementById('setStartDate').value = info.startDate || '';
+          document.getElementById('setEndDate').value = info.endDate || '';
+          document.getElementById('setTargetBudget').value = info.targetBudget || 35000;
+          const gelInput = document.getElementById('setGelRate');
+          if (gelInput) gelInput.value = info.gelRate || DEFAULT_GEL_RATE;
+
+          const modal = document.getElementById('settingsModal');
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        },
+        closeTripSettingsModal: function () {
+          const modal = document.getElementById('settingsModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        },
+        saveTripSettings: function (e) {
+          e.preventDefault();
+          state.data.tripInfo = {
+            title: document.getElementById('setTripTitle').value.trim(),
+            destinations: document.getElementById('setTripDest').value.trim(),
+            partner1Name: document.getElementById('setPartner1').value.trim() || 'Göksel',
+            partner2Name: document.getElementById('setPartner2').value.trim() || 'Zeliş',
+            startDate: document.getElementById('setStartDate').value,
+            endDate: document.getElementById('setEndDate').value,
+            targetBudget: Number(document.getElementById('setTargetBudget').value) || 0,
+            gelRate: Number(document.getElementById('setGelRate')?.value) || DEFAULT_GEL_RATE
+          };
+          saveData();
+          window.appActions.closeTripSettingsModal();
+          showToast(`Tiflis rota ve Lari kuru (1 ₾ = ${state.data.tripInfo.gelRate} ₺) güncellendi!`);
+        },
+        openShareModal: function () {
+          const modal = document.getElementById('shareModal');
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        },
+        closeShareModal: function () {
+          const modal = document.getElementById('shareModal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        },
+        copyPlanDataText: function () {
+          const jsonStr = JSON.stringify(state.data);
+          window.appActions.copyText(jsonStr);
+          showToast('Plan yedeği kopyalandı!');
+        },
+        importPlanDataText: function () {
+          const raw = document.getElementById('importJsonTextarea').value.trim();
+          if (!raw) return;
+          try {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.tripInfo && Array.isArray(parsed.items)) {
+              state.data = parsed;
+              saveData();
+              document.getElementById('importJsonTextarea').value = '';
+              window.appActions.closeShareModal();
+              showToast('Plan başarıyla yüklendi ve eşitlendi!');
+            } else {
+              showToast('Geçersiz veri formatı!');
+            }
+          } catch (e) {
+            showToast('Veri okunamadı!');
+          }
+        },
+        downloadBackupJSON: function () {
+          const blob = new Blob([JSON.stringify(state.data, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `goksel-zelis-tiflis-plani.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+        },
+        loadSampleData: function () {
+          state.data = getInitialSampleData();
+          saveData();
+          window.appActions.closeShareModal();
+          showToast('Göksel & Zeliş Tiflis öneri paketi yüklendi!');
+        }
+      };
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showToast('Panoya kopyalandı!');
+        } catch (err) {}
+        document.body.removeChild(ta);
+      }
+
+      // Buluttan gelen veriyi yerel veriyi ezmeden akıllı birleştir
+      window._applyCloudData = function (remoteData, updatedBy) {
+        if (remoteData && remoteData.tripInfo && Array.isArray(remoteData.items)) {
+          state.data = remoteData;
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state.data));
+          } catch (e) {}
+          saveToIndexedDB(state.data);
+          renderAll();
+          const txt = document.getElementById('syncStatusText');
+          if (txt) {
+            txt.textContent = updatedBy
+              ? `Otomatik Kayıt Aktif (Son: ${updatedBy})`
+              : `Otomatik Kayıt & Senkronizasyon Aktif`;
+          }
+        }
+      };
+
+      window._getCurrentLocalData = function () {
+        return state.data;
+      };
+
+      // --- İLK ÇALIŞTIRMA ---
+      loadInitialLocalState();
+      renderAll();
+    })();
+  </script>
+
+  <!-- KODSUZ OTOMATİK CANLI BULUT SENKRONİZASYON MODÜLÜ -->
+  <script type="module">
+    const FIXED_ROOM_ID = "GOKSEL-ZELIS-TIFLIS-2026-MAIN";
+    try {
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
+        const { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
+        const { getFirestore, doc, setDoc, getDoc, onSnapshot } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        const getDocRef = () => doc(db, 'artifacts', appId, 'public', 'data', 'goksel_zelis_permanent_room', FIXED_ROOM_ID);
+
+        window._cloudPushState = async function (code, dataObj, updatedBy) {
+          if (!auth.currentUser) return;
+          await setDoc(getDocRef(), {
+            payload: JSON.stringify(dataObj),
+            updatedAt: Date.now(),
+            updatedBy: updatedBy || 'Göksel & Zeliş'
+          });
+        };
+
+        window._cloudFetchNow = async function () {
+          if (!auth.currentUser) return;
+          const snap = await getDoc(getDocRef());
+          if (snap.exists()) {
+            const d = snap.data();
+            if (d && d.payload) {
+              const parsed = JSON.parse(d.payload);
+              if (window._applyCloudData) window._applyCloudData(parsed, d.updatedBy);
+            }
+          }
+        };
+
+        onAuthStateChanged(auth, async (u) => {
+          if (!u) return;
+          const docRef = getDocRef();
+
+          // İlk açılışta bulutta kayıt varsa hemen çek, yoksa mevcut planı buluta ilk kez yaz
+          try {
+            const initialSnap = await getDoc(docRef);
+            if (initialSnap.exists()) {
+              const d = initialSnap.data();
+              if (d && d.payload) {
+                const parsed = JSON.parse(d.payload);
+                if (window._applyCloudData) window._applyCloudData(parsed, d.updatedBy);
+              }
+            } else if (window._getCurrentLocalData) {
+              await window._cloudPushState(FIXED_ROOM_ID, window._getCurrentLocalData(), 'Göksel & Zeliş');
+            }
+          } catch (e) {}
+
+          // Canlı dinleyici (Göksel veya Zeliş bir şey değiştirdiğinde diğerinde anında güncellenir)
+          onSnapshot(docRef, (snap) => {
+            if (snap.exists()) {
+              const d = snap.data();
+              if (d && d.payload) {
+                try {
+                  const parsed = JSON.parse(d.payload);
+                  if (window._applyCloudData) window._applyCloudData(parsed, d.updatedBy);
+                } catch (e) {}
+              }
+            }
+          }, (err) => {
+            console.warn("Canlı senkronizasyon uyarısı:", err);
+          });
+        });
+      }
+    } catch (err) {
+      console.log("Cihaz hafızası (LocalStorage + IndexedDB) aktif.");
+    }
+  </script>
+</body>
+</html>
